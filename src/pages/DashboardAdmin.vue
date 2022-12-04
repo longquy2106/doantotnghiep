@@ -1,0 +1,828 @@
+<template>
+  <q-layout view="hHh Lpr lff" style="height: 300px">
+    <div>
+      <q-drawer
+        v-model="drawer"
+        show-if-above
+        :width="300"
+        bordered
+        class="bg-grey-3 q-my-md"
+      >
+        <q-scroll-area class="fit">
+          <q-list class="q-my-xl">
+            <template v-for="(menuItem, index) in menuList" :key="index" >
+              <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
+                <q-item-section avatar>
+                  <q-icon :name="menuItem.icon" />
+                </q-item-section>
+                <q-item-section>
+                  {{ menuItem.label }}
+                </q-item-section>
+              </q-item>
+              <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+            </template>
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
+    </div>
+
+    <!-- "DANH SÁCH CÁC CÔNG TY" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH CÁC CÔNG TY"
+              :rows="dataCompanies"
+              :columns="columnsCompanies"
+              row-key="id"
+              selection="single"
+              v-model:selected="selected"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn color="primary" icon="add" label="Thêm" @click="createCompany = true" />
+              </div>
+              <div class="q-mr-sm">
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="Chỉnh sửa"
+                  @click="editCompany"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteItem()"
+                />
+              </div>
+            </div>
+            <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+
+    <!-- Chỉnh sửa thông tin công ty -->
+    <div class="q-pa-md">
+      <q-dialog v-model="createCompany" persistent>
+        <q-card >
+          <q-card-section class="">
+            <div>
+              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin công ty</h3>
+            </div>
+            <div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="congty.tencongty" label="Tên công ty"/>
+                <q-input filled v-model="congty.macongty" label="Mã công ty" />
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="congty.diachicty" label="Địa chỉ"/>
+                <q-input filled v-model="congty.sdtcty" type="tel" label="Số điện thoại"/>
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="congty.linkmap" label="Đường dẫn trên bản đồ (GGMap)"/>
+                <q-file color="teal" filled v-model="uploadimg" label="Upload hình ảnh">
+                  <template v-slot:prepend>
+                    <q-icon name="cloud_upload" />
+                  </template>
+                </q-file>
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="Các phòng" />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="Kiểu văn phòng" />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="Dịch vụ" />
+              </div>
+              <div class="q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="congty.motacty" type="textarea" label="Mô tả" />
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn flat label="Cancel" color="primary" v-close-popup="!cancelEnabled"/>
+            <q-btn flat label="Xác nhận" color="primary" @click="onCreateCompany"/>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
+    <!-- "DANH SÁCH NGƯỜI DÙNG" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH NGƯỜI DÙNG"
+              :rows="dataUsers"
+              :columns="columnsUsers"
+              row-key="id"
+              selection="single"
+              v-model:selected="selected"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn class="q-mr-sm" color="primary" icon="add" label="Thêm" @click="createUser = true" />
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="Chỉnh sửa"
+                  @click="edit()"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteItem()"
+                />
+              </div>
+            </div>
+            <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+
+    <!-- CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG -->
+    <div class="q-pa-md">
+      <q-dialog v-model="createUser" persistent>
+        <q-card >
+          <q-card-section class="">
+            <div>
+              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin người dùng</h3>
+            </div>
+            <div>
+              <div class="q-mt-md q-mx-lg">
+                <q-input class="q-mt-md" filled v-model="username" label="Username"/>
+                <q-input class="q-mt-md" filled v-model="emailnguoidung" label="Email" />
+                <q-input class="q-mt-md" filled v-model="passnguoidung" label="Password"/>
+                <div class="flex justify-between q-mr-md q-mt-sm">
+                  <q-toggle size="75px" v-model="shape" val="confimed" label="Confimed" />
+                  <q-toggle size="75px" v-model="shape" val="blocked" label="Blocked" />
+                </div>
+                <q-input class="q-mt-md" filled v-model="tennguoidung" label="Tên người dùng"/>
+                <q-input class="q-mt-md" filled v-model="dobnguoidung" label="Ngày tháng năm sinh" />
+                <q-input class="q-mt-md" filled v-model="diachinguoidung" label="Địa chỉ"/>
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn flat label="Cancel" color="primary" v-close-popup="!cancelEnabled"/>
+            <q-btn flat label="Xác nhận" color="primary" @click="onCreateBook"/>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
+    <!-- "DANH SÁCH CÁC VĂN PHÒNG" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH CÁC VĂN PHÒNG"
+              :rows="dataRooms"
+              :columns="columnsRooms"
+              row-key="id"
+              selection="single"
+              v-model:selected="selected"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn class="q-mr-sm" color="primary" icon="add" label="Thêm" @click="createRooms = true" />
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="Chỉnh sửa"
+                  @click="edit()"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteItem()"
+                />
+              </div>
+            </div>
+            <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+
+    <!-- chỉnh sửa thông tin văn Phòng -->
+    <div class="q-pa-md">
+      <q-dialog v-model="createRooms" persistent>
+        <q-card >
+          <q-card-section class="">
+            <div>
+              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin văn phòng</h3>
+            </div>
+            <div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="tenphong" label="Tên phòng"/>
+                <q-input filled v-model="giaphong" label="Giá" />
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="giaVAT" label="Giá VAT"/>
+                <q-input filled v-model="codephong" label="Mã văn phòng"/>
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="sizephong" label="Kích thước"/>
+                <q-file color="teal" filled v-model="imgphong" label="Upload hình ảnh">
+                  <template v-slot:prepend>
+                    <q-icon name="cloud_upload" />
+                  </template>
+                </q-file>
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="Thuộc công ty" />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="Kiểu phòng" />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="View" />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select filled v-model="model" :options="options" label="Trạng thái" />
+              </div>
+              <div class="q-mt-md q-ml-lg">
+                <q-input class="q-mr-lg" filled v-model="motaphong" type="textarea" label="Mô tả" />
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn flat label="Cancel" color="primary" v-close-popup="!cancelEnabled"/>
+            <q-btn flat label="Xác nhận" color="primary" @click="onCreateBook"/>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
+    <!-- "DANH SÁCH LỊCH SỬ ĐẶT PHÒNG" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH LỊCH SỬ ĐẶT PHÒNG"
+              :rows="dataBookHis"
+              :columns="columnsBookHis"
+              row-key="id"
+              selection="multiple"
+              v-model:selected="selectedBookHis"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="Chỉnh sửa"
+                  @click="edit()"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteItem()"
+                />
+              </div>
+            </div>
+            <div class="q-mt-md">Selected: {{ JSON.stringify(selectedBookHis) }}</div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+
+    <!-- "DANH SÁCH CÁC KIỂU VĂN PHÒNG" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH CÁC KIỂU VĂN PHÒNG"
+              :rows="dataRoomType"
+              :columns="columnsRoty"
+              row-key="id"
+              selection="single"
+              v-model:selected="selected"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn class="q-mr-sm" color="primary" icon="add" label="Thêm" @click="createRoomtype = true" />
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="Chỉnh sửa"
+                  @click="edit()"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteItem()"
+                />
+              </div>
+            </div>
+            <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+
+    <!-- chỉnh sửa các kiểu văn phòng -->
+    <div class="q-pa-md">
+      <q-dialog v-model="createRoomtype" persistent>
+        <q-card >
+          <q-card-section class="">
+            <div>
+              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin kiểu văn phòng</h3>
+            </div>
+            <div class=" q-mt-md q-ml-lg">
+              <q-input class="q-mr-lg" filled v-model="roomtype.nameroomtype" label="Tên kiểu văn phòng"/>
+              <q-file class=" q-mt-md" color="teal" filled v-model="imgroomtype" label="Upload hình ảnh">
+                <template v-slot:prepend>
+                  <q-icon name="cloud_upload" />
+                </template>
+              </q-file>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn flat label="Cancel" color="primary" v-close-popup="!cancelEnabled"/>
+            <q-btn flat label="Xác nhận" color="primary" @click="onCreateRoomtype"/>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
+    <!-- "DANH SÁCH CÁC DỊCH VỤ VĂN PHÒNG" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH CÁC DỊCH VỤ VĂN PHÒNG"
+              :rows="dataRoomService"
+              :columns="columnsRoSe"
+              row-key="id"
+              selection="single"
+              v-model:selected="selected"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn class="q-mr-sm" color="primary" icon="add" label="Thêm" @click="createRoomService = true" />
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  label="Chỉnh sửa"
+                  @click="edit()"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteItem()"
+                />
+              </div>
+            </div>
+            <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+    <!-- chỉnh sửa thông tin dịch vụ văn phòng -->
+    <div class="q-pa-md">
+      <q-dialog v-model="createRoomService" persistent>
+        <q-card >
+          <q-card-section class="">
+            <div>
+              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin dịch vụ văn phòng</h3>
+            </div>
+            <div class=" q-mt-md q-ml-lg">
+              <q-input class="q-mr-lg" filled v-model="roomservice.nameroomservice" label="Tên dịch vụ"/>
+              <q-file class=" q-mt-md q-mr-lg" color="teal" filled v-model="imgroomservice" label="Upload hình ảnh">
+                <template v-slot:prepend>
+                  <q-icon name="cloud_upload" />
+                </template>
+              </q-file>
+              <div class="q-mt-md">
+                <q-input class="q-mr-lg" filled v-model="roomservice.motaroomservice" type="textarea" label="Mô tả" />
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn flat label="Cancel" color="primary" v-close-popup="!cancelEnabled"/>
+            <q-btn flat label="Xác nhận" color="primary" @click="onCreateRoomService"/>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+  </q-layout>
+</template>
+
+<script>
+import { ref } from 'vue'
+import { api } from 'boot/axios'
+export default {
+  methods: {
+    getPostsCompanies () {
+      api
+        .get('/bookings?populate=*')
+        .then((res) => {
+          this.postsCo = res.data.data
+          for (let index = 0; index < this.postsCo.length; index++) {
+            const tempPostCo = {}
+            tempPostCo.id = this.postsCo[index].id
+            tempPostCo.Name = this.postsCo[index].attributes.Name
+            tempPostCo.Code = this.postsCo[index].attributes.Code
+            tempPostCo.Address = this.postsCo[index].attributes.Address
+            tempPostCo.Phone = this.postsCo[index].attributes.Phone
+            tempPostCo.Link_map = this.postsCo[index].attributes.Link_map
+            tempPostCo.Room_type_name = this.postsCo[index].attributes?.room_type.data?.attributes?.Name
+            this.dataCompanies.push(tempPostCo)
+          }
+        })
+    },
+    getPostsRooms () {
+      api
+        .get('/rooms?populate=*')
+        .then((res) => {
+          this.postsRo = res.data.data
+          for (let index = 0; index < this.postsRo.length; index++) {
+            const tempPostRo = {}
+            tempPostRo.id = this.postsRo[index].id
+            tempPostRo.Name = this.postsRo[index].attributes.Name
+            tempPostRo.Price = this.postsRo[index].attributes.Price
+            tempPostRo.Price_VAT = this.postsRo[index].attributes.Price_VAT
+            tempPostRo.Code = this.postsRo[index].attributes.Code
+            tempPostRo.Type = this.postsRo[index].attributes.Type
+            tempPostRo.Size = this.postsRo[index].attributes.Size
+            tempPostRo.Status = this.postsRo[index].attributes.Status
+            tempPostRo.Location = this.postsRo[index].attributes?.location.data?.attributes?.Name
+            this.dataRooms.push(tempPostRo)
+          }
+        })
+    },
+    getPostsUser () {
+      api
+        .get('/users?populate=*')
+        .then((res) => {
+          this.postsUser = res.data
+          for (let index = 0; index < this.postsUser.length; index++) {
+            const tempPostUser = {}
+            tempPostUser.id = this.postsUser[index].id
+            tempPostUser.email = this.postsUser[index].email
+            tempPostUser.confirmed = this.postsUser[index].confirmed
+            tempPostUser.blocked = this.postsUser[index].blocked
+            tempPostUser.Full_name = this.postsUser[index].Full_name
+            tempPostUser.Dob = this.postsUser[index].Dob
+            tempPostUser.Address = this.postsUser[index].Address
+            tempPostUser.auths = this.postsUser[index].auths
+            this.dataUsers.push(tempPostUser)
+          }
+        })
+    },
+    getPostsRoty () {
+      api
+        .get('/room-types')
+        .then((res) => {
+          this.postsRoty = res.data.data
+          for (let index = 0; index < this.postsRoty.length; index++) {
+            const tempPostRoty = {}
+            tempPostRoty.id = this.postsRoty[index].id
+            tempPostRoty.Name = this.postsRoty[index].attributes.Name
+            this.dataRoomType.push(tempPostRoty)
+          }
+        })
+    },
+    getPostsRoSe () {
+      api
+        .get('/service-rooms')
+        .then((res) => {
+          this.postsRoSe = res.data.data
+          for (let index = 0; index < this.postsRoSe.length; index++) {
+            const tempPostRoSe = {}
+            tempPostRoSe.id = this.postsRoSe[index].id
+            tempPostRoSe.Name = this.postsRoSe[index].attributes.Name
+            this.dataRoomService.push(tempPostRoSe)
+          }
+          console.log(this.dataRoomService)
+        })
+    },
+    getPostsBookHis () {
+      api
+        .get('/booking-histories?pagination[pageSize]=1000')
+        .then((res) => {
+          this.postsBookHis = res.data.data
+          for (let index = 0; index < this.postsBookHis.length; index++) {
+            const tempPostBookHis = {}
+            tempPostBookHis.id = this.postsBookHis[index].id
+            tempPostBookHis.Code = this.postsBookHis[index].attributes.Code
+            tempPostBookHis.Date = this.postsBookHis[index].attributes.Date
+            tempPostBookHis.Start_time = this.postsBookHis[index].attributes.Start_time
+            tempPostBookHis.End_time = this.postsBookHis[index].attributes.End_time
+            tempPostBookHis.Price = this.postsBookHis[index].attributes.Price
+            tempPostBookHis.Price_VAT = this.postsBookHis[index].attributes.Price_VAT
+            tempPostBookHis.Total_price = this.postsBookHis[index].attributes.Total_price
+            tempPostBookHis.Status = this.postsBookHis[index].attributes.Status
+            tempPostBookHis.User_name = this.postsBookHis[index].attributes.User_name
+            tempPostBookHis.Email = this.postsBookHis[index].attributes.Email
+            tempPostBookHis.Address = this.postsBookHis[index].attributes.Address
+            tempPostBookHis.Note = this.postsBookHis[index].attributes.Note
+            tempPostBookHis.Phone_number = this.postsBookHis[index].attributes.Phone_number
+            tempPostBookHis.Room = this.postsBookHis[index].attributes.Room
+            tempPostBookHis.Total_time = this.postsBookHis[index].attributes.Total_time
+            tempPostBookHis.Method_of_payment = this.postsBookHis[index].attributes.Method_of_payment
+            this.dataBookHis.push(tempPostBookHis)
+          }
+        })
+    },
+    onCreateCompany () {
+      api.post('/bookings', {
+        data: {
+          Name: this.congty.tencongty,
+          Code: this.congty.macongty,
+          Address: this.congty.diachicty,
+          Phone: this.congty.sdtcty,
+          Link_map: this.congty.linkmap,
+          Decripstion: this.congty.motacty
+        }
+      }).then(response => {
+        console.log(response)
+      })
+      console.log(this.congty)
+    },
+    onCreateRoomtype () {
+      api.post('/room-types', {
+        data: {
+          Name: this.roomtype.nameroomtype
+        }
+      }).then(response => {
+        console.log(response)
+      })
+      console.log(this.roomtype)
+    },
+    onCreateRoomService () {
+      api.post('/service-rooms', {
+        data: {
+          Name: this.roomservice.nameroomservice,
+          Description: this.roomservice.motaroomservice
+        }
+      }).then(response => {
+        console.log(response)
+      })
+      console.log(this.roomservice)
+    }
+  },
+  mounted () {
+    this.getPostsCompanies()
+    this.getPostsRooms()
+    this.getPostsRoty()
+    this.getPostsBookHis()
+    this.getPostsUser()
+    this.getPostsRoSe()
+  },
+  data () {
+    return {
+      shape: ref(false),
+      createCompany: ref(false),
+      createUser: ref(false),
+      createRooms: ref(false),
+      createRoomtype: ref(false),
+      createRoomService: ref(false),
+      drawer: ref(false),
+      selectedBookHis: ref(),
+      selected: ref([]),
+      postsCo: [],
+      postsRo: [],
+      postsRoty: [],
+      postsBookHis: [],
+      postsUser: [],
+      dataCompanies: [],
+      dataRooms: [],
+      dataRoomType: [],
+      dataBookHis: [],
+      dataRoomService: [],
+      dataUsers: [],
+      columnsCompanies: [
+        {
+          name: 'id',
+          align: 'right',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        {
+          name: 'name',
+          align: 'center',
+          label: 'Name',
+          field: 'Name',
+          sortable: true
+        },
+        {
+          name: 'code',
+          align: 'center',
+          label: 'Code',
+          field: 'Code',
+          sortable: true
+        },
+        { name: 'address', label: 'Address', field: 'Address', align: 'center' },
+        { name: 'phone', label: 'Phone', field: 'Phone', align: 'center' },
+        { name: 'link_map', label: 'Link map', field: 'Link_map', align: 'center' },
+        { name: 'room_type_name', label: 'Room tye', field: 'Room_type_name', align: 'center' }
+      ],
+      columnsRooms: [
+        {
+          name: 'id',
+          align: 'right',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        {
+          name: 'name',
+          align: 'center',
+          label: 'Room name',
+          field: 'Name',
+          sortable: true
+        },
+        {
+          name: 'price',
+          align: 'center',
+          label: 'Price',
+          field: 'Price',
+          sortable: true
+        },
+        { name: 'price_vat', label: 'Price VAT', field: 'Price_VAT', align: 'center' },
+        { name: 'code', label: 'Code', field: 'Code', align: 'center' },
+        { name: 'type', label: 'Type', field: 'Type', align: 'center' },
+        { name: 'size', label: 'Size', field: 'Size', align: 'center' },
+        { name: 'status', label: 'Status', field: 'Status', align: 'center' },
+        { name: 'location', label: 'Location', field: 'Location', align: 'center' }
+      ],
+      columnsUsers: [
+        {
+          name: 'id',
+          align: 'right',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        { name: 'email', label: 'Email', field: 'email', align: 'center' },
+        { name: 'confirmed', label: 'Confirmed', field: 'confirmed', align: 'center' },
+        { name: 'blocked', label: 'Blocked', field: 'blocked', align: 'center' },
+        { name: 'full_name', label: 'Full name', field: 'Full_name', align: 'center' },
+        { name: 'dob', label: 'Day of birth', field: 'Dob', align: 'center' },
+        { name: 'address', label: 'Address', field: 'Address', align: 'center' },
+        { name: 'auths', label: 'Auth', field: 'auths', align: 'center' }
+      ],
+      columnsRoty: [
+        {
+          name: 'id',
+          align: 'right',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        {
+          name: 'name',
+          align: 'center',
+          label: 'Room type',
+          field: 'Name',
+          sortable: true
+        }
+      ],
+      columnsRoSe: [
+        {
+          name: 'id',
+          align: 'right',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        {
+          name: 'name',
+          align: 'center',
+          label: 'Service room',
+          field: 'Name',
+          sortable: true
+        }
+      ],
+      columnsBookHis: [
+        {
+          name: 'id',
+          align: 'center',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        {
+          name: 'code',
+          align: 'center',
+          label: 'Code',
+          field: 'Code',
+          sortable: true
+        },
+        {
+          name: 'date',
+          align: 'center',
+          label: 'Date',
+          field: 'Date',
+          sortable: true
+        },
+        { name: 'start_time', label: 'Start time', field: 'Start_time', align: 'center' },
+        { name: 'end_time', label: 'End time', field: 'End_time', align: 'center' },
+        { name: 'price', label: 'Price', field: 'Price', align: 'center' },
+        { name: 'price_vat', label: 'Price VAT', field: 'Price_VAT', align: 'center' },
+        { name: 'total_price', label: 'Total Price', field: 'Total_price', align: 'center' },
+        { name: 'status', label: 'Status', field: 'Status', align: 'center' },
+        { name: 'user_name', label: 'User Name', field: 'User_name', align: 'center' },
+        { name: 'email', label: 'Email', field: 'Email', align: 'center' },
+        { name: 'address', label: 'Address', field: 'Address', align: 'center' },
+        { name: 'phone_number', label: 'Phone Number', field: 'Phone_number', align: 'center' },
+        { name: 'note', label: 'Note', field: 'Note', align: 'center' },
+        { name: 'room', label: 'Room', field: 'Room', align: 'center' },
+        { name: 'total_time', label: 'Total Time', field: 'Total_time', align: 'center' },
+        { name: 'method_of_payment', label: 'Method of payment', field: 'Method_of_payment', align: 'center' }
+      ],
+      nameroomtype: [],
+      menuList: [
+        {
+          icon: 'inbox',
+          label: 'Quản lý công ty',
+          separator: true
+        },
+        {
+          icon: 'send',
+          label: 'Quản lý người dùng',
+          separator: true
+        },
+        {
+          icon: 'delete',
+          label: 'Quản lý văn phòng',
+          separator: true
+        },
+        {
+          icon: 'error',
+          label: 'Quản lý lịch sử đặt phòng',
+          separator: true
+        },
+        {
+          icon: 'settings',
+          label: 'Quản lý kiểu văn phòng',
+          separator: false
+        }
+      ],
+      congty: {
+        tencongty: '',
+        macongty: '',
+        diachicty: '',
+        sdtcty: '',
+        linkmap: '',
+        motacty: ''
+      },
+      roomservice: {
+        nameroomservice: '',
+        motaroomservice: ''
+      },
+      roomtype: {
+        nameroomtype: ''
+      },
+      options: []
+    }
+  }
+}
+</script>

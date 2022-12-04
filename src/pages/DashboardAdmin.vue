@@ -86,23 +86,25 @@
               </div>
               <div class="flex q-mt-md q-ml-lg">
                 <q-input class="q-mr-lg" filled v-model="congty.linkmap" label="Đường dẫn trên bản đồ (GGMap)"/>
-                <q-file color="teal" filled v-model="uploadimg" label="Upload hình ảnh">
+                <q-file style="width:183px" color="teal" filled v-model="uploadimg" label="Upload hình ảnh">
                   <template v-slot:prepend>
                     <q-icon name="cloud_upload" />
                   </template>
                 </q-file>
               </div>
               <div class="q-my-md q-ml-lg">
-                <q-select filled v-model="model" :options="options" label="Các phòng" />
+                <q-select style="width:390px" filled
+                v-model="model"
+                :options="this.dataRoomType"
+                option-value="id"
+                option-label="Name"
+                label="Kiểu văn phòng" />
               </div>
               <div class="q-my-md q-ml-lg">
-                <q-select filled v-model="model" :options="options" label="Kiểu văn phòng" />
-              </div>
-              <div class="q-my-md q-ml-lg">
-                <q-select filled v-model="model" :options="options" label="Dịch vụ" />
+                <q-select style="width:390px" filled v-model="model" :options="options" label="Dịch vụ" />
               </div>
               <div class="q-mt-md q-ml-lg">
-                <q-input class="q-mr-lg" filled v-model="congty.motacty" type="textarea" label="Mô tả" />
+                <q-input style="width:390px" class="q-mr-lg" filled v-model="congty.motacty" type="textarea" label="Mô tả" />
               </div>
             </div>
           </q-card-section>
@@ -526,6 +528,7 @@ export default {
             tempPostRoty.Name = this.postsRoty[index].attributes.Name
             this.dataRoomType.push(tempPostRoty)
           }
+          console.log('room-type', this.dataRoomType)
         })
     },
     getPostsRoSe () {
@@ -662,7 +665,7 @@ export default {
         { name: 'address', label: 'Address', field: 'Address', align: 'center' },
         { name: 'phone', label: 'Phone', field: 'Phone', align: 'center' },
         { name: 'link_map', label: 'Link map', field: 'Link_map', align: 'center' },
-        { name: 'room_type_name', label: 'Room tye', field: 'Room_type_name', align: 'center' }
+        { name: 'room_type_name', label: 'Room type', field: 'Room_type_name', align: 'center' }
       ],
       columnsRooms: [
         {
@@ -821,7 +824,8 @@ export default {
       roomtype: {
         nameroomtype: ''
       },
-      options: []
+      options: [],
+      model: ''
     }
   }
 }

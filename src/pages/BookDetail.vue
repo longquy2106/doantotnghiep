@@ -63,6 +63,7 @@
                   outlined
                   v-model="khachhang.hovaten"
                   label="Nhập họ và tên"
+                  :rules="[(val)=>(val && val.length > 0)|| 'Không được để trống']"
                 ></q-input>
               </div>
               <div class="q-my-sm">
@@ -70,6 +71,7 @@
                   outlined
                   v-model="khachhang.sdt"
                   label="Nhập số điện thoại"
+                  :rules="[(val)=>(val && val.length > 0)|| 'Không được để trống']"
                 ></q-input>
               </div>
               <div class="q-my-sm">
@@ -77,6 +79,7 @@
                   outlined
                   v-model="khachhang.email"
                   label="Nhập địa chỉ Email"
+                  :rules="[(val)=>(val && val.length > 0)|| 'Không được để trống']"
                 ></q-input>
               </div>
               <div class="q-my-sm">
@@ -520,15 +523,16 @@ export default {
   },
   methods: {
     dialogBookclick () {
-      this.dialogBook = true
       this.total_time = this.timeend - this.timestart
       this.tamtinh = this.total_time * this.roomdatas.priceRoomData
       this.price_vat = (this.tamtinh * 10) / 100
       this.total_price = this.tamtinh + this.price_vat
-      if (this.total_time <= 0) {
+      if (this.khachhang.hovaten !== '' && this.khachhang.sdt !== '' && this.khachhang.email !== '' && this.total_time > 0) {
+        this.dialogBook = true
+      } else {
         this.$q.notify({
           type: 'negative',
-          message: 'Kiểm tra lại thời gian đặt'
+          message: 'Vui lòng kiểm tra lại các giá trị nhập liệu'
         })
       }
       const day = this.date.split('T')[0].split('-')[2]
@@ -612,13 +616,17 @@ export default {
       timestart: '08.00',
       timeend: '09.00',
       optionstime: [
-        '01.00',
-        '02.00',
-        '03.00',
-        '04.00',
-        '05.00',
-        '06.00',
-        '07.00'
+        '08.00',
+        '09.00',
+        '10.00',
+        '11.00',
+        '12.00',
+        '13.00',
+        '14.00',
+        '15.00',
+        '16.00',
+        '17.00',
+        '18.00'
       ]
     }
   }

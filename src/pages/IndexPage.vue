@@ -136,7 +136,7 @@ export default {
           tempRoom.addressRooms = res.data.data[index].attributes.Address
           tempRoom.phoneRooms = res.data.data[index].attributes.Phone
           tempRoom.typeRooms = res.data.data[index].attributes.room_type.data?.attributes?.Name
-          tempRoom.image = res.data.data[index].attributes.Image.data[0].attributes.url
+          tempRoom.image = res.data?.data[index]?.attributes?.Image.data[0].attributes.url
           this.rooms.push(tempRoom)
         }
         // const tempRoom = res.data?.data.map(e => ({
@@ -149,7 +149,6 @@ export default {
         //     url: 'http://localhost:1337' + item.attributes.formats.thumbnail.url
         //   }))[0]
         // }))
-        // this.rooms.push(tempRoom)
       })
     api.get('/view-rooms')
       .then((res) => {
@@ -160,7 +159,6 @@ export default {
           tempView.nameView = res.data.data[index].attributes.Name
           this.views.push(tempView)
         }
-        console.log(this.rooms)
       })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {
@@ -171,6 +169,7 @@ export default {
         minute: 'numeric'
       }).format()
     }, 1000)
+    console.log(this.rooms)
   },
 
   data () {

@@ -1343,9 +1343,24 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
+            api.get('/bookings?populate=*&pagination[pageSize]=1000').then((res) => {
+              this.postsCo = res.data.data
+              this.dataCompanies = []
+              for (let index = 0; index < this.postsCo.length; index++) {
+                const tempPostCo = {}
+                tempPostCo.id = this.postsCo[index].id
+                tempPostCo.Name = this.postsCo[index].attributes.Name
+                tempPostCo.Code = this.postsCo[index].attributes.Code
+                tempPostCo.Address = this.postsCo[index].attributes.Address
+                tempPostCo.Phone = this.postsCo[index].attributes.Phone
+                tempPostCo.Link_map = this.postsCo[index].attributes.Link_map
+                tempPostCo.Room_type_name =
+                  this.postsCo[index].attributes?.room_type.data?.attributes?.Name
+                this.dataCompanies.push(tempPostCo)
+              }
+              console.log('this.dataCompanies', this.dataCompanies)
+            })
             this.createCompany = false
-            this.dataCompanies.push(this.congty.tencongty, this.congty.macongty, this.congty.diachicty, this.congty.sdtcty, this.congty.linkmap, this.selectRoomType?.id.toString())
-            console.log(this.dataCompanies)
           }
         })
       } else {

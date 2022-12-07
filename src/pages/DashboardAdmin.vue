@@ -54,7 +54,7 @@
                   color="primary"
                   icon="edit"
                   label="Chỉnh sửa"
-                  @click="updateCompany = true"
+                  @click="(updateCompany = true, openDialogCompanyUpdate())"
                 />
               </div>
               <div>
@@ -66,7 +66,6 @@
                 />
               </div>
             </div>
-            <div v-for="select in selectedCo" :key="select.id" class="q-mt-md">Selected: {{select?.id}}</div>
           </div>
         </div>
       </q-page>
@@ -192,21 +191,21 @@
                 <q-input
                   class="q-mr-lg"
                   filled
-                  v-model="this.selectedCo[0].Name"
+                  v-model="editUpdateCo.Name"
                   label="Tên công ty"
                 />
-                <q-input filled v-model="this.selectedCo[0].Code" label="Mã công ty" />
+                <q-input filled v-model="editUpdateCo.Code" label="Mã công ty" />
               </div>
               <div class="flex q-mt-md q-ml-lg">
                 <q-input
                   class="q-mr-lg"
                   filled
-                  v-model="this.selectedCo[0].Address"
+                  v-model="editUpdateCo.Address"
                   label="Địa chỉ"
                 />
                 <q-input
                   filled
-                  v-model="this.selectedCo[0].Phone"
+                  v-model="editUpdateCo.Phone"
                   type="tel"
                   label="Số điện thoại"
                 />
@@ -215,7 +214,7 @@
                 <q-input
                   class="q-mr-lg"
                   filled
-                  v-model="this.selectedCo[0].Link_map"
+                  v-model="editUpdateCo.Link_map"
                   label="Đường dẫn trên bản đồ (GGMap)"
                 />
                 <q-file
@@ -442,7 +441,7 @@
                   color="primary"
                   icon="edit"
                   label="Chỉnh sửa"
-                  @click="edit()"
+                  @click="(updateRoom = true, openDialogRoomUpdate())"
                 />
               </div>
               <div>
@@ -459,7 +458,7 @@
       </q-page>
     </q-page-container>
 
-    <!-- chỉnh sửa thông tin văn Phòng -->
+    <!-- Tạo mới thông tin văn Phòng -->
     <div class="q-pa-md">
       <q-dialog v-model="createRooms" persistent>
         <q-card>
@@ -594,6 +593,141 @@
       </q-dialog>
     </div>
 
+    <!-- Chỉnh sửa thông tin văn phòng -->
+    <div class="q-pa-md">
+      <q-dialog v-model="updateRoom" persistent>
+        <q-card>
+          <q-card-section class="">
+            <div>
+              <h4 class="q-mt-sm q-ml-lg text-bold"> Chỉnh sửa thông tin văn phòng</h4>
+            </div>
+            <div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateRo.Name"
+                  label="Tên phòng"
+                />
+                <q-input filled v-model="editUpdateRo.Price" label="Giá" />
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateRo.Price_VAT"
+                  label="Giá VAT"
+                />
+                <q-input
+                  filled
+                  v-model="editUpdateRo.Code"
+                  label="Mã văn phòng"
+                />
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateRo.Size"
+                  label="Kích thước"
+                />
+                <q-file
+                  style="width: 183px"
+                  color="teal"
+                  filled
+                  v-model="imgphong"
+                  label="Upload hình ảnh"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="cloud_upload" />
+                  </template>
+                </q-file>
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  v-model="selectCompanies"
+                  :options="this.dataCompanies"
+                  option-value="id"
+                  option-label="Name"
+                  label="Thuộc công ty"
+                />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  v-model="editUpdateRo.Type"
+                  :options="kieuphong"
+                  label="Kiểu phòng"
+                />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  v-model="selectRoomService"
+                  multiple
+                  :options="this.dataRoomService"
+                  option-value="id"
+                  option-label="Name"
+                  label="Dịch vụ văn phòng"
+                />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  v-model="selectRoomView"
+                  multiple
+                  :options="this.dataRoomView"
+                  option-value="id"
+                  option-label="Name"
+                  label="View văn phòng"
+                />
+              </div>
+              <div class="q-mt-md q-ml-lg">
+                <q-input
+                  style="width: 390px"
+                  class="q-mr-lg"
+                  filled
+                  v-model="vanphong.motaphong"
+                  type="textarea"
+                  label="Mô tả"
+                />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  v-model="editUpdateRo.Status"
+                  :options="trangthai"
+                  label="Trạng thái"
+                />
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn
+              flat
+              label="Cancel"
+              color="primary"
+              v-close-popup="!cancelEnabled"
+            />
+            <q-btn
+              flat
+              label="Xác nhận"
+              color="primary"
+              @click="onUpdateRoom"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
     <!-- "DANH SÁCH LỊCH SỬ ĐẶT PHÒNG" -->
     <q-page-container>
       <q-page padding>
@@ -614,7 +748,7 @@
                   color="primary"
                   icon="edit"
                   label="Chỉnh sửa"
-                  @click="edit()"
+                  @click="(updateBookHis = true, openDialogBookHisUpdate())"
                 />
               </div>
               <div>
@@ -630,6 +764,161 @@
         </div>
       </q-page>
     </q-page-container>
+
+    <!-- Chỉnh sửa lịch sử đặt phòng -->
+    <div class="q-pa-md">
+      <q-dialog v-model="updateBookHis" persistent>
+        <q-card>
+          <q-card-section class="">
+            <div>
+              <h4 class="q-mt-sm q-ml-lg text-bold">Chỉnh sửa lịch sử đặt phòng</h4>
+            </div>
+            <div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  disable
+                  v-model="editUpdateBookHis.Code"
+                  label="Mã đặt phòng"
+                />
+                <q-input
+                  filled
+                  style="width:180px"
+                  v-model="editUpdateBookHis.Date"
+                  mask="date"
+                  :rules="['date']"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        cover
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="editUpdateBookHis.Date">
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <div class="flex q-ml-lg">
+                <q-select
+                  class="q-mr-lg"
+                  filled
+                  style="width: 183px"
+                  v-model="editUpdateBookHis.Timestart"
+                  :options="optionstime"
+                  label="Thời gian bắt đầu"
+                  selected
+                />
+                <q-select
+                  filled
+                  style="width: 183px"
+                  v-model="editUpdateBookHis.Timeend"
+                  :options="optionstime"
+                  label="Thời gian kết thúc"
+                />
+              </div>
+              <div class=" flex q-mt-md q-ml-lg">
+                <q-select
+                  class="q-mr-lg"
+                  filled
+                  style="width: 183px"
+                  v-model="editUpdateBookHis.Status"
+                  :options="optionsStatus"
+                  label="Trạng thái"
+                />
+                <q-select
+                  filled
+                  style="width: 183px"
+                  v-model="editUpdateBookHis.Payment"
+                  :options="optionsPayment"
+                  label="Hình thức thanh toán"
+                />
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateBookHis.Username"
+                  label="Người dùng"
+                />
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateBookHis.Email"
+                  label="Email"
+                />
+              </div>
+              <div class="flex q-mt-md q-ml-lg">
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateBookHis.Phone"
+                  label="Số điện thoại"
+                />
+                <q-input
+                  class="q-mr-lg"
+                  filled
+                  v-model="editUpdateBookHis.Note"
+                  label="Ghi chú"
+                />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  disable
+                  v-model="selectCompanies"
+                  :options="this.dataCompanies"
+                  option-value="id"
+                  option-label="Name"
+                  label="Địa chỉ đặt"
+                />
+              </div>
+              <div class="q-my-md q-ml-lg">
+                <q-select
+                  style="width: 390px"
+                  filled
+                  disable
+                  v-model="selectRoom"
+                  :options="this.dataRooms"
+                  option-value="id"
+                  option-label="Name"
+                  label="Văn phòng đặt"
+                />
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn
+              flat
+              label="Cancel"
+              color="primary"
+              v-close-popup="!cancelEnabled"
+            />
+            <q-btn
+              flat
+              label="Xác nhận"
+              color="primary"
+              @click="onUpdateBookHis"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
 
     <!-- "DANH SÁCH CÁC KIỂU VĂN PHÒNG" -->
     <q-page-container>
@@ -654,19 +943,13 @@
                   label="Thêm"
                   @click="createRoomtype = true"
                 />
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Chỉnh sửa"
-                  @click="edit()"
-                />
               </div>
               <div>
                 <q-btn
                   color="primary"
                   icon="delete"
                   label="Xóa"
-                  @click="deleteRoomRype"
+                  @click="deleteRoomType"
                 />
               </div>
             </div>
@@ -750,12 +1033,6 @@
                   label="Thêm"
                   @click="createRoomService = true"
                 />
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Chỉnh sửa"
-                  @click="edit()"
-                />
               </div>
               <div>
                 <q-btn
@@ -770,7 +1047,7 @@
         </div>
       </q-page>
     </q-page-container>
-    <!-- chỉnh sửa thông tin dịch vụ văn phòng -->
+    <!-- Tạo mới thông tin dịch vụ văn phòng -->
     <div class="q-pa-md">
       <q-dialog v-model="createRoomService" persistent>
         <q-card>
@@ -831,6 +1108,85 @@
         </q-card>
       </q-dialog>
     </div>
+
+     <!-- "DANH SÁCH TẦM NHÌN VĂN PHÒNG" -->
+    <q-page-container>
+      <q-page padding>
+        <div>
+          <!-- table -->
+          <div class="q-pa-md">
+            <q-table
+              title="DANH SÁCH CÁC TẦM NHÌN VĂN PHÒNG"
+              :rows="dataRoomView"
+              :columns="columnsRoVi"
+              row-key="id"
+              selection="single"
+              v-model:selected="selectedRoVi"
+            />
+            <div class="flex justify-end q-mt-md">
+              <div class="q-mr-sm">
+                <q-btn
+                  class="q-mr-sm"
+                  color="primary"
+                  icon="add"
+                  label="Thêm"
+                  @click="createRoomView = true"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  icon="delete"
+                  label="Xóa"
+                  @click="deleteRoomView"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+
+    <!-- Tạo mới thông tin tầm nhìn văn phòng -->
+    <div class="q-pa-md">
+      <q-dialog v-model="createRoomView" persistent>
+        <q-card>
+          <q-card-section class="">
+            <div>
+              <h4 class="q-mt-sm q-mx-lg text-bold">
+                Thêm tầm nhìn văn phòng
+              </h4>
+            </div>
+            <div class="q-mt-md q-ml-lg">
+              <q-input
+                style="width: 440px"
+                class="q-mr-lg"
+                filled
+                v-model="roomview.nameview"
+                label="Tên dịch vụ"
+              />
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn
+              flat
+              label="Cancel"
+              color="primary"
+              v-close-popup="!cancelEnabled"
+            />
+            <q-btn
+              flat
+              label="Xác nhận"
+              color="primary"
+              @click="onCreateRoomView"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
   </q-layout>
 </template>
 
@@ -840,7 +1196,7 @@ import { api } from 'boot/axios'
 export default {
   methods: {
     getPostsCompanies () {
-      api.get('/bookings?populate=*&pagination[pageSize]=100').then((res) => {
+      api.get('/bookings?populate=*&pagination[pageSize]=1000').then((res) => {
         this.postsCo = res.data.data
         for (let index = 0; index < this.postsCo.length; index++) {
           const tempPostCo = {}
@@ -857,7 +1213,7 @@ export default {
       })
     },
     getPostsRooms () {
-      api.get('/rooms?populate=*&pagination[pageSize]=100').then((res) => {
+      api.get('/rooms?populate=*&pagination[pageSize]=1000').then((res) => {
         this.postsRo = res.data.data
         for (let index = 0; index < this.postsRo.length; index++) {
           const tempPostRo = {}
@@ -876,7 +1232,7 @@ export default {
       })
     },
     getPostsUser () {
-      api.get('/users?populate=*&?pagination[pageSize]=100').then((res) => {
+      api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {
         this.postsUser = res.data
         for (let index = 0; index < this.postsUser.length; index++) {
           const tempPostUser = {}
@@ -893,7 +1249,7 @@ export default {
       })
     },
     getPostsRoty () {
-      api.get('/room-types?pagination[pageSize]=100').then((res) => {
+      api.get('/room-types?pagination[pageSize]=1000').then((res) => {
         this.postsRoty = res.data.data
         for (let index = 0; index < this.postsRoty.length; index++) {
           const tempPostRoty = {}
@@ -905,7 +1261,7 @@ export default {
       })
     },
     getPostsRoSe () {
-      api.get('/service-rooms?pagination[pageSize]=100').then((res) => {
+      api.get('/service-rooms?pagination[pageSize]=1000').then((res) => {
         this.postsRoSe = res.data.data
         for (let index = 0; index < this.postsRoSe.length; index++) {
           const tempPostRoSe = {}
@@ -951,7 +1307,7 @@ export default {
       })
     },
     getPostsRoVi () {
-      api.get('/view-rooms?pagination[pageSize]=100').then((res) => {
+      api.get('/view-rooms?pagination[pageSize]=1000').then((res) => {
         this.postsRoVi = res.data.data
         for (let index = 0; index < this.postsRoVi.length; index++) {
           const tempPostRoVi = {}
@@ -967,57 +1323,88 @@ export default {
       for (let index = 0; index < this.selectRoomService.length; index++) {
         this.selectRoomServiceIDs.push(this.selectRoomService[index].id)
       }
-      api.post('/bookings', {
-        data: {
-          Name: this.congty.tencongty,
-          Code: this.congty.macongty,
-          Address: this.congty.diachicty,
-          Phone: this.congty.sdtcty,
-          Link_map: this.congty.linkmap,
-          Decripstion: this.congty.motacty,
-          room_type: this.selectRoomType?.id.toString(),
-          services_rooms: this.selectRoomServiceIDs
-        }
-      }).then((response) => {
-        console.log(response)
-        if (response.status === 200) {
-          console.log('Success')
-          this.$q.notify({
-            type: 'positive',
-            message: 'Tạo thành công'
-          })
-        }
-      })
-      console.log(this.selectRoomService)
-      console.log(this.selectRoomType?.id)
+      if (this.congty.tencongty !== '' && this.congty.macongty !== '' && this.congty.diachicty !== '' && this.congty.sdtcty !== '' && this.congty.linkmap !== '' && this.congty.motacty !== '' && this.selectRoomType?.id.toString() !== '' && this.selectRoomServiceIDs !== '') {
+        api.post('/bookings', {
+          data: {
+            Name: this.congty.tencongty,
+            Code: this.congty.macongty,
+            Address: this.congty.diachicty,
+            Phone: this.congty.sdtcty,
+            Link_map: this.congty.linkmap,
+            Decripstion: this.congty.motacty,
+            room_type: this.selectRoomType?.id.toString(),
+            services_rooms: this.selectRoomServiceIDs
+          }
+        }).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('Success')
+            this.$q.notify({
+              type: 'positive',
+              message: 'Tạo thành công'
+            })
+            this.createCompany = false
+            this.dataCompanies.push(this.congty.tencongty, this.congty.macongty, this.congty.diachicty, this.congty.sdtcty, this.congty.linkmap, this.selectRoomType?.id.toString())
+            console.log(this.dataCompanies)
+          }
+        })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu đầy đủ'
+        })
+        console.log(this.selectRoomService)
+        console.log(this.selectRoomType?.id)
+      }
+    },
+
+    openDialogCompanyUpdate () {
+      this.editUpdateCo.Name = this.selectedCo[0].Name
+      this.editUpdateCo.Code = this.selectedCo[0].Code
+      this.editUpdateCo.Address = this.selectedCo[0].Address
+      this.editUpdateCo.Phone = this.selectedCo[0].Phone
+      this.editUpdateCo.Link_map = this.selectedCo[0].Link_map
     },
     // Chỉnh sửa công ty
     onUpdateCompany () {
       for (let index = 0; index < this.selectRoomService.length; index++) {
         this.selectRoomServiceIDs.push(this.selectRoomService[index].id)
       }
-      api.put(`/bookings/${this.selectedCo[0]?.id}`, {
-        data: {
-          Name: this.selectedCo[0].Name,
-          Code: this.selectedCo[0].Code,
-          Address: this.selectedCo[0].Address,
-          Phone: this.selectedCo[0].Phone,
-          Link_map: this.selectedCo[0].Link_map,
-          Decripstion: this.congty.motacty,
-          room_type: this.selectRoomType?.id,
-          services_rooms: this.selectRoomServiceIDs
-        }
-      }).then((response) => {
-        console.log(response)
-        if (response.status === 200) {
-          console.log('Success')
-          this.$q.notify({
-            type: 'positive',
-            message: 'Cập nhật thành công'
-          })
-        }
-      })
-      console.log(this.selectedCo[0])
+      if (this.editUpdateCo.Name !== '' && this.editUpdateCo.Code !== '' && this.editUpdateCo.Address !== '' && this.editUpdateCo.Phone !== '' && this.editUpdateCo.Link_map !== '' && this.congty.motacty !== '' && this.selectRoomType?.id !== '' && this.selectRoomServiceIDs !== '') {
+        api.put(`/bookings/${this.selectedCo[0]?.id}`, {
+          data: {
+            Name: this.editUpdateCo.Name,
+            Code: this.editUpdateCo.Code,
+            Address: this.editUpdateCo.Address,
+            Phone: this.editUpdateCo.Phone,
+            Link_map: this.editUpdateCo.Link_map,
+            Decripstion: this.congty.motacty,
+            room_type: this.selectRoomType?.id,
+            services_rooms: this.selectRoomServiceIDs
+          }
+        }).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('Success')
+            this.$q.notify({
+              type: 'positive',
+              message: 'Cập nhật thành công'
+            })
+            this.updateCompany = false
+            this.selectedCo[0].Name = this.editUpdateCo.Name
+            this.selectedCo[0].Code = this.editUpdateCo.Code
+            this.selectedCo[0].Address = this.editUpdateCo.Address
+            this.selectedCo[0].Phone = this.editUpdateCo.Phone
+            this.selectedCo[0].Link_map = this.editUpdateCo.Link_map
+            this.dataCompanies.splice(1, 6, this.selectedCo[0].Name, this.selectedCo[0].Code, this.selectedCo[0].Address, this.selectedCo[0].Phone, this.selectedCo[0].Link_map, this.selectRoomType[0])
+          }
+        })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu đầy đủ'
+        })
+      }
     },
     // Xóa công ty
     deleteCompany () {
@@ -1043,6 +1430,7 @@ export default {
       })
       console.log(this.selectedCo[0]?.id)
     },
+
     // Tạo mới thông tin văn phòng
     onCreateRoom () {
       for (let index = 0; index < this.selectRoomService.length; index++) {
@@ -1051,8 +1439,8 @@ export default {
       for (let index = 0; index < this.selectRoomView.length; index++) {
         this.selectRoomViewIDs.push(this.selectRoomView[index].id)
       }
-      api
-        .post('/rooms', {
+      if (this.vanphong.tenphong !== '' && this.vanphong.giaphong !== '' && this.vanphong.giaVAT !== '' && this.vanphong.codephong !== '' && this.vanphong.sizephong !== '' && this.vanphong.motaphong !== '' && this.vanphong.kieuphong !== '' && this.vanphong.trangthai !== '' && this.selectCompanies?.id.toString() !== '' && this.selectRoomServiceIDs !== '' && this.selectRoomViewIDs !== '') {
+        api.post('/rooms', {
           data: {
             Name: this.vanphong.tenphong,
             Price: Number(this.vanphong.giaphong),
@@ -1067,17 +1455,83 @@ export default {
             views_rooms: this.selectRoomViewIDs
           }
         })
-        .then((response) => {
+          .then((response) => {
+            console.log(response)
+            if (response.status === 200) {
+              console.log('Success')
+              this.$q.notify({
+                type: 'positive',
+                message: 'Tạo thành công'
+              })
+              this.createRooms = false
+            }
+          })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu đầy đủ'
+        })
+      }
+      console.log(this.vanphong)
+    },
+
+    openDialogRoomUpdate () {
+      this.editUpdateRo.Name = this.selectedRo[0].Name
+      this.editUpdateRo.Price = this.selectedRo[0].Price
+      this.editUpdateRo.Code = this.selectedRo[0].Code
+      this.editUpdateRo.Price_VAT = this.selectedRo[0].Price_VAT
+      this.editUpdateRo.Size = this.selectedRo[0].Size
+      this.editUpdateRo.Type = this.selectedRo[0].Type
+      this.editUpdateRo.Status = this.selectedRo[0].Status
+    },
+    // Chỉnh sửa văn phòng
+    onUpdateRoom () {
+      for (let index = 0; index < this.selectRoomService.length; index++) {
+        this.selectRoomServiceIDs.push(this.selectRoomService[index].id)
+      }
+      for (let index = 0; index < this.selectRoomView.length; index++) {
+        this.selectRoomViewIDs.push(this.selectRoomView[index].id)
+      }
+      if (this.editUpdateRo.Name !== '' && this.editUpdateRo.Price !== '' && this.editUpdateRo.Price_VAT !== '' && this.editUpdateRo.Code !== '' && this.editUpdateRo.Size !== '' && this.vanphong.motaphong !== '' && this.editUpdateRo.Type !== '' && this.editUpdateRo.Status !== '' && this.selectCompanies?.id.toString() !== '' && this.selectRoomServiceIDs !== '' && this.selectRoomViewIDs !== '') {
+        api.put(`/rooms/${this.selectedRo[0]?.id}`, {
+          data: {
+            Name: this.editUpdateRo.Name,
+            Price: Number(this.editUpdateRo.Price),
+            Price_VAT: Number(this.editUpdateRo.Price_VAT),
+            Code: this.editUpdateRo.Code,
+            Size: this.editUpdateRo.Size,
+            Description: this.vanphong.motaphong,
+            Type: this.editUpdateRo.Type,
+            Status: this.editUpdateRo.Status,
+            location: this.selectCompanies?.id.toString(),
+            services_rooms: this.selectRoomServiceIDs,
+            views_rooms: this.selectRoomViewIDs
+          }
+        }).then((response) => {
           console.log(response)
           if (response.status === 200) {
             console.log('Success')
             this.$q.notify({
               type: 'positive',
-              message: 'Tạo thành công'
+              message: 'Cập nhật thành công'
             })
+            this.updateRoom = false
+            this.selectedRo[0].Name = this.editUpdateRo.Name
+            this.selectedRo[0].Price = this.editUpdateRo.Price
+            this.selectedRo[0].Code = this.editUpdateRo.Code
+            this.selectedRo[0].Price_VAT = this.editUpdateRo.Price_VAT
+            this.selectedRo[0].Size = this.editUpdateRo.Size
+            this.selectedRo[0].Type = this.editUpdateRo.Type
+            this.selectedRo[0].Status = this.editUpdateRo.Status
+            this.dataCompanies.splice(1, 8, this.selectedRo[0].Name, this.selectedRo[0].Price, this.selectedRo[0].Price_VAT, this.selectedRo[0].Code, this.selectedRo[0].Type, this.selectedRo[0].Size)
           }
         })
-      console.log(this.vanphong)
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu đầy đủ'
+        })
+      }
     },
     // Xóa văn phòng
     deleteRoom () {
@@ -1128,13 +1582,12 @@ export default {
 
     // Tạo mới các kiểu văn phòng
     onCreateRoomtype () {
-      api
-        .post('/room-types', {
+      if (this.roomtype.nameroomtype !== '') {
+        api.post('/room-types', {
           data: {
             Name: this.roomtype.nameroomtype
           }
-        })
-        .then((response) => {
+        }).then((response) => {
           console.log(response)
           if (response.status === 200) {
             console.log('Success')
@@ -1144,10 +1597,16 @@ export default {
             })
           }
         })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu'
+        })
+      }
       console.log(this.roomtype)
     },
     // Xóa các kiểu văn phòng
-    deleteRoomRype () {
+    deleteRoomType () {
       api.delete(`/room-types/${this.selectedRoTy[0]?.id}`, {
       }).then((response) => {
         console.log(response)
@@ -1172,14 +1631,13 @@ export default {
 
     // Tạo mới dịch vụ văn phòng
     onCreateRoomService () {
-      api
-        .post('/service-rooms', {
+      if (this.roomservice.nameroomservice !== '' && this.roomservice.motaroomservice !== '') {
+        api.post('/service-rooms', {
           data: {
             Name: this.roomservice.nameroomservice,
             Description: this.roomservice.motaroomservice
           }
-        })
-        .then((response) => {
+        }).then((response) => {
           console.log(response)
           if (response.status === 200) {
             console.log('Success')
@@ -1189,6 +1647,12 @@ export default {
             })
           }
         })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu'
+        })
+      }
       console.log(this.roomservice)
     },
     // Xóa dịch vụ văn phòng
@@ -1215,6 +1679,119 @@ export default {
       })
     },
 
+    // Tạo mới tầm nhìn văn phòng
+    onCreateRoomView () {
+      if (this.roomview.nameview !== '') {
+        api.post('/view-rooms', {
+          data: {
+            Name: this.roomview.nameview
+          }
+        }).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('Success')
+            this.$q.notify({
+              type: 'positive',
+              message: 'Tạo thành công'
+            })
+          }
+        })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập liệu'
+        })
+      }
+    },
+    // Xóa các kiểu văn phòng
+    deleteRoomView () {
+      api.delete(`/view-rooms/${this.selectedRoVi[0]?.id}`, {
+      }).then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          console.log('Success')
+          this.$q.notify({
+            type: 'positive',
+            message: 'Xóa thành công'
+          })
+          this.dataRoomView.splice(Number(this.selectedRoVi[0]?.id) - 1, 1)
+          const tempDataRoomView = []
+          for (let index = 0; index < this.dataRoomView.length; index++) {
+            if (this.dataRoomView[index].id !== this.selectedRoVi[0]?.id) {
+              tempDataRoomView.push(this.dataRoomView[index])
+            }
+          }
+          this.dataRoomType = tempDataRoomView
+          console.log(this.dataRoomView)
+        }
+      })
+    },
+
+    // Chỉnh sửa lịch sử đặt phòng
+    openDialogBookHisUpdate () {
+      this.editUpdateBookHis.Code = this.selectedBookHis[0]?.Code
+      this.editUpdateBookHis.Timestart = this.selectedBookHis[0].Start_time
+      this.editUpdateBookHis.Timeend = this.selectedBookHis[0].End_time
+      this.editUpdateBookHis.Status = this.selectedBookHis[0].Status
+      this.editUpdateBookHis.Payment = this.selectedBookHis[0].Method_of_payment
+      this.editUpdateBookHis.Username = this.selectedBookHis[0].User_name
+      this.editUpdateBookHis.Email = this.selectedBookHis[0].Email
+      this.editUpdateBookHis.Phone = this.selectedBookHis[0].Phone_number
+      this.editUpdateBookHis.Note = this.selectedBookHis[0].Note
+      console.log(this.selectedBookHis[0])
+    },
+    onUpdateBookHis () {
+      const day = this.editUpdateBookHis.Date.split('T')[0].split('/')[2]
+      const month = this.editUpdateBookHis.Date.split('T')[0].split('/')[1]
+      const year = this.editUpdateBookHis.Date.split('T')[0].split('/')[0]
+      this.dateClone = `${day}/${month}/${year}`
+      console.log(this.dateClone)
+      if (this.editUpdateBookHis.Timestart < this.editUpdateBookHis.Timeend && this.dateClone !== '' && this.editUpdateBookHis.Status !== '' && this.editUpdateBookHis.Username !== '' && this.editUpdateBookHis.Note !== '' && this.editUpdateBookHis.Email !== '' && this.editUpdateBookHis.Phone !== '' && this.editUpdateBookHis.Payment !== '') {
+        api.put(`/booking-histories/${this.selectedBookHis[0]?.id}`, {
+          data: {
+            Date: this.dateClone,
+            Start_time: this.editUpdateBookHis.Timestart,
+            End_time: this.editUpdateBookHis.Timeend,
+            Status: this.editUpdateBookHis.Status,
+            Username: this.editUpdateBookHis.Username,
+            Note: this.editUpdateBookHis.Note,
+            Email: this.editUpdateBookHis.Email,
+            Phone: this.editUpdateBookHis.Phone,
+            Method_of_payment: this.editUpdateBookHis.Payment
+          }
+        }).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('Success')
+            this.$q.notify({
+              type: 'positive',
+              message: 'Cập nhật thành công'
+            })
+            this.updateBookHis = false
+            this.selectedBookHis[0].Date = this.dateClone
+            this.selectedBookHis[0].Code = this.editUpdateBookHis.Code
+            this.selectedBookHis[0].Start_time = this.editUpdateBookHis.Timestart
+            this.selectedBookHis[0].End_time = this.editUpdateBookHis.Timeend
+            this.selectedBookHis[0].Status = this.editUpdateBookHis.Status
+            this.selectedBookHis[0].Method_of_payment = this.editUpdateBookHis.Payment
+            this.selectedBookHis[0].User_name = this.editUpdateBookHis.Username
+            this.selectedBookHis[0].Email = this.editUpdateBookHis.Email
+            this.selectedBookHis[0].Phone_number = this.editUpdateBookHis.Phone
+            this.selectedBookHis[0].Note = this.editUpdateBookHis.Note
+            this.dataCompanies.splice(1, 9, this.selectedBookHis[0].Date
+              , this.selectedBookHis[0].Start_time
+              , this.selectedBookHis[0].End_time, this.selectedBookHis[0].Status, this.selectedBookHis[0].Method_of_payment
+              , this.selectedBookHis[0].User_name, this.selectedBookHis[0].Email, this.selectedBookHis[0].Phone_number
+              , this.selectedBookHis[0].Note)
+          }
+        })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Nhập liệu sai. Vui lòng kiểm tra lại dữ liệu'
+        })
+      }
+    },
     // Xóa lịch sử đặt phòng
     deleteBookHis () {
       api.delete(`/booking-histories/${this.selectedBookHis[0]?.id}`, {
@@ -1307,6 +1884,14 @@ export default {
         motacty: '',
         uploadimg: ''
       },
+      editUpdateCo: {
+        Name: null,
+        Code: null,
+        Address: null,
+        Phone: null,
+        Link_map: null,
+        Decripstion: null
+      },
       selectCompanies: '',
       selectedCo: [],
 
@@ -1362,6 +1947,8 @@ export default {
       },
 
       // xử lý dữ liệu văn phòng
+      selectRoom: [],
+      updateRoom: ref(false),
       createRooms: ref(false),
       postsRo: [],
       dataRooms: [],
@@ -1414,6 +2001,15 @@ export default {
         kieuphong: '',
         trangthai: ''
       },
+      editUpdateRo: {
+        Name: null,
+        Price: null,
+        Price_VAT: null,
+        Code: null,
+        Type: null,
+        Size: null,
+        Status: null
+      },
       selectedRo: [],
 
       // Xử lý dữ liệu các kiểu văn phòng
@@ -1443,6 +2039,7 @@ export default {
       selectedRoTy: [],
 
       // Xử lý dữ liệu lịch sử đặt phòng
+      updateBookHis: ref(false),
       postsBookHis: [],
       dataBookHis: [],
       selectedBookHis: [],
@@ -1528,6 +2125,18 @@ export default {
           align: 'center'
         }
       ],
+      editUpdateBookHis: {
+        Code: null,
+        Date: null,
+        Timestart: null,
+        Timeend: null,
+        Status: null,
+        Payment: null,
+        Username: null,
+        Email: null,
+        Phone: null,
+        Note: null
+      },
 
       // Xử lý dữ liệu dịch vụ văn phòng
       createRoomService: ref(false),
@@ -1559,22 +2168,58 @@ export default {
       selectedRoSe: [],
 
       // Xử lý dữ liệu view
+      createRoomView: ref(false),
       dataRoomView: [],
+      roomview: {
+        nameview: ''
+      },
+      selectedRoVi: [],
       selectRoomView: [],
       selectRoomViewIDs: [],
+      columnsRoVi: [
+        {
+          name: 'id',
+          align: 'right',
+          label: 'Id',
+          field: 'id',
+          sortable: true
+        },
+        {
+          name: 'name',
+          align: 'center',
+          label: 'Service room',
+          field: 'Name',
+          sortable: true
+        }
+      ],
 
       //
       drawer: ref(false),
-      selected: ref([]),
       menuList: [
         { icon: 'inbox', label: 'Quản lý công ty', separator: true },
         { icon: 'send', label: 'Quản lý người dùng', separator: true },
         { icon: 'delete', label: 'Quản lý văn phòng', separator: true },
         { icon: 'error', label: 'Quản lý lịch sử đặt phòng', separator: true },
-        { icon: 'settings', label: 'Quản lý kiểu văn phòng', separator: false }
+        { icon: 'settings', label: 'Quản lý kiểu văn phòng', separator: true },
+        { icon: 'settings', label: 'Quản lý tầm nhìn văn phòng', separator: false }
       ],
       options: [],
-      model: ''
+      model: '',
+      optionsStatus: ['Đang xác thực', 'Đã xác thực', 'Đã thanh toán', 'Đã hủy'],
+      optionsPayment: ['Thanh toán tại QUẦY', 'Tài khoản ngân hàng', 'Ví điện tử MOMO'],
+      optionstime: [
+        '08.00',
+        '09.00',
+        '10.00',
+        '11.00',
+        '12.00',
+        '13.00',
+        '14.00',
+        '15.00',
+        '16.00',
+        '17.00',
+        '18.00'
+      ]
     }
   }
 }

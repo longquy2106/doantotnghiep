@@ -127,9 +127,12 @@ export default {
   name: 'IndexPage',
 
   created () {
-    api.get('/bookings?populate=*')
+    api.get('/bookings?populate=*&pagination[pageSize]=100')
       .then((res) => {
+        let count = 0
         for (let index = 0; index < res.data.data.length; index++) {
+          count++
+          console.log(count)
           const tempRoom = {}
           tempRoom.id = res.data.data[index].id
           tempRoom.nameRooms = res.data.data[index].attributes.Name
@@ -139,6 +142,7 @@ export default {
           tempRoom.image = res.data?.data[index]?.attributes?.Image.data[0].attributes.url
           this.rooms.push(tempRoom)
         }
+
         // const tempRoom = res.data?.data.map(e => ({
         //   id: e.id,
         //   nameRooms: e.attributes.Name,
@@ -159,6 +163,7 @@ export default {
           tempView.nameView = res.data.data[index].attributes.Name
           this.views.push(tempView)
         }
+        console.log(this.rooms.length)
       })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {

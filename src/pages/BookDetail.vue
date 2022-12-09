@@ -440,6 +440,7 @@
               color="primary"
               v-close-popup="!cancelEnabled"
             />
+
             <q-btn
               :to="{ name: 'BookStatus', params: { idNew: codeBooking } }"
               flat
@@ -540,7 +541,8 @@ export default {
       const month = this.date.split('T')[0].split('-')[1]
       const year = this.date.split('T')[0].split('-')[0]
       this.dateClone = `${day}/${month}/${year}`
-      console.log(this.dateClone)
+
+      this.userID = localStorage.user_id
     },
     onCreateBook () {
       api.post('/booking-histories', {
@@ -573,12 +575,12 @@ export default {
           })
         }
       })
-      // api.get('/booking-histories?pagination[pageSize]=1000')
-      //   .then((res) => {
-      //     this.postsBookHis = res.data.data
-      //     this.idNew = this.postsBookHis[this.postsBookHis.length - 1].id.toString()
-      //     console.log('newid', this.idNew)
-      //   })
+      api.get('/booking-histories?pagination[pageSize]=1000')
+        .then((res) => {
+          this.postsBookHis = res.data.data
+          this.idNew = this.postsBookHis[this.postsBookHis.length - 1].id.toString()
+          console.log('newid', this.idNew)
+        })
     }
   },
   data () {

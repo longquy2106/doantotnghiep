@@ -3,7 +3,7 @@
     <q-header elevated class="bg-amber-1">
       <q-toolbar>
 
-        <q-toolbar-title style="fontSize:41px" class="text-bold text-black">
+        <q-toolbar-title style="fontSize:41px" @click="toPageMain" class="text-bold text-black">
           Book Now!
         </q-toolbar-title>
 
@@ -20,9 +20,11 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'AuthLayout',
-
-  setup () {
-
+  methods: {
+    toPageMain () {
+      const route = this.$router.resolve({ path: '/' })
+      window.open(route.href)
+    }
   }
 })
 </script>

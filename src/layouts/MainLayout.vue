@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="q-px-xl bg-amber-1">
       <q-toolbar class="row text-black" >
-          <q-toolbar-title shrink class="text-weight-bold" style="fontSize:40px">
+          <q-toolbar-title shrink class="text-weight-bold" @click="toPageMain" style="fontSize:40px">
             Book Now !
           </q-toolbar-title>
         <div class="row q-px-md">
@@ -56,6 +56,10 @@ import { api } from 'boot/axios'
 export default defineComponent({
   name: 'MainLayout',
   methods: {
+    toPageMain () {
+      const route = this.$router.resolve({ path: '/' })
+      window.open(route.href)
+    },
     linktomessenger () {
       window.open('https://www.facebook.com/messages/t/105035399098357')
     },
@@ -78,20 +82,6 @@ export default defineComponent({
           if (Number(this.userID) === this.dataUsers[todo].id) {
             this.thisUser = this.dataUsers[todo]
             console.log(this.thisUser)
-            // const tempthisUser = { bookingHistory: [] }
-            // tempthisUser.id = this.dataUsers[todo].id
-            // tempthisUser.email = this.dataUsers[todo].email
-            // tempthisUser.confirmed = this.dataUsers[todo].confirmed
-            // tempthisUser.blocked = this.dataUsers[todo].blocked
-            // tempthisUser.Full_name = this.dataUsers[todo].Full_name
-            // tempthisUser.Dob = this.dataUsers[todo].Dob
-            // tempthisUser.Address = this.dataUsers[todo].Address
-            // tempthisUser.auths = this.dataUsers[todo].auths
-            // tempthisUser.bookingHistory = this.dataUsers[todo].bookingHistory
-            // this.thisUser = (tempthisUser)
-            // console.log('his', this.dataUsers[todo].bookingHistory)
-          } else {
-            console.log('false')
           }
         }
       })
@@ -104,7 +94,11 @@ export default defineComponent({
   data () {
     return {
       dataUsers: [],
-      thisUser: {}
+      thisUser: {},
+      thisUnknow: {
+        username: 'Unknow'
+      }
+
     }
   },
   setup () {

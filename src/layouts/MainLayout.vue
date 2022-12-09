@@ -26,7 +26,7 @@
             <q-avatar size="26px">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png">
             </q-avatar>
-            <a class="q-ml-sm text-bold text-black">Jone</a>
+            <a class="q-ml-sm text-bold text-black">{{thisUser.username}}</a>
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>
@@ -52,11 +52,59 @@
 import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { api } from 'boot/axios'
 export default defineComponent({
   name: 'MainLayout',
   methods: {
     linktomessenger () {
       window.open('https://www.facebook.com/messages/t/105035399098357')
+    },
+    getPostsUser () {
+      api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {
+        this.postsUser = res.data
+        for (let index = 0; index < this.postsUser.length; index++) {
+          const tempPostUser = {}
+          tempPostUser.id = this.postsUser[index].id
+          tempPostUser.email = this.postsUser[index].email
+          tempPostUser.username = this.postsUser[index].username
+          tempPostUser.Full_name = this.postsUser[index].Full_name
+          tempPostUser.Dob = this.postsUser[index].Dob
+          tempPostUser.Address = this.postsUser[index].Address
+          tempPostUser.auths = this.postsUser[index].auths
+          tempPostUser.bookingHistory = this.postsUser[index].booking_histories
+          this.dataUsers.push(tempPostUser)
+        }
+        for (let todo = 0; todo < this.dataUsers.length; todo++) {
+          if (Number(this.userID) === this.dataUsers[todo].id) {
+            this.thisUser = this.dataUsers[todo]
+            console.log(this.thisUser)
+            // const tempthisUser = { bookingHistory: [] }
+            // tempthisUser.id = this.dataUsers[todo].id
+            // tempthisUser.email = this.dataUsers[todo].email
+            // tempthisUser.confirmed = this.dataUsers[todo].confirmed
+            // tempthisUser.blocked = this.dataUsers[todo].blocked
+            // tempthisUser.Full_name = this.dataUsers[todo].Full_name
+            // tempthisUser.Dob = this.dataUsers[todo].Dob
+            // tempthisUser.Address = this.dataUsers[todo].Address
+            // tempthisUser.auths = this.dataUsers[todo].auths
+            // tempthisUser.bookingHistory = this.dataUsers[todo].bookingHistory
+            // this.thisUser = (tempthisUser)
+            // console.log('his', this.dataUsers[todo].bookingHistory)
+          } else {
+            console.log('false')
+          }
+        }
+      })
+      this.userID = localStorage.user_id
+    }
+  },
+  mounted () {
+    this.getPostsUser()
+  },
+  data () {
+    return {
+      dataUsers: [],
+      thisUser: {}
     }
   },
   setup () {

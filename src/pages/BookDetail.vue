@@ -39,7 +39,7 @@
         </div>
 
         <div class="q-mx-xl q-my-md">
-          <q-card class="my-card">
+          <q-card class="my-card" style="width:546px">
             <q-card-section>
               <div class="">
                 <a style="fontSize:20px" class="text-bold">Mã Đơn Đặt</a>
@@ -497,6 +497,7 @@ export default {
         minute: 'numeric'
       }).format()
     }, 1000)
+    this.userID = localStorage.user_id
   },
 
   mounted () {
@@ -542,49 +543,47 @@ export default {
       console.log(this.dateClone)
     },
     onCreateBook () {
-      api
-        .post('/booking-histories', {
-          data: {
-            Code: this.codeBooking.toString(),
-            Start_time: this.timestart,
-            End_time: this.timeend,
-            Date: this.dateClone,
-            Price: Number(this.roomdatas.priceRoomData),
-            Price_VAT: Number(this.price_vat),
-            Total_price: Number(this.total_price),
-            Status: this.bookStatus,
-            User_name: this.khachhang.hovaten,
-            Phone_number: this.khachhang.sdt,
-            Email: this.khachhang.email,
-            Address: this.room.nameRooms,
-            Room: this.roomdatas.nameRoomData,
-            Note: this.khachhang.note,
-            Total_time: this.total_time,
-            Method_of_payment: this.shape
-          }
-        })
-        .then((response) => {
-          console.log(response)
-          if (response.status === 200) {
-            console.log('Success')
-            this.$q.notify({
-              type: 'positive',
-              message: 'Đặt phòng thành công'
-            })
-          }
-        })
+      api.post('/booking-histories', {
+        data: {
+          Code: this.codeBooking.toString(),
+          Start_time: this.timestart,
+          End_time: this.timeend,
+          Date: this.dateClone,
+          Price: Number(this.roomdatas.priceRoomData),
+          Price_VAT: Number(this.price_vat),
+          Total_price: Number(this.total_price),
+          Status: this.bookStatus,
+          User_name: this.khachhang.hovaten,
+          Phone_number: this.khachhang.sdt,
+          Email: this.khachhang.email,
+          Address: this.room.nameRooms,
+          Room: this.roomdatas.nameRoomData,
+          Note: this.khachhang.note,
+          Total_time: this.total_time,
+          Method_of_payment: this.shape,
+          user: this.userID.toString()
+        }
+      }).then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          console.log('Success')
+          this.$q.notify({
+            type: 'positive',
+            message: 'Đặt phòng thành công'
+          })
+        }
+      })
       // api.get('/booking-histories?pagination[pageSize]=1000')
       //   .then((res) => {
       //     this.postsBookHis = res.data.data
       //     this.idNew = this.postsBookHis[this.postsBookHis.length - 1].id.toString()
       //     console.log('newid', this.idNew)
       //   })
-      console.log(this.khachhang)
-      console.log(this.total_time)
     }
   },
   data () {
     return {
+      userID: '',
       idNew: '',
       dateClone: '',
       codeBooking: Math.floor(Math.random() * 10000000),

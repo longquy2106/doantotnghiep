@@ -114,6 +114,8 @@
                   style="width: 183px"
                   color="teal"
                   filled
+                  :filter="checkFileType"
+                  @rejected="onRejected"
                   v-model="congty.uploadimg"
                   label="Upload hình ảnh"
                 >
@@ -1478,6 +1480,24 @@ export default {
                 type: 'positive',
                 message: 'Tạo thành công'
               })
+              api.get('/rooms?populate=*&pagination[pageSize]=1000').then((res) => {
+                this.postsRo = res.data.data
+                this.dataRooms = []
+                for (let index = 0; index < this.postsRo.length; index++) {
+                  const tempPostRo = {}
+                  tempPostRo.id = this.postsRo[index].id
+                  tempPostRo.Name = this.postsRo[index].attributes.Name
+                  tempPostRo.Price = this.postsRo[index].attributes.Price
+                  tempPostRo.Price_VAT = this.postsRo[index].attributes.Price_VAT
+                  tempPostRo.Code = this.postsRo[index].attributes.Code
+                  tempPostRo.Type = this.postsRo[index].attributes.Type
+                  tempPostRo.Size = this.postsRo[index].attributes.Size
+                  tempPostRo.Status = this.postsRo[index].attributes.Status
+                  tempPostRo.Location =
+                    this.postsRo[index].attributes?.location.data?.attributes?.Name
+                  this.dataRooms.push(tempPostRo)
+                }
+              })
               this.createRooms = false
             }
           })
@@ -1610,6 +1630,17 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
+            api.get('/room-types?pagination[pageSize]=1000').then((res) => {
+              this.postsRoty = res.data.data
+              this.dataRoomType = []
+              for (let index = 0; index < this.postsRoty.length; index++) {
+                const tempPostRoty = {}
+                tempPostRoty.id = this.postsRoty[index].id
+                tempPostRoty.Name = this.postsRoty[index].attributes.Name
+                this.dataRoomType.push(tempPostRoty)
+              }
+            })
+            this.createRoomtype = false
           }
         })
       } else {
@@ -1660,6 +1691,18 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
+            api.get('/service-rooms?pagination[pageSize]=1000').then((res) => {
+              this.postsRoSe = res.data.data
+              this.dataRoomService = []
+              for (let index = 0; index < this.postsRoSe.length; index++) {
+                const tempPostRoSe = {}
+                tempPostRoSe.id = this.postsRoSe[index].id
+                tempPostRoSe.Name = this.postsRoSe[index].attributes.Name
+                this.dataRoomService.push(tempPostRoSe)
+              }
+              console.log(this.dataRoomService)
+            })
+            this.createRoomService = false
           }
         })
       } else {
@@ -1709,6 +1752,17 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
+            api.get('/view-rooms?pagination[pageSize]=1000').then((res) => {
+              this.postsRoVi = res.data.data
+              this.dataRoomView = []
+              for (let index = 0; index < this.postsRoVi.length; index++) {
+                const tempPostRoVi = {}
+                tempPostRoVi.id = this.postsRoVi[index].id
+                tempPostRoVi.Name = this.postsRoVi[index].attributes.Name
+                this.dataRoomView.push(tempPostRoVi)
+              }
+            })
+            this.createRoomView = false
           }
         })
       } else {

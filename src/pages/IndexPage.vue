@@ -164,6 +164,9 @@ export default {
           this.views.push(tempView)
         }
         console.log(this.rooms.length)
+        console.log(localStorage)
+        console.log(localStorage.user_id)
+        console.log(localStorage.user_name)
       })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {

@@ -127,12 +127,9 @@ export default {
   name: 'IndexPage',
 
   created () {
-    api.get('/bookings?populate=*&pagination[pageSize]=100')
+    api.get('/bookings?populate=*&pagination[pageSize]=1000')
       .then((res) => {
-        let count = 0
         for (let index = 0; index < res.data.data.length; index++) {
-          count++
-          console.log(count)
           const tempRoom = {}
           tempRoom.id = res.data.data[index].id
           tempRoom.nameRooms = res.data.data[index].attributes.Name
@@ -154,7 +151,7 @@ export default {
         //   }))[0]
         // }))
       })
-    api.get('/view-rooms')
+    api.get('/view-rooms?populate=*&pagination[pageSize]=1000')
       .then((res) => {
         for (let index = 0; index < res.data.data.length; index++) {
           const tempView = {}
@@ -163,10 +160,7 @@ export default {
           tempView.nameView = res.data.data[index].attributes.Name
           this.views.push(tempView)
         }
-        console.log(this.rooms.length)
-        console.log(localStorage)
-        console.log(localStorage.user_id)
-        console.log(localStorage.user_name)
+        console.log(this.views)
       })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {
@@ -177,7 +171,6 @@ export default {
         minute: 'numeric'
       }).format()
     }, 1000)
-    console.log(this.rooms)
   },
 
   data () {

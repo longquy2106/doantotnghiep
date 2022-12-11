@@ -234,83 +234,63 @@
                 <div class="flex q-my-sm">
                   <div>
                     <a style="fontSize:17px" class="text-bold text-italic"
-                      >TÊN PHÒNG:</a
+                      >TÊN PHÒNG: </a
                     >
                   </div>
                   <div class="q-mx-md">
                     <a style="fontSize:17px" class="text-bold">{{
                       roomdatas.nameRoomData
-                    }}</a>
+                    }} - {{roomdatas.codeRoomData}}</a>
                   </div>
                 </div>
                 <div class="q-mr-sm q-my-md">
                   <q-img
-                    src="http://localhost:1337/uploads/hd2_mr_205_c043253ef9.jpg?updated_at=2022-12-01T14:53:30.452Z"
+                    :src="`http://localhost:1337${inforoom[0]?.imageRoomData}`"
                     style="width: 508px; height: 220px"
                   ></q-img>
                 </div>
-                <div>
-                  <div><a>Date booking:</a></div>
-                  <div class="" style="max-width: 300px">
-                    <q-input
-                      filled
-                      v-model="date"
-                      mask="date"
-                      :rules="['date']"
+                <div class="flex q-my-sm">
+                  <div>
+                    <a>Kiểu văn phòng:</a
                     >
-                      <template v-slot:append>
-                        <q-icon name="event" class="cursor-pointer">
-                          <q-popup-proxy
-                            cover
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date v-model="date">
-                              <div class="row items-center justify-end">
-                                <q-btn
-                                  v-close-popup
-                                  label="Close"
-                                  color="primary"
-                                  flat
-                                />
-                              </div>
-                            </q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
                   </div>
-                  <div class="flex justify-between">
-                    <!-- TimeStart -->
-                    <div>
-                      <div class="q-my-xs"><a>Start time:</a></div>
-                      <div class="q-gutter-sm row">
-                        <div style="width: 250px">
-                          <div class="q-gutter-md">
-                            <q-select
-                              filled
-                              v-model="timestart"
-                              :options="optionstime"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- TimeEnd -->
-                    <div>
-                      <div class="q-my-xs"><a>End time:</a></div>
-                      <div class="q-gutter-sm row">
-                        <div style="width: 250px">
-                          <div class="q-gutter-md">
-                            <q-select
-                              filled
-                              v-model="timeend"
-                              :options="optionstime"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="q-mx-md">
+                    <a class="text-bold">{{
+                      roomdatas.typeRoomData
+                    }}</a>
+                  </div>
+                </div>
+                <div class="flex q-my-sm">
+                  <div>
+                    <a>Kích thước văn phòng:</a
+                    >
+                  </div>
+                  <div class="q-mx-md">
+                    <a class="text-bold">{{
+                      roomdatas.sizeRoomData
+                    }} người</a>
+                  </div>
+                </div>
+                <div class="flex q-my-sm">
+                  <div>
+                    <a>Giá cơ bản:</a
+                    >
+                  </div>
+                  <div class="q-mx-md">
+                    <a class="text-bold">{{
+                      roomdatas.priceRoomData
+                    }}</a>
+                  </div>
+                </div>
+                <div style="width:502px" class="flex q-my-sm">
+                  <div>
+                    <a>Mô tả:</a
+                    >
+                  </div>
+                  <div class="q-mx-md">
+                    <a>{{
+                      roomdatas.descriptionRoomData
+                    }}</a>
                   </div>
                 </div>
               </div>
@@ -322,7 +302,71 @@
           <q-card>
             <q-card-section>
               <div>
-                <div>
+                <div><a>Date booking:</a></div>
+                <div class="" style="max-width: 300px">
+                  <q-input
+                    filled
+                    v-model="date"
+                    mask="date"
+                    :rules="['date']"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date v-model="date">
+                            <div class="row items-center justify-end">
+                              <q-btn
+                                v-close-popup
+                                label="Close"
+                                color="primary"
+                                flat
+                              />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+                <div class="flex justify-between">
+                  <!-- TimeStart -->
+                  <div>
+                    <div class="q-my-xs"><a>Start time:</a></div>
+                    <div class="q-gutter-sm row">
+                      <div style="width: 250px">
+                        <div class="q-gutter-md">
+                          <q-select
+                            filled
+                            v-model="timestart"
+                            :options="optionstime"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- TimeEnd -->
+                  <div>
+                    <div class="q-my-xs"><a>End time:</a></div>
+                    <div class="q-gutter-sm row">
+                      <div style="width: 250px">
+                        <div class="q-gutter-md">
+                          <q-select
+                            filled
+                            v-model="timeend"
+                            :options="optionstime"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div>
+                <div class="q-mt-lg">
                   <a style="fontSize:20px"
                     ><a class="text-bold">Bước 1:</a> Nhấn "xác nhận" khi đã
                     điền đủ thông tin.</a
@@ -463,7 +507,7 @@ import { useQuasar } from 'quasar'
 export default {
   name: 'BookDetail',
   created () {
-    api.get('/bookings?populate=*').then((res) => {
+    api.get('/bookings?populate=*&pagination[pageSize]=1000').then((res) => {
       for (let index = 0; index < res.data.data.length; index++) {
         const tempRoom = {}
         tempRoom.id = res.data.data[index].id
@@ -475,6 +519,10 @@ export default {
         for (let todo = 0; todo < tempRoom.rooms.length; todo++) {
           const tempRoomData = {}
           tempRoomData.id = tempRoom.rooms[todo].id
+          tempRoomData.codeRoomData = tempRoom.rooms[todo].attributes.Code
+          tempRoomData.descriptionRoomData = tempRoom.rooms[todo].attributes.Description
+          tempRoomData.typeRoomData = tempRoom.rooms[todo].attributes.Type
+          tempRoomData.sizeRoomData = tempRoom.rooms[todo].attributes.Size
           tempRoomData.nameRoomData = tempRoom.rooms[todo].attributes.Name
           tempRoomData.priceRoomData = tempRoom.rooms[todo].attributes.Price
           tempRoomData.pVATRoomData = tempRoom.rooms[todo].attributes.Price_VAT
@@ -489,6 +537,22 @@ export default {
         this.rooms.push(tempRoom)
       }
     })
+    api.get('/rooms?populate=*&pagination[pageSize]=1000')
+      .then((res) => {
+        for (let tedo = 0; tedo < res.data.data.length; tedo++) {
+          const tempRoomData = {}
+          tempRoomData.id = res.data.data[tedo].id
+          tempRoomData.nameRoomData = res.data.data[tedo].attributes.Name
+          tempRoomData.priceRoomData = res.data.data[tedo].attributes.Price
+          tempRoomData.pricevatRoomData = res.data.data[tedo].attributes.Price_VAT
+          tempRoomData.codeRoomData = res.data.data[tedo].attributes.Code
+          tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
+          tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
+          tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
+          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data[0].attributes.url
+          this.inforoomdatas.push(tempRoomData)
+        }
+      })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {
         day: 'numeric',
@@ -520,7 +584,11 @@ export default {
           console.log('this.roomdatas', this.roomdatas)
         }
       }
-      console.log(this.roomdatas.priceRoomData)
+      for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
+        if (this.roomdatas?.id === this.inforoomdatas[tudo].id) {
+          this.inforoom.push(this.inforoomdatas[tudo])
+        }
+      }console.log(this.inforoom)
     }, 1000)
   },
   methods: {
@@ -537,12 +605,21 @@ export default {
           message: 'Vui lòng kiểm tra lại các giá trị nhập liệu'
         })
       }
-      const day = this.date.split('T')[0].split('-')[2]
-      const month = this.date.split('T')[0].split('-')[1]
-      const year = this.date.split('T')[0].split('-')[0]
-      this.dateClone = `${day}/${month}/${year}`
+      this.dateClone = this.date.split('T')[0]
+      // const day = this.date?.split('T')[0].split('-')[2]
+      // const month = this.date?.split('T')[0].split('-')[1]
+      // const year = this.date?.split('T')[0].split('-')[0]
+      // this.dateClone = `${day}/${month}/${year}`
 
       this.userID = localStorage.user_id
+      if (typeof this.userID === 'undefined') {
+        this.userID = 1
+        console.log('true', this.userID)
+      } else {
+        console.log('false', this.userID)
+      }
+      console.log(this.date)
+      console.log(this.dateClone)
     },
     onCreateBook () {
       api.post('/booking-histories', {
@@ -612,6 +689,8 @@ export default {
       rooms: [],
       room: [],
       views: [],
+      inforoomdatas: [],
+      inforoom: [],
       interval: null,
       time: null,
       timestart: '08.00',

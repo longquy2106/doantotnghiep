@@ -375,31 +375,31 @@
 
                 <q-separator inset />
 
-                <div v-for="roomdata in room.rooms" :key="roomdata.id" class="flex q-ma-md">
+                <div v-for="iroom in inforoom" :key="iroom.id" class="flex q-ma-md">
                   <div class="q-mr-md" loading="lazy" spinner-color="white">
                     <q-img
                       style="width: 250px; height: 150px"
-                      src="http://localhost:1337/uploads/hd2_mr_205_c043253ef9.jpg?updated_at=2022-12-01T14:53:30.452Z"
+                      :src="`http://localhost:1337${iroom.imageRoomData}`"
                     />
                   </div>
                   <div class="flex justify-between" style="width: 68%">
                     <div>
                       <div>
                         <a style="fontsize: 20px" class="text-bold"
-                          > {{roomdata.attributes.Name}}&nbsp;-&nbsp;{{roomdata.attributes.Code}} </a
+                          > {{iroom.nameRoomData}}&nbsp;-&nbsp;{{iroom.codeRoomData}} </a
                         >
                       </div>
                       <div>
                         <q-icon name="meeting_room" class="q-mr-sm"></q-icon
-                        ><a>Kiểu văn phòng: {{roomdata.attributes.Type}}</a>
+                        ><a>Kiểu văn phòng:{{iroom.typeRoomData}} </a>
                       </div>
                       <div>
                         <q-icon name="visibility" class="q-mr-sm"></q-icon
-                        ><a>Trạng thái: {{roomdata.attributes.Status}}</a>
+                        ><a>Trạng thái:{{iroom.statusRoomData}} </a>
                       </div>
                       <div>
                         <q-icon name="schedule" class="q-mr-sm"></q-icon
-                        ><a>Kích thước: {{roomdata.attributes.Size}}&nbsp;người</a>
+                        ><a>Kích thước:{{iroom.sizeRoomData}} &nbsp;người</a>
                       </div>
                       <div>
                         <q-chip
@@ -410,16 +410,16 @@
                     </div>
                     <div class="q-mt-xl">
                       <div class="text-right text-bold text-red" style="fontsize: 20px">
-                        <a>Giá: {{roomdata.attributes.Price}}&nbsp;VNĐ / H</a>
+                        <a>Giá:{{iroom.priceRoomData}} &nbsp;VNĐ / H</a>
                       </div>
                       <div
                         class="text-right text-bold text-black"
                         style="fontsize: 20px"
                       >
-                        VAT: {{roomdata.attributes.Price_VAT}}&nbsp;VNĐ / H
+                        VAT:{{iroom.pricevatRoomData}} &nbsp;VNĐ / H
                       </div>
                       <div class="float-right q-mt-md">
-                        <q-btn :to="{ name: 'BookDetail', params: { roomId: room.id, roomdata: roomdata.id }}" class="bg-amber-13 text-bold"
+                        <q-btn :to="{ name: 'BookDetail', params: { roomId: room.id, roomdata: iroom.id }}" class="bg-amber-13 text-bold"
                           >Đặt ngay</q-btn
                         >
                       </div>
@@ -445,23 +445,23 @@
               <q-card-section align="center">
                 <div>
                   <q-avatar size="60px">
-                    <img src="https://cdn.quasar.dev/img/avatar.png" />
+                    <img src="https://9mobi.vn/cf/images/2015/03/nkk/hinh-anh-dep-1.jpg" />
                   </q-avatar>
                 </div>
                 <div class="text-bold q-mt-md" style="fontsize: 16px">
-                  <a>Steve Harvey</a>
+                  <a>Hana Sophia</a>
                 </div>
                 <div>
                   <div class="flex justify-center">
                     <q-icon size="20px" class="q-mr-xs" name="desk"></q-icon>
-                    <a class="q-mr-md" style="fontsize: 13px">Bàn làm việc 1</a>
+                    <a class="q-mr-md" style="fontsize: 13px">Meeting</a>
                     <q-icon
                       size="18px"
                       color="warning"
                       class="q-mr-xs"
                       name="star_rate"
                     ></q-icon>
-                    <a style="fontsize: 13px">4,8</a>
+                    <a style="fontsize: 13px">5,0</a>
                   </div>
                   <div class="q-mt-sm text-grey-13">
                     <a>"</a>
@@ -490,7 +490,7 @@
                 <div>
                   <div class="flex justify-center">
                     <q-icon size="20px" class="q-mr-xs" name="desk"></q-icon>
-                    <a class="q-mr-md" style="fontsize: 13px">Bàn làm việc 1</a>
+                    <a class="q-mr-md" style="fontsize: 13px">Meeting</a>
 
                     <q-icon
                       size="18px"
@@ -498,13 +498,14 @@
                       class="q-mr-xs"
                       name="star_rate"
                     ></q-icon>
-                    <a style="fontsize: 13px">4,8</a>
+                    <a style="fontsize: 13px">5,0</a>
                   </div>
                   <div class="q-mt-sm text-grey-13">
                     <a>"</a>
                     <a
-                      >Không gian làm việc thoáng đãng, mát mẻ, phù hợp cho công
-                      việc. Yên tĩnh, rất tuyệt, sẽ tiếp tục đặt.</a
+                      >Tôi rất thích kiểu không gian làm việc này.
+                      Nó khiến tôi cảm thấy thoải mái, tập trung và
+                      có động lực hơn trong công việc </a
                     >
                     <a>"</a>
                   </div>
@@ -518,29 +519,30 @@
               <q-card-section align="center">
                 <div>
                   <q-avatar size="60px">
-                    <img src="https://cdn.quasar.dev/img/avatar.png" />
+                    <img src="https://pdp.edu.vn/wp-content/uploads/2021/06/hinh-anh-suy-tu-1.jpg" />
                   </q-avatar>
                 </div>
                 <div class="text-bold q-mt-md" style="fontsize: 16px">
-                  <a>Steve Harvey</a>
+                  <a>Jone Handler</a>
                 </div>
                 <div>
                   <div class="flex justify-center">
                     <q-icon size="20px" class="q-mr-xs" name="desk"></q-icon>
-                    <a class="q-mr-md" style="fontsize: 13px">Bàn làm việc 1</a>
+                    <a class="q-mr-md" style="fontsize: 13px">Event_space</a>
                     <q-icon
                       size="18px"
                       color="warning"
                       class="q-mr-xs"
                       name="star_rate"
                     ></q-icon>
-                    <a style="fontsize: 13px">4,8</a>
+                    <a style="fontsize: 13px">5,0</a>
                   </div>
                   <div class="q-mt-sm text-grey-13">
                     <a>"</a>
                     <a
-                      >Không gian làm việc thoáng đãng, mát mẻ, phù hợp cho công
-                      việc. Yên tĩnh, rất tuyệt, sẽ tiếp tục đặt.</a
+                      >Tôi đã đặt không gian sự kiện ở đây, cảm thấy
+                      sự tận tình của nhân viên là rất tuyệt vời.
+                      Tôi muốn lần sau sẽ tiếp tục đặt ở đây.</a
                     >
                     <a>"</a>
                   </div>
@@ -593,19 +595,14 @@
 </template>
 
 <script>
-// login
+
 import { defineComponent, ref } from 'vue'
 import { api } from 'boot/axios'
-// import { api } from 'boot/axios'
 
-// login
-// ggmap
-
-// ggmap
 export default defineComponent({
   name: 'CompanyInfo',
   created () {
-    api.get('/bookings?populate=*')
+    api.get('/bookings?populate=*&pagination[pageSize]=1000')
       .then((res) => {
         for (let index = 0; index < res.data.data.length; index++) {
           const tempRoom = {}
@@ -627,7 +624,6 @@ export default defineComponent({
             tempRoomImage.url = tempRoom.image[tido].attributes.url
             tempRoom.arrImage.push(tempRoomImage)
           }
-          console.log('this.rooms.arrImage', this.rooms.arrImage)
           for (let todo = 0; todo < tempRoom.rooms.length; todo++) {
             const tempRoomData = {}
             tempRoomData.id = tempRoom.rooms[todo].id
@@ -649,6 +645,23 @@ export default defineComponent({
           this.rooms.push(tempRoom)
         }
       })
+    api.get('/rooms?populate=*&pagination[pageSize]=1000')
+      .then((res) => {
+        for (let tedo = 0; tedo < res.data.data.length; tedo++) {
+          const tempRoomData = {}
+          tempRoomData.id = res.data.data[tedo].id
+          tempRoomData.nameRoomData = res.data.data[tedo].attributes.Name
+          tempRoomData.priceRoomData = res.data.data[tedo].attributes.Price
+          tempRoomData.pricevatRoomData = res.data.data[tedo].attributes.Price_VAT
+          tempRoomData.codeRoomData = res.data.data[tedo].attributes.Code
+          tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
+          tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
+          tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
+          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data[0].attributes.url
+          this.roomdatas.push(tempRoomData)
+        }
+      })
+    console.log('room', this.roomdatas)
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {
         day: 'numeric',
@@ -670,10 +683,19 @@ export default defineComponent({
           console.log('this.room', this.room)
         }
       }
+      for (let tudo = 0; tudo < this.room.rooms.length; tudo++) {
+        for (let tido = 0; tido < this.roomdatas.length; tido++) {
+          if (this.room.rooms[tudo].id === this.roomdatas[tido].id) {
+            this.inforoom.push(this.roomdatas[tido])
+          }
+        }
+      }console.log(this.inforoom)
     }, 1000)
   },
   data () {
     return {
+      inforoom: [],
+      roomdatas: [],
       rooms: [],
       roomdata: [],
       roomservice: [],

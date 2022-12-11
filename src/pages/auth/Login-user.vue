@@ -77,7 +77,7 @@ export default {
           localStorage.setItem('token', token)
           isLoading.value = false
           $q.loadingBar.stop()
-          router.push('/')
+          router.push('/mainpage')
         }
       } catch (error) {
         $q.notify({

@@ -48,7 +48,7 @@
                 </div>
                 <div class="q-mr-sm q-my-md">
                   <q-img
-                    src="http://localhost:1337/uploads/hd2_mr_205_c043253ef9.jpg?updated_at=2022-12-01T14:53:30.452Z"
+                    :src="`http://localhost:1337${inforoom[0]?.imageRoomData}`"
                     style="width: 335px; height: 150px"
                   ></q-img>
                 </div>
@@ -154,9 +154,38 @@ export default ({
         this.dataBookHis.push(tempPostBookHis)
         console.log(this.dataBookHis)
       })
+    api.get('/rooms?populate=*&pagination[pageSize]=1000')
+      .then((res) => {
+        for (let tedo = 0; tedo < res.data.data.length; tedo++) {
+          const tempRoomData = {}
+          tempRoomData.id = res.data.data[tedo].id
+          tempRoomData.nameRoomData = res.data.data[tedo].attributes.Name
+          tempRoomData.priceRoomData = res.data.data[tedo].attributes.Price
+          tempRoomData.pricevatRoomData = res.data.data[tedo].attributes.Price_VAT
+          tempRoomData.codeRoomData = res.data.data[tedo].attributes.Code
+          tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
+          tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
+          tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
+          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data[0].attributes.url
+          this.inforoomdatas.push(tempRoomData)
+        }
+        console.log(this.inforoomdatas)
+        console.log(this.dataBookHis[0]?.Room)
+      })
+  },
+  mounted () {
+    setTimeout(() => {
+      for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
+        if (this.dataBookHis[0]?.Room === this.inforoomdatas[tudo].nameRoomData) {
+          this.inforoom.push(this.inforoomdatas[tudo])
+        }
+      }console.log(this.inforoom)
+    }, 1000)
   },
   data () {
     return {
+      inforoom: [],
+      inforoomdatas: [],
       dataBookHis: []
     }
   }

@@ -9,27 +9,72 @@
         class="bg-grey-3 q-my-md"
       >
         <q-scroll-area class="fit">
-          <q-list class="q-my-xl">
-            <template v-for="(menuItem, index) in menuList" :key="index">
-              <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
-                <q-item-section avatar>
-                  <q-icon :name="menuItem.icon" />
-                </q-item-section>
-                <q-item-section>
-                  {{ menuItem.label }}
-                </q-item-section>
-              </q-item>
-              <q-separator :key="'sep' + index" v-if="menuItem.separator" />
-            </template>
+          <q-list class="q-mt-xl" bordered>
+            <q-item v-ripple>
+              <q-item-section avatar>
+                <q-icon name="business" />
+              </q-item-section>
+              <q-item-section>Quản lý công ty</q-item-section>
+              <q-toggle v-model="dscongty" />
+            </q-item>
+            <q-separator />
+            <q-item v-ripple>
+              <q-item-section avatar>
+                <q-icon name="person" />
+              </q-item-section>
+              <q-item-section>Quản lý người dùng</q-item-section>
+              <q-toggle v-model="dsnguoidung" />
+            </q-item>
+            <q-separator />
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="meeting_room" />
+              </q-item-section>
+              <q-item-section>Quản lý văn phòng</q-item-section>
+              <q-toggle v-model="dsvanphong" />
+            </q-item>
+            <q-separator />
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="manage_search" />
+              </q-item-section>
+              <q-item-section>Quản lý lịch sử đặt phòng</q-item-section>
+              <q-toggle v-model="dslichsu" />
+            </q-item>
+            <q-separator />
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="format_list_bulleted" />
+              </q-item-section>
+              <q-item-section>Quản lý kiểu văn phòng</q-item-section>
+              <q-toggle v-model="dskieu" />
+            </q-item>
+            <q-separator />
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="wifi_2_bar" />
+              </q-item-section>
+              <q-item-section>Quản lý dịch vụ văn phòng</q-item-section>
+              <q-toggle v-model="dsdichvu" />
+            </q-item>
+            <q-separator />
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="visibility" />
+              </q-item-section>
+              <q-item-section>Quản lý tầm nhìn văn phòng</q-item-section>
+              <q-toggle v-model="dsview" />
+            </q-item>
+
           </q-list>
         </q-scroll-area>
       </q-drawer>
     </div>
 
     <!-- "DANH SÁCH CÁC CÔNG TY" -->
-    <q-page-container @show="modscongty" @hide="dongdscongty">
+    <q-page-container v-show="dscongty">
       <q-page padding>
-        <div>
+        <div >
           <!-- table -->
           <div class="q-pa-md">
             <q-table
@@ -77,7 +122,7 @@
         <q-card>
           <q-card-section class="">
             <div>
-              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin công ty</h3>
+              <h4 class="q-mt-sm q-ml-lg text-bold">Thêm mới công ty</h4>
             </div>
             <div>
               <div class="flex q-mt-md q-ml-lg">
@@ -110,19 +155,9 @@
                   v-model="congty.linkmap"
                   label="Đường dẫn trên bản đồ (GGMap)"
                 />
-                <q-file
-                  style="width: 183px"
-                  color="teal"
-                  filled
-                  :filter="checkFileType"
-                  @rejected="onRejected"
-                  v-model="congty.uploadimg"
-                  label="Upload hình ảnh"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="cloud_upload" />
-                  </template>
-                </q-file>
+                <div>
+                  <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"/>
+                </div>
               </div>
               <div class="q-my-md q-ml-lg">
                 <q-select
@@ -219,17 +254,9 @@
                   v-model="editUpdateCo.Link_map"
                   label="Đường dẫn trên bản đồ (GGMap)"
                 />
-                <q-file
-                  style="width: 183px"
-                  color="teal"
-                  filled
-                  v-model="congty.uploadimg"
-                  label="Upload hình ảnh"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="cloud_upload" />
-                  </template>
-                </q-file>
+                <div>
+                  <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"/>
+                </div>
               </div>
               <div class="q-my-md q-ml-lg">
                 <q-select
@@ -288,56 +315,54 @@
     </div>
 
     <!-- "DANH SÁCH NGƯỜI DÙNG" -->
-    <q-page-container>
+    <q-page-container v-show="dsnguoidung">
       <q-page padding>
-        <div>
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH NGƯỜI DÙNG"
-              :rows="dataUsers"
-              :columns="columnsUsers"
-              row-key="id"
-              selection="single"
-              v-model:selected="selected"
-            />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  class="q-mr-sm"
-                  color="primary"
-                  icon="add"
-                  label="Thêm"
-                  @click="createUser = true"
-                />
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Chỉnh sửa"
-                  @click="edit()"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteItem()"
-                />
-              </div>
+        <!-- table -->
+        <div class="q-pa-md">
+          <q-table
+            title="DANH SÁCH NGƯỜI DÙNG"
+            :rows="dataUsers"
+            :columns="columnsUsers"
+            row-key="id"
+            selection="single"
+            v-model:selected="selected"
+          />
+          <div class="flex justify-end q-mt-md">
+            <div class="q-mr-sm">
+              <q-btn
+                class="q-mr-sm"
+                color="primary"
+                icon="add"
+                label="Thêm"
+                @click="createUser = true"
+              />
+              <q-btn
+                color="primary"
+                icon="edit"
+                label="Chỉnh sửa"
+                @click="editUser = true"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                icon="delete"
+                label="Xóa"
+                @click="edit()"
+              />
             </div>
           </div>
         </div>
       </q-page>
     </q-page-container>
 
-    <!-- CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG -->
+    <!-- TẠO MỚI THÔNG TIN NGƯỜI DÙNG -->
     <div class="q-pa-md">
       <q-dialog v-model="createUser" persistent>
         <q-card>
           <q-card-section class="">
             <div>
-              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin người dùng</h3>
+              <h4 class="q-mt-sm q-ml-lg text-bold">Thêm mới người dùng</h4>
             </div>
             <div>
               <div class="q-mt-md q-mx-lg">
@@ -361,20 +386,77 @@
                   label="Password"
                   type="Password"
                 />
-                <div class="flex justify-between q-mr-md q-mt-sm">
-                  <q-toggle
-                    size="75px"
-                    v-model="nguoidung.confimed"
-                    val="confimed"
-                    label="Confimed"
-                  />
-                  <q-toggle
-                    size="75px"
-                    v-model="nguoidung.blocked"
-                    val="blocked"
-                    label="Blocked"
-                  />
-                </div>
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="nguoidung.tennguoidung"
+                  label="Tên người dùng"
+                />
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="nguoidung.dobnguoidung"
+                  label="Ngày tháng năm sinh"
+                />
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="nguoidung.diachinguoidung"
+                  label="Địa chỉ"
+                />
+              </div>
+            </div>
+          </q-card-section>
+
+          <!-- Notice v-close-popup -->
+          <q-card-actions align="center">
+            <q-btn
+              flat
+              label="Cancel"
+              color="primary"
+              v-close-popup="!cancelEnabled"
+            />
+            <q-btn
+              flat
+              label="Xác nhận"
+              color="primary"
+              @click="onCreateUser"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+
+    <!-- CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG -->
+    <div class="q-pa-md">
+      <q-dialog v-model="editUser" persistent>
+        <q-card>
+          <q-card-section class="">
+            <div>
+              <h4 class="q-mt-sm q-ml-lg text-bold">Chỉnh sửa thông tin người dùng</h4>
+            </div>
+            <div>
+              <div class="q-mt-md q-mx-lg">
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="nguoidung.username"
+                  label="Username"
+                />
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="nguoidung.emailnguoidung"
+                  label="Email"
+                  type="Email"
+                />
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="nguoidung.passnguoidung"
+                  label="Password"
+                  type="Password"
+                />
                 <q-input
                   class="q-mt-md"
                   filled
@@ -417,7 +499,7 @@
     </div>
 
     <!-- "DANH SÁCH CÁC VĂN PHÒNG" -->
-    <q-page-container>
+    <q-page-container v-show="dsvanphong">
       <q-page padding>
         <div>
           <!-- table -->
@@ -466,7 +548,7 @@
         <q-card>
           <q-card-section class="">
             <div>
-              <h3 class="q-mt-sm q-ml-lg text-bold">Thông tin văn phòng</h3>
+              <h4 class="q-mt-sm q-ml-lg text-bold">Thông tin văn phòng</h4>
             </div>
             <div>
               <div class="flex q-mt-md q-ml-lg">
@@ -498,17 +580,9 @@
                   v-model="vanphong.sizephong"
                   label="Kích thước"
                 />
-                <q-file
-                  style="width: 183px"
-                  color="teal"
-                  filled
-                  v-model="imgphong"
-                  label="Upload hình ảnh"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="cloud_upload" />
-                  </template>
-                </q-file>
+                <div>
+                  <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"/>
+                </div>
               </div>
               <div class="q-my-md q-ml-lg">
                 <q-select
@@ -633,17 +707,9 @@
                   v-model="editUpdateRo.Size"
                   label="Kích thước"
                 />
-                <q-file
-                  style="width: 183px"
-                  color="teal"
-                  filled
-                  v-model="imgphong"
-                  label="Upload hình ảnh"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="cloud_upload" />
-                  </template>
-                </q-file>
+                <div>
+                  <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"/>
+                </div>
               </div>
               <div class="q-my-md q-ml-lg">
                 <q-select
@@ -731,7 +797,7 @@
     </div>
 
     <!-- "DANH SÁCH LỊCH SỬ ĐẶT PHÒNG" -->
-    <q-page-container>
+    <q-page-container v-show="dslichsu">
       <q-page padding>
         <div>
           <!-- table -->
@@ -923,7 +989,7 @@
     </div>
 
     <!-- "DANH SÁCH CÁC KIỂU VĂN PHÒNG" -->
-    <q-page-container>
+    <q-page-container v-show="dskieu">
       <q-page padding>
         <div>
           <!-- table -->
@@ -978,18 +1044,6 @@
                 v-model="roomtype.nameroomtype"
                 label="Tên kiểu văn phòng"
               />
-              <q-file
-                style="width: 390px"
-                class="q-mt-md"
-                color="teal"
-                filled
-                v-model="imgroomtype"
-                label="Upload hình ảnh"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="cloud_upload" />
-                </template>
-              </q-file>
             </div>
           </q-card-section>
 
@@ -1013,7 +1067,7 @@
     </div>
 
     <!-- "DANH SÁCH CÁC DỊCH VỤ VĂN PHÒNG" -->
-    <q-page-container>
+    <q-page-container v-show="dsdichvu">
       <q-page padding>
         <div>
           <!-- table -->
@@ -1067,18 +1121,6 @@
                 v-model="roomservice.nameroomservice"
                 label="Tên dịch vụ"
               />
-              <q-file
-                style="width: 440px"
-                class="q-mt-md q-mr-lg"
-                color="teal"
-                filled
-                v-model="imgroomservice"
-                label="Upload hình ảnh"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="cloud_upload" />
-                </template>
-              </q-file>
               <div class="q-mt-md">
                 <q-input
                   style="width: 440px"
@@ -1112,7 +1154,7 @@
     </div>
 
      <!-- "DANH SÁCH TẦM NHÌN VĂN PHÒNG" -->
-    <q-page-container>
+    <q-page-container v-show="dsview">
       <q-page padding>
         <div>
           <!-- table -->
@@ -1335,7 +1377,8 @@ export default {
             Link_map: this.congty.linkmap,
             Decripstion: this.congty.motacty,
             room_type: this.selectRoomType?.id.toString(),
-            services_rooms: this.selectRoomServiceIDs
+            services_rooms: this.selectRoomServiceIDs,
+            Image: this.newimage.toString()
           }
         }).then((response) => {
           console.log(response)
@@ -1397,7 +1440,8 @@ export default {
             Link_map: this.editUpdateCo.Link_map,
             Decripstion: this.congty.motacty,
             room_type: this.selectRoomType?.id,
-            services_rooms: this.selectRoomServiceIDs
+            services_rooms: this.selectRoomServiceIDs,
+            Image: this.newimage.toString()
           }
         }).then((response) => {
           console.log(response)
@@ -1469,7 +1513,8 @@ export default {
             Status: this.vanphong.trangthai,
             location: this.selectCompanies?.id.toString(),
             services_rooms: this.selectRoomServiceIDs,
-            views_rooms: this.selectRoomViewIDs
+            views_rooms: this.selectRoomViewIDs,
+            Images: this.newimage
           }
         })
           .then((response) => {
@@ -1540,7 +1585,8 @@ export default {
             Status: this.editUpdateRo.Status,
             location: this.selectCompanies?.id.toString(),
             services_rooms: this.selectRoomServiceIDs,
-            views_rooms: this.selectRoomViewIDs
+            views_rooms: this.selectRoomViewIDs,
+            Images: this.newimage.toString()
           }
         }).then((response) => {
           console.log(response)
@@ -1795,7 +1841,6 @@ export default {
         }
       })
     },
-
     // Chỉnh sửa lịch sử đặt phòng
     openDialogBookHisUpdate () {
       this.editUpdateBookHis.Code = this.selectedBookHis[0]?.Code
@@ -1810,9 +1855,9 @@ export default {
       console.log(this.selectedBookHis[0])
     },
     onUpdateBookHis () {
-      const day = this.editUpdateBookHis.Date.split('T')[0].split('/')[2]
-      const month = this.editUpdateBookHis.Date.split('T')[0].split('/')[1]
-      const year = this.editUpdateBookHis.Date.split('T')[0].split('/')[0]
+      const day = this.editUpdateBookHis.Date.split('/')[2]
+      const month = this.editUpdateBookHis.Date.split('/')[1]
+      const year = this.editUpdateBookHis.Date.split('/')[0]
       this.dateClone = `${day}/${month}/${year}`
       console.log(this.dateClone)
       if (this.editUpdateBookHis.Timestart < this.editUpdateBookHis.Timeend && this.dateClone !== '' && this.editUpdateBookHis.Status !== '' && this.editUpdateBookHis.Username !== '' && this.editUpdateBookHis.Note !== '' && this.editUpdateBookHis.Email !== '' && this.editUpdateBookHis.Phone !== '' && this.editUpdateBookHis.Payment !== '') {
@@ -1883,6 +1928,23 @@ export default {
           console.log(this.dataRooms)
         }
       })
+    },
+    uploadImage (event) {
+      const data = new FormData()
+      data.append('name', 'my-picture')
+      data.append('files', event.target.files[0])
+      const config = {
+        header: {
+          'Content-Type': 'image/png'
+        }
+      }
+      api.post('/upload', data, config)
+        .then(
+          response => {
+            this.newimage = response.data[0].id
+            console.log('new image', response.data[0].id)
+          }
+        )
     }
   },
   mounted () {
@@ -1896,8 +1958,8 @@ export default {
   },
   data () {
     return {
-      shape: ref(false),
       // xử lý dữ liệu công ty
+      dscongty: ref(true),
       createCompany: ref(false),
       updateCompany: ref(false),
       postsCo: [],
@@ -1965,6 +2027,8 @@ export default {
       selectedCo: [],
 
       // xử lý dữ liệu người dùng
+      dsnguoidung: ref(false),
+      editUser: ref(false),
       createUser: ref(false),
       postsUser: [],
       dataUsers: [],
@@ -2016,6 +2080,7 @@ export default {
       },
 
       // xử lý dữ liệu văn phòng
+      dsvanphong: ref(false),
       selectRoom: [],
       updateRoom: ref(false),
       createRooms: ref(false),
@@ -2082,6 +2147,7 @@ export default {
       selectedRo: [],
 
       // Xử lý dữ liệu các kiểu văn phòng
+      dskieu: ref(false),
       createRoomtype: ref(false),
       postsRoty: [],
       dataRoomType: [],
@@ -2108,6 +2174,7 @@ export default {
       selectedRoTy: [],
 
       // Xử lý dữ liệu lịch sử đặt phòng
+      dslichsu: ref(false),
       updateBookHis: ref(false),
       postsBookHis: [],
       dataBookHis: [],
@@ -2208,6 +2275,7 @@ export default {
       },
 
       // Xử lý dữ liệu dịch vụ văn phòng
+      dsdichvu: ref(false),
       createRoomService: ref(false),
       dataRoomService: [],
       columnsRoSe: [
@@ -2237,6 +2305,7 @@ export default {
       selectedRoSe: [],
 
       // Xử lý dữ liệu view
+      dsview: ref(false),
       createRoomView: ref(false),
       dataRoomView: [],
       roomview: {
@@ -2261,17 +2330,9 @@ export default {
           sortable: true
         }
       ],
-
       //
+      newimage: '',
       drawer: ref(false),
-      menuList: [
-        { icon: 'inbox', label: 'Quản lý công ty', separator: true },
-        { icon: 'send', label: 'Quản lý người dùng', separator: true },
-        { icon: 'delete', label: 'Quản lý văn phòng', separator: true },
-        { icon: 'error', label: 'Quản lý lịch sử đặt phòng', separator: true },
-        { icon: 'settings', label: 'Quản lý kiểu văn phòng', separator: true },
-        { icon: 'settings', label: 'Quản lý tầm nhìn văn phòng', separator: false }
-      ],
       options: [],
       model: '',
       optionsStatus: ['Đang xác thực', 'Đã xác thực', 'Đã thanh toán', 'Đã hủy'],

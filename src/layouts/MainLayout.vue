@@ -6,7 +6,7 @@
             Book Now !
           </q-toolbar-title>
         <div class="row q-px-md">
-          <router-link :to="{ path: '/' }"><q-chip class="q-px-md text-bold">Địa Điểm</q-chip></router-link>
+          <router-link :to="{ path: '/mainpage' }"><q-chip class="q-px-md text-bold">Địa Điểm</q-chip></router-link>
           <q-chip class="q-px-md text-bold">Khách Hàng Doanh Nghiệp</q-chip>
           <q-chip class="q-px-md text-bold">Đối Tác</q-chip>
           <router-link :to="{ path: '/profile' }"><q-chip class="q-px-md text-bold">Lịch sử đặt phòng</q-chip></router-link>
@@ -57,7 +57,7 @@ export default defineComponent({
   name: 'MainLayout',
   methods: {
     toPageMain () {
-      const route = this.$router.resolve({ path: '/' })
+      const route = this.$router.resolve({ path: '/mainpage' })
       window.open(route.href)
     },
     linktomessenger () {
@@ -81,7 +81,6 @@ export default defineComponent({
         for (let todo = 0; todo < this.dataUsers.length; todo++) {
           if (Number(this.userID) === this.dataUsers[todo].id) {
             this.thisUser = this.dataUsers[todo]
-            console.log(this.thisUser)
           }
         }
       })
@@ -94,11 +93,7 @@ export default defineComponent({
   data () {
     return {
       dataUsers: [],
-      thisUser: {},
-      thisUnknow: {
-        username: 'Unknow'
-      }
-
+      thisUser: {}
     }
   },
   setup () {

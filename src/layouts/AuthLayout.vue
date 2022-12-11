@@ -22,7 +22,7 @@ export default defineComponent({
   name: 'AuthLayout',
   methods: {
     toPageMain () {
-      const route = this.$router.resolve({ path: '/' })
+      const route = this.$router.resolve({ path: '/mainpage' })
       window.open(route.href)
     }
   }

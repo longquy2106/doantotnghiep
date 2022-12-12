@@ -18,8 +18,7 @@ const routes = [
     component: () => import('layouts/AuthLayout.vue'),
     children: [
       { path: '/register', component: () => import('pages/auth/Register-user.vue') },
-      { path: '/login', component: () => import('pages/auth/Login-user.vue') },
-      { path: '/login-admin', component: () => import('pages/auth/Login-admin.vue') }
+      { path: '/login', component: () => import('pages/auth/Login-user.vue') }
     ]
   },
   // Always leave this as last one,

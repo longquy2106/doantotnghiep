@@ -7,9 +7,8 @@
           </q-toolbar-title>
         <div class="row q-px-md">
           <router-link :to="{ path: '/mainpage' }"><q-chip class="q-px-md text-bold">Địa Điểm</q-chip></router-link>
-          <q-chip class="q-px-md text-bold">Khách Hàng Doanh Nghiệp</q-chip>
-          <q-chip class="q-px-md text-bold">Đối Tác</q-chip>
           <router-link :to="{ path: '/profile' }"><q-chip class="q-px-md text-bold">Lịch sử đặt phòng</q-chip></router-link>
+          <router-link :to="{ path: '/dashboard' }"><q-chip class="q-px-md text-bold">Quản lý</q-chip></router-link>
         </div>
         <q-space />
         <div class="q-gutter-sm row items-center no-wrap">

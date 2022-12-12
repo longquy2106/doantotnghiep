@@ -73,7 +73,7 @@ export default {
             username: user.username
           })
           localStorage.setItem('user_id', user.id)
-          localStorage.setItem('user_name', user.name)
+          localStorage.setItem('auths', user.auths)
           localStorage.setItem('token', token)
           isLoading.value = false
           $q.loadingBar.stop()

@@ -56,6 +56,7 @@ export default {
     const username = ref('')
     const email = ref('')
     const password = ref('')
+    const auths = ref('user')
     const router = useRouter()
     const $q = useQuasar()
     const isLoading = ref(false)
@@ -64,7 +65,8 @@ export default {
       const data = {
         username: username.value,
         email: email.value,
-        password: password.value
+        password: password.value,
+        auths: auths.value
       }
       isLoading.value = true
       $q.loadingBar.start()
@@ -74,6 +76,10 @@ export default {
           isLoading.value = false
           $q.loadingBar.stop()
           router.push('/login')
+          $q.notify({
+            type: 'positive',
+            message: 'Đăng ký thành công !'
+          })
         }
       } catch (error) {
         $q.notify({

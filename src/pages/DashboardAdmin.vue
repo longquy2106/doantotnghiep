@@ -1239,6 +1239,14 @@ import { ref } from 'vue'
 import { api } from 'boot/axios'
 export default {
   methods: {
+    checkAuth () {
+      if (localStorage.auths.toString() === 'user') {
+        this.$router.go(-1)
+        // const route = this.$router.resolve({ path: '/' })
+        // window.open(route.href)
+        // console.log(localStorage.auths)
+      }
+    },
     getPostsCompanies () {
       api.get('/bookings?populate=*&pagination[pageSize]=1000').then((res) => {
         this.postsCo = res.data.data
@@ -1948,6 +1956,7 @@ export default {
     }
   },
   mounted () {
+    this.checkAuth()
     this.getPostsRoVi()
     this.getPostsCompanies()
     this.getPostsRooms()

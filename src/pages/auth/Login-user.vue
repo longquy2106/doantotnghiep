@@ -5,16 +5,16 @@
         <div class="q-px-lg">
         <q-card square class="shadow-20" style="width: 400px">
           <q-card-section class="bg-amber">
-            <h4 class="text-h5 text-white text-center q-my-md">Login</h4>
+            <h4 class="text-h5 text-white text-center q-my-md">Đăng nhập</h4>
           </q-card-section>
           <q-card-section>
             <q-form class="q-gutter-md">
-             <q-input clearable v-model="email" label="Email" type="Email" :rules="[(val)=> !!val || 'Email is missing', emailValidate]">
+             <q-input clearable v-model="email" label="Email" type="Email" :rules="[(val)=> !!val || 'Email không được để trống', emailValidate]">
               <template v-slot:prepend>
                 <q-icon name="email"></q-icon>
               </template>
             </q-input>
-             <q-input clearable v-model="password" label="Password" type="Password" :rules="[(val)=>(val && val.length > 6)|| 'Username must be longer 6 characters']">
+             <q-input clearable v-model="password" label="Mật khẩu" type="Password" :rules="[(val)=>(val && val.length > 6)|| 'Mật khẩu phải trên 6 ký tự']">
               <template v-slot:prepend>
                 <q-icon name="lock" />
               </template>
@@ -22,11 +22,11 @@
             </q-form>
           </q-card-section>
           <q-card-actions>
-            <q-btn color="amber" class="text-white full-width" label="Login" size="md" type="submit" @click="submitForm"></q-btn>
+            <q-btn color="amber" class="text-white full-width" label="Đăng nhập" size="md" type="submit" @click="submitForm"></q-btn>
           </q-card-actions>
           <q-card-section>
-            <p>Not have an account yet?
-              <router-link to="/register">Register Now !</router-link></p>
+            <p>Bạn đã có tài khoản chưa?
+              <router-link to="/register">Đăng ký ngay !</router-link></p>
           </q-card-section>
         </q-card>
         </div>
@@ -82,7 +82,7 @@ export default {
       } catch (error) {
         $q.notify({
           type: 'negative',
-          message: 'Username or password is incorrect. Try again!'
+          message: 'Email hoặc mật khẩu sai. Vui lòng thử lại!'
         })
         $q.loadingBar.stop()
       }

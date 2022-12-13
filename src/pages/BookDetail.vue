@@ -27,7 +27,7 @@
                     <a>Bạn đã có tài khoản BookNow của riêng mình chưa ?</a>
                   </div>
                   <div>
-                    <a href="/login">Đăng nhập</a>
+                    <a href="/login-user">Đăng nhập</a>
                     <a>&nbsp;để thanh toán hoặc&nbsp;</a>
                     <a href="/register">Đăng ký</a>
                     <a>&nbsp;để tận hưởng ưu đã thành viên !</a>
@@ -79,14 +79,14 @@
                   outlined
                   v-model="khachhang.email"
                   label="Nhập địa chỉ Email"
-                  :rules="[(val)=>(val && val.length > 0)|| 'Không được để trống']"
+                  type="Email" :rules="[(val)=> !!val || 'Email không được để trống', emailValidate]"
                 ></q-input>
               </div>
               <div class="q-my-sm">
                 <q-input
                   outlined
                   v-model="khachhang.note"
-                  label="Note ghi chú"
+                  label="Ghi chú"
                 ></q-input>
               </div>
             </q-card-section>
@@ -302,7 +302,7 @@
           <q-card>
             <q-card-section>
               <div>
-                <div><a>Date booking:</a></div>
+                <div><a>Ngày đặt phòng:</a></div>
                 <div class="" style="max-width: 300px">
                   <q-input
                     filled
@@ -335,7 +335,7 @@
                 <div class="flex justify-between">
                   <!-- TimeStart -->
                   <div>
-                    <div class="q-my-xs"><a>Start time:</a></div>
+                    <div class="q-my-xs"><a>Thời gian bắt đầu:</a></div>
                     <div class="q-gutter-sm row">
                       <div style="width: 250px">
                         <div class="q-gutter-md">
@@ -350,7 +350,7 @@
                   </div>
                   <!-- TimeEnd -->
                   <div>
-                    <div class="q-my-xs"><a>End time:</a></div>
+                    <div class="q-my-xs"><a>Thời gian kết thúc:</a></div>
                     <div class="q-gutter-sm row">
                       <div style="width: 250px">
                         <div class="q-gutter-md">
@@ -375,7 +375,7 @@
                 <div>
                   <a style="fontSize:20px"
                     ><a class="text-bold">Bước 2:</a> Kiểm tra giá tiền ở mục
-                    "confirm".</a
+                    "Chi tiết đơn đặt".</a
                   >
                 </div>
                 <div>
@@ -400,7 +400,7 @@
       <q-dialog v-model="dialogBook" persistent>
         <q-card>
           <q-card-section class="row items-center">
-            <h4 class="text-bold">Booking Confirmation</h4>
+            <h4 class="text-bold">Chi tiết đơn đặt</h4>
           </q-card-section>
 
           <q-card-section class="">
@@ -443,7 +443,7 @@
                   <a>{{ khachhang.sdt }}</a>
                 </div>
                 <div>
-                  <a class="text-bold">- NOTE :</a>&nbsp;
+                  <a class="text-bold">- GHI CHÚ :</a>&nbsp;
                   <a>{{ khachhang.note }}</a>
                 </div>
               </div>
@@ -480,7 +480,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />

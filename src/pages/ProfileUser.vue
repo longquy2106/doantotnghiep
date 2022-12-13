@@ -191,7 +191,7 @@ export default {
           tempPostUser.Full_name = this.postsUser[index].Full_name
           tempPostUser.Dob = this.postsUser[index].Dob
           tempPostUser.Address = this.postsUser[index].Address
-          tempPostUser.auths = this.postsUser[index].auths
+          tempPostUser.auths = this.postsUser[index].authsthisUser
           tempPostUser.Phone_number = this.postsUser[index].Phone_number
           tempPostUser.bookingHistory = this.postsUser[index].booking_histories
           this.dataUsers.push(tempPostUser)
@@ -201,25 +201,11 @@ export default {
             this.thisUser = this.dataUsers[todo]
             console.log(this.thisUser.Full_name)
             this.User.push(this.thisUser)
-            // const tempthisUser = { bookingHistory: [] }
-            // tempthisUser.id = this.dataUsers[todo].id
-            // tempthisUser.email = this.dataUsers[todo].email
-            // tempthisUser.confirmed = this.dataUsers[todo].confirmed
-            // tempthisUser.blocked = this.dataUsers[todo].blocked
-            // tempthisUser.Full_name = this.dataUsers[todo].Full_name
-            // tempthisUser.Dob = this.dataUsers[todo].Dob
-            // tempthisUser.Address = this.dataUsers[todo].Address
-            // tempthisUser.auths = this.dataUsers[todo].auths
-            // tempthisUser.bookingHistory = this.dataUsers[todo].bookingHistory
-            // this.thisUser = (tempthisUser)
-            // console.log('his', this.dataUsers[todo].bookingHistory)
-          } else {
-            console.log('false')
           }
         }
       })
       this.userID = localStorage.user_id
-      console.log(this.thisUser)
+      console.log('User', this.User)
     },
     getPostsRooms () {
       api.get('/rooms?populate=*&pagination[pageSize]=1000')

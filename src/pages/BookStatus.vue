@@ -65,23 +65,23 @@
                     <div class="q-my-xs "><a>{{dataBookHis[0]?.Email}}</a></div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="q-my-xs text-bold"><a>Date booking:&nbsp;</a></div>
+                  <div class="q-my-xs text-bold"><a>Ngày đặt phòng:&nbsp;</a></div>
                   <div class="q-my-xs"><a>{{dataBookHis[0]?.Date}}</a></div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="q-my-xs text-bold"><a>Start time:</a></div>
+                  <div class="q-my-xs text-bold"><a>Thời gian bắt đầu:</a></div>
                   <div class="q-my-xs"><a>{{dataBookHis[0]?.Start_time}}:00</a></div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="q-my-xs text-bold"><a>End time:</a></div>
+                  <div class="q-my-xs text-bold"><a>Thời gian kết thúc:</a></div>
                   <div class="q-my-xs"><a>{{dataBookHis[0]?.End_time}}:00</a></div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="q-my-xs text-bold"><a>Total time:</a></div>
+                  <div class="q-my-xs text-bold"><a>Tổng thời gian:</a></div>
                   <div class="q-my-xs"><a>{{dataBookHis[0]?.Total_time}} giờ</a></div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="q-my-xs text-bold"><a>Note:</a></div>
+                  <div class="q-my-xs text-bold"><a>Ghi chú:</a></div>
                   <div class="q-my-xs"><a>{{dataBookHis[0]?.Note}}</a></div>
                 </div>
               </div>

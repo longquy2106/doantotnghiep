@@ -318,20 +318,17 @@
               >
                 <q-list dense padding class="rounded-borders">
                   <q-item clickable v-ripple class="q-mb-md">
-                    <q-item-section> Phòng làm việc nhóm </q-item-section>
+                    <q-item-section> Phòng họp</q-item-section>
                   </q-item>
 
                   <q-item clickable v-ripple class="q-my-md">
-                    <q-item-section> Bàn làm việc đơn </q-item-section>
+                    <q-item-section> Phòng hội nghị </q-item-section>
                   </q-item>
 
                   <q-item clickable v-ripple class="q-my-md">
-                    <q-item-section> Phòng họp </q-item-section>
+                    <q-item-section> Sảnh sự kiện </q-item-section>
                   </q-item>
 
-                  <q-item clickable v-ripple class="q-my-md">
-                    <q-item-section> V...v... </q-item-section>
-                  </q-item>
                 </q-list>
               </div>
 
@@ -357,7 +354,7 @@
                               <div class="row items-center justify-end">
                                 <q-btn
                                   v-close-popup
-                                  label="Close"
+                                  label="Đóng"
                                   color="primary"
                                   flat
                                 />
@@ -704,7 +701,7 @@ export default defineComponent({
       time: null,
       interval: null,
       slide: ref(1),
-      date: ref('2019-02-01   12:44'),
+      date: new Date().toISOString(),
       search: null,
       modelFavorite: ref(1),
       modelRating: ref(5),

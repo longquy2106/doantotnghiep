@@ -200,7 +200,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -299,7 +299,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -325,7 +325,7 @@
             :columns="columnsUsers"
             row-key="id"
             selection="single"
-            v-model:selected="selected"
+            v-model:selected="selectedUser"
           />
           <div class="flex justify-end q-mt-md">
             <div class="q-mr-sm">
@@ -340,7 +340,7 @@
                 color="primary"
                 icon="edit"
                 label="Chỉnh sửa"
-                @click="editUser = true"
+                @click="(editUser = true, openDialogUserUpdate())"
               />
             </div>
             <div>
@@ -348,7 +348,7 @@
                 color="primary"
                 icon="delete"
                 label="Xóa"
-                @click="edit()"
+                @click="deleteUser"
               />
             </div>
           </div>
@@ -356,7 +356,7 @@
       </q-page>
     </q-page-container>
 
-    <!-- TẠO MỚI THÔNG TIN NGƯỜI DÙNG -->
+    <!-- TẠO MỚI NGƯỜI DÙNG -->
     <div class="q-pa-md">
       <q-dialog v-model="createUser" persistent>
         <q-card>
@@ -370,33 +370,75 @@
                   class="q-mt-md"
                   filled
                   v-model="nguoidung.username"
-                  label="Username"
+                  label="Tên người dùng"
                 />
                 <q-input
                   class="q-mt-md"
                   filled
                   v-model="nguoidung.emailnguoidung"
-                  label="Email"
+                  label="Địa chỉ email"
                   type="Email"
                 />
                 <q-input
                   class="q-mt-md"
                   filled
                   v-model="nguoidung.passnguoidung"
-                  label="Password"
+                  label="Mật khẩu"
                   type="Password"
                 />
                 <q-input
                   class="q-mt-md"
                   filled
+                  v-model="nguoidung.sdtnguoidung"
+                  label="Số điện thoại"
+                />
+                <div class="flex q-mt-md">
+                  <div>
+                    <q-input
+                      class="q-mr-sm"
+                      filled
+                      label="Ngày sinh"
+                      style="width:180px"
+                      v-model="nguoidung.dobnguoidung"
+                      mask="date"
+                      :rules="['date']"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="event" class="cursor-pointer">
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date v-model="nguoidung.dobnguoidung">
+                              <div class="row items-center justify-end">
+                                <q-btn
+                                  v-close-popup
+                                  label="Đóng"
+                                  color="primary"
+                                  flat
+                                />
+                              </div>
+                            </q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <div>
+                    <q-select
+                      filled
+                      style="width:180px"
+                      v-model="nguoidung.auths"
+                      :options="optionsAuths"
+                      label="Quyền"
+                    />
+                  </div>
+                </div>
+                <q-input
+                  filled
                   v-model="nguoidung.tennguoidung"
                   label="Tên người dùng"
-                />
-                <q-input
-                  class="q-mt-md"
-                  filled
-                  v-model="nguoidung.dobnguoidung"
-                  label="Ngày tháng năm sinh"
                 />
                 <q-input
                   class="q-mt-md"
@@ -412,7 +454,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -433,46 +475,88 @@
         <q-card>
           <q-card-section class="">
             <div>
-              <h4 class="q-mt-sm q-ml-lg text-bold">Chỉnh sửa thông tin người dùng</h4>
+              <h4 class="q-mt-sm q-ml-lg text-bold">Chỉnh sửa người dùng</h4>
             </div>
             <div>
               <div class="q-mt-md q-mx-lg">
                 <q-input
                   class="q-mt-md"
                   filled
-                  v-model="nguoidung.username"
-                  label="Username"
-                />
-                <q-input
-                  class="q-mt-md"
-                  filled
-                  v-model="nguoidung.emailnguoidung"
-                  label="Email"
-                  type="Email"
-                />
-                <q-input
-                  class="q-mt-md"
-                  filled
-                  v-model="nguoidung.passnguoidung"
-                  label="Password"
-                  type="Password"
-                />
-                <q-input
-                  class="q-mt-md"
-                  filled
-                  v-model="nguoidung.tennguoidung"
+                  v-model="editnguoidung.username"
                   label="Tên người dùng"
                 />
                 <q-input
                   class="q-mt-md"
                   filled
-                  v-model="nguoidung.dobnguoidung"
-                  label="Ngày tháng năm sinh"
+                  v-model="editnguoidung.emailnguoidung"
+                  label="Địa chỉ email"
+                  type="Email"
                 />
                 <q-input
                   class="q-mt-md"
                   filled
-                  v-model="nguoidung.diachinguoidung"
+                  v-model="editnguoidung.passnguoidung"
+                  label="Mật khẩu"
+                  type="Password"
+                />
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="editnguoidung.sdtnguoidung"
+                  label="Số điện thoại"
+                />
+                <div class="flex q-mt-md">
+                  <div>
+                    <q-input
+                      class="q-mr-sm"
+                      filled
+                      label="Ngày sinh"
+                      style="width:180px"
+                      v-model="editnguoidung.dobnguoidung"
+                      mask="date"
+                      :rules="['date']"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="event" class="cursor-pointer">
+                          <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date v-model="editnguoidung.dobnguoidung">
+                              <div class="row items-center justify-end">
+                                <q-btn
+                                  v-close-popup
+                                  label="Đóng"
+                                  color="primary"
+                                  flat
+                                />
+                              </div>
+                            </q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <div>
+                    <q-select
+                      filled
+                      style="width:180px"
+                      v-model="editnguoidung.auths"
+                      :options="optionsAuths"
+                      label="Quyền"
+                    />
+                  </div>
+                </div>
+                <q-input
+                  filled
+                  v-model="editnguoidung.tennguoidung"
+                  label="Tên người dùng"
+                />
+                <q-input
+                  class="q-mt-md"
+                  filled
+                  v-model="editnguoidung.diachinguoidung"
                   label="Địa chỉ"
                 />
               </div>
@@ -483,7 +567,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -491,7 +575,7 @@
               flat
               label="Xác nhận"
               color="primary"
-              @click="onCreateUser"
+              @click="onUpdateUser"
             />
           </q-card-actions>
         </q-card>
@@ -625,7 +709,7 @@
                   :options="this.dataRoomView"
                   option-value="id"
                   option-label="Name"
-                  label="View văn phòng"
+                  label="Tầm nhìn văn phòng"
                 />
               </div>
               <div class="q-mt-md q-ml-lg">
@@ -654,7 +738,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -752,7 +836,7 @@
                   :options="this.dataRoomView"
                   option-value="id"
                   option-label="Name"
-                  label="View văn phòng"
+                  label="Tầm nhìn văn phòng"
                 />
               </div>
               <div class="q-mt-md q-ml-lg">
@@ -781,7 +865,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -973,7 +1057,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -1051,7 +1135,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -1138,7 +1222,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -1207,7 +1291,7 @@
                 class="q-mr-lg"
                 filled
                 v-model="roomview.nameview"
-                label="Tên dịch vụ"
+                label="Loại tầm nhìn"
               />
             </div>
           </q-card-section>
@@ -1216,7 +1300,7 @@
           <q-card-actions align="center">
             <q-btn
               flat
-              label="Cancel"
+              label="Hủy bỏ"
               color="primary"
               v-close-popup="!cancelEnabled"
             />
@@ -1240,11 +1324,12 @@ import { api } from 'boot/axios'
 export default {
   methods: {
     checkAuth () {
-      if (localStorage.auths.toString() === 'user') {
+      if (localStorage.auths.toString() === 'User') {
         this.$router.go(-1)
-        // const route = this.$router.resolve({ path: '/' })
-        // window.open(route.href)
-        // console.log(localStorage.auths)
+        this.$q.notify({
+          type: 'negative',
+          message: 'Bạn không có quyền truy cập'
+        })
       }
     },
     getPostsCompanies () {
@@ -1289,13 +1374,13 @@ export default {
         for (let index = 0; index < this.postsUser.length; index++) {
           const tempPostUser = {}
           tempPostUser.id = this.postsUser[index].id
+          tempPostUser.username = this.postsUser[index].username
           tempPostUser.email = this.postsUser[index].email
-          tempPostUser.confirmed = this.postsUser[index].confirmed
-          tempPostUser.blocked = this.postsUser[index].blocked
           tempPostUser.Full_name = this.postsUser[index].Full_name
           tempPostUser.Dob = this.postsUser[index].Dob
           tempPostUser.Address = this.postsUser[index].Address
           tempPostUser.auths = this.postsUser[index].auths
+          tempPostUser.Phone_number = this.postsUser[index].Phone_number
           this.dataUsers.push(tempPostUser)
         }
       })
@@ -1486,15 +1571,23 @@ export default {
             type: 'positive',
             message: 'Xóa thành công'
           })
-          this.dataCompanies.splice(Number(this.selectedCo[0]?.id) - 1, 1)
-          const tempDataCompanies = []
-          for (let index = 0; index < this.dataCompanies.length; index++) {
-            if (this.dataCompanies[index].id !== this.selectedCo[0]?.id) {
-              tempDataCompanies.push(this.dataCompanies[index])
+          api.get('/bookings?populate=*&pagination[pageSize]=1000').then((res) => {
+            this.postsCo = res.data.data
+            this.dataCompanies = []
+            for (let index = 0; index < this.postsCo.length; index++) {
+              const tempPostCo = {}
+              tempPostCo.id = this.postsCo[index].id
+              tempPostCo.Name = this.postsCo[index].attributes.Name
+              tempPostCo.Code = this.postsCo[index].attributes.Code
+              tempPostCo.Address = this.postsCo[index].attributes.Address
+              tempPostCo.Phone = this.postsCo[index].attributes.Phone
+              tempPostCo.Link_map = this.postsCo[index].attributes.Link_map
+              tempPostCo.Room_type_name =
+                this.postsCo[index].attributes?.room_type.data?.attributes?.Name
+              this.dataCompanies.push(tempPostCo)
             }
-          }
-          this.dataCompanies = tempDataCompanies
-          console.log(this.dataCompanies)
+            console.log('this.dataCompanies', this.dataCompanies)
+          })
         }
       })
       console.log(this.selectedCo[0]?.id)
@@ -1649,15 +1742,17 @@ export default {
     // Tạo mới người dùng
     onCreateUser () {
       console.log(this.nguoidung)
-      api
-        .post('/users', {
-          data: {
-            username: 't7edass332sdassst',
-            email: 'te32s3ssst2263@gmail.com',
-            password: '2356897'
-          }
-        })
-        .then((response) => {
+      if (this.nguoidung.username !== '' && this.nguoidung.emailnguoidung !== '' && this.nguoidung.passnguoidung !== '') {
+        api.post('/auth/local/register', {
+          username: this.nguoidung.username,
+          email: this.nguoidung.emailnguoidung,
+          password: this.nguoidung.passnguoidung,
+          Full_name: this.nguoidung.tennguoidung,
+          Dob: this.nguoidung.dobnguoidung,
+          Address: this.nguoidung.diachinguoidung,
+          auths: this.nguoidung.auths,
+          Phone_number: this.nguoidung.sdtnguoidung
+        }).then((response) => {
           console.log(response)
           if (response.status === 200) {
             console.log('Success')
@@ -1665,10 +1760,146 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
+            api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {
+              this.postsUser = res.data
+              this.dataUsers = []
+              for (let index = 0; index < this.postsUser.length; index++) {
+                const tempPostUser = {}
+                tempPostUser.id = this.postsUser[index].id
+                tempPostUser.username = this.postsUser[index].username
+                tempPostUser.email = this.postsUser[index].email
+                tempPostUser.Full_name = this.postsUser[index].Full_name
+                tempPostUser.Dob = this.postsUser[index].Dob
+                tempPostUser.Address = this.postsUser[index].Address
+                tempPostUser.auths = this.postsUser[index].auths
+                tempPostUser.Phone_number = this.postsUser[index].Phone_number
+                this.dataUsers.push(tempPostUser)
+              }
+            })
+            this.createUser = false
+          } else {
+            this.$q.notify({
+              type: 'negative',
+              message: 'Tên tài khoản hoặc email bị trùng'
+            })
           }
         })
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Vui lòng nhập đủ thông tin'
+        })
+      }
     },
-
+    openDialogUserUpdate () {
+      console.log(this.selectedUser)
+      this.editnguoidung.username = this.selectedUser[0].username
+      this.editnguoidung.emailnguoidung = this.selectedUser[0].email
+      this.editnguoidung.tennguoidung = this.selectedUser[0].Full_name
+      this.editnguoidung.dobnguoidung = this.selectedUser[0].Dob
+      this.editnguoidung.diachinguoidung = this.selectedUser[0].Address
+      this.editnguoidung.auths = this.selectedUser[0].auths
+      this.editnguoidung.sdtnguoidung = this.selectedUser[0].Phone_number
+    },
+    // Chỉnh sửa người dùng
+    onUpdateUser () {
+      if (this.editnguoidung.passnguoidung !== '') {
+        api.put(`/users/${this.selectedUser[0]?.id}`, {
+          username: this.editnguoidung.username,
+          email: this.editnguoidung.emailnguoidung,
+          password: this.editnguoidung.passnguoidung,
+          Full_name: this.editnguoidung.tennguoidung,
+          Dob: this.editnguoidung.dobnguoidung,
+          Address: this.editnguoidung.diachinguoidung,
+          auths: this.editnguoidung.auths,
+          Phone_number: this.editnguoidung.sdtnguoidung
+        }).then((response) => {
+          if (response.status === 200) {
+            console.log('Success')
+            this.$q.notify({
+              type: 'positive',
+              message: 'Cập nhật thành công'
+            })
+            this.editUser = false
+            api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {
+              this.postsUser = res.data
+              this.dataUsers = []
+              for (let index = 0; index < this.postsUser.length; index++) {
+                const tempPostUser = {}
+                tempPostUser.id = this.postsUser[index].id
+                tempPostUser.username = this.postsUser[index].username
+                tempPostUser.email = this.postsUser[index].email
+                tempPostUser.Full_name = this.postsUser[index].Full_name
+                tempPostUser.Dob = this.postsUser[index].Dob
+                tempPostUser.Address = this.postsUser[index].Address
+                tempPostUser.auths = this.postsUser[index].auths
+                tempPostUser.Phone_number = this.postsUser[index].Phone_number
+                this.dataUsers.push(tempPostUser)
+              }
+            })
+          }
+        })
+      } else {
+        api.put(`/users/${this.selectedUser[0]?.id}`, {
+          username: this.editnguoidung.username,
+          email: this.editnguoidung.emailnguoidung,
+          Full_name: this.editnguoidung.tennguoidung,
+          Dob: this.editnguoidung.dobnguoidung,
+          Address: this.editnguoidung.diachinguoidung,
+          auths: this.editnguoidung.auths,
+          Phone_number: this.editnguoidung.sdtnguoidung
+        }).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('Success')
+            this.$q.notify({
+              type: 'positive',
+              message: 'Cập nhật thành công'
+            })
+            this.editUser = false
+            api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {
+              this.postsUser = res.data
+              this.dataUsers = []
+              for (let index = 0; index < this.postsUser.length; index++) {
+                const tempPostUser = {}
+                tempPostUser.id = this.postsUser[index].id
+                tempPostUser.username = this.postsUser[index].username
+                tempPostUser.email = this.postsUser[index].email
+                tempPostUser.Full_name = this.postsUser[index].Full_name
+                tempPostUser.Dob = this.postsUser[index].Dob
+                tempPostUser.Address = this.postsUser[index].Address
+                tempPostUser.auths = this.postsUser[index].auths
+                tempPostUser.Phone_number = this.postsUser[index].Phone_number
+                this.dataUsers.push(tempPostUser)
+              }
+            })
+          }
+        })
+      }
+    },
+    // Xóa người dùng
+    deleteUser () {
+      api.delete(`/users/${this.selectedUser[0]?.id}`, {
+      }).then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          console.log('Success')
+          this.$q.notify({
+            type: 'positive',
+            message: 'Xóa thành công'
+          })
+          this.dataUsers.splice(Number(this.selectedUser[0]?.id) - 1, 1)
+          const tempDataUser = []
+          for (let index = 0; index < this.dataUsers.length; index++) {
+            if (this.dataUsers[index].id !== this.selectedUser[0]?.id) {
+              tempDataUser.push(this.dataUsers[index])
+            }
+          }
+          this.dataUsers = tempDataUser
+          console.log(this.dataUsers)
+        }
+      })
+    },
     // Tạo mới các kiểu văn phòng
     onCreateRoomtype () {
       if (this.roomtype.nameroomtype !== '') {
@@ -1700,7 +1931,7 @@ export default {
       } else {
         this.$q.notify({
           type: 'negative',
-          message: 'Vui lòng nhập liệu'
+          message: 'Vui lòng nhập liệu đầy đủ'
         })
       }
       console.log(this.roomtype)
@@ -1822,11 +2053,11 @@ export default {
       } else {
         this.$q.notify({
           type: 'negative',
-          message: 'Vui lòng nhập liệu'
+          message: 'Vui lòng nhập liệu đầy đủ'
         })
       }
     },
-    // Xóa các kiểu văn phòng
+    // Xóa tầm nhìn văn phòng
     deleteRoomView () {
       api.delete(`/view-rooms/${this.selectedRoVi[0]?.id}`, {
       }).then((response) => {
@@ -1837,15 +2068,16 @@ export default {
             type: 'positive',
             message: 'Xóa thành công'
           })
-          this.dataRoomView.splice(Number(this.selectedRoVi[0]?.id) - 1, 1)
-          const tempDataRoomView = []
-          for (let index = 0; index < this.dataRoomView.length; index++) {
-            if (this.dataRoomView[index].id !== this.selectedRoVi[0]?.id) {
-              tempDataRoomView.push(this.dataRoomView[index])
+          api.get('/view-rooms?pagination[pageSize]=1000').then((res) => {
+            this.postsRoVi = res.data.data
+            this.dataRoomView = []
+            for (let index = 0; index < this.postsRoVi.length; index++) {
+              const tempPostRoVi = {}
+              tempPostRoVi.id = this.postsRoVi[index].id
+              tempPostRoVi.Name = this.postsRoVi[index].attributes.Name
+              this.dataRoomView.push(tempPostRoVi)
             }
-          }
-          this.dataRoomType = tempDataRoomView
-          console.log(this.dataRoomView)
+          })
         }
       })
     },
@@ -1984,33 +2216,33 @@ export default {
         {
           name: 'name',
           align: 'center',
-          label: 'Name',
+          label: 'Tên công ty',
           field: 'Name',
           sortable: true
         },
         {
           name: 'code',
           align: 'center',
-          label: 'Code',
+          label: 'Mã công ty',
           field: 'Code',
           sortable: true
         },
         {
           name: 'address',
-          label: 'Address',
+          label: 'Địa chỉ công ty',
           field: 'Address',
           align: 'center'
         },
-        { name: 'phone', label: 'Phone', field: 'Phone', align: 'center' },
+        { name: 'phone', label: 'Số điện thoại', field: 'Phone', align: 'center' },
         {
           name: 'link_map',
-          label: 'Link map',
+          label: 'Địa chỉ đường dẫn',
           field: 'Link_map',
           align: 'center'
         },
         {
           name: 'room_type_name',
-          label: 'Room type',
+          label: 'Kiểu công ty',
           field: 'Room_type_name',
           align: 'center'
         }
@@ -2036,9 +2268,11 @@ export default {
       selectedCo: [],
 
       // xử lý dữ liệu người dùng
+      selectedUser: [],
       dsnguoidung: ref(false),
       editUser: ref(false),
       createUser: ref(false),
+      optionsAuths: ['User', 'Admin'],
       postsUser: [],
       dataUsers: [],
       columnsUsers: [
@@ -2049,43 +2283,43 @@ export default {
           field: 'id',
           sortable: true
         },
+        { name: 'username', label: 'Tên người dùng', field: 'username', align: 'center' },
         { name: 'email', label: 'Email', field: 'email', align: 'center' },
         {
-          name: 'confirmed',
-          label: 'Confirmed',
-          field: 'confirmed',
-          align: 'center'
-        },
-        {
-          name: 'blocked',
-          label: 'Blocked',
-          field: 'blocked',
-          align: 'center'
-        },
-        {
           name: 'full_name',
-          label: 'Full name',
+          label: 'Tên đầy đủ',
           field: 'Full_name',
           align: 'center'
         },
-        { name: 'dob', label: 'Day of birth', field: 'Dob', align: 'center' },
+        { name: 'dob', label: 'Ngày sinh', field: 'Dob', align: 'center' },
+        { name: 'phone_number', label: 'Số điện thoại', field: 'Phone_number', align: 'center' },
         {
           name: 'address',
-          label: 'Address',
+          label: 'Địa chỉ',
           field: 'Address',
           align: 'center'
         },
-        { name: 'auths', label: 'Auth', field: 'auths', align: 'center' }
+        { name: 'auths', label: 'Quyền', field: 'auths', align: 'center' }
       ],
       nguoidung: {
+        auths: '',
         username: '',
         emailnguoidung: '',
         passnguoidung: '',
         tennguoidung: '',
         dobnguoidung: '',
         diachinguoidung: '',
-        confimed: ref(false),
-        blocked: ref(false)
+        sdtnguoidung: ''
+      },
+      editnguoidung: {
+        auths: '',
+        username: '',
+        emailnguoidung: '',
+        passnguoidung: '',
+        tennguoidung: '',
+        dobnguoidung: '',
+        diachinguoidung: '',
+        sdtnguoidung: ''
       },
 
       // xử lý dữ liệu văn phòng
@@ -2106,30 +2340,30 @@ export default {
         {
           name: 'name',
           align: 'center',
-          label: 'Room name',
+          label: 'Tên phòng',
           field: 'Name',
           sortable: true
         },
         {
           name: 'price',
           align: 'center',
-          label: 'Price',
+          label: 'Giá',
           field: 'Price',
           sortable: true
         },
         {
           name: 'price_vat',
-          label: 'Price VAT',
+          label: 'Giá VAT',
           field: 'Price_VAT',
           align: 'center'
         },
-        { name: 'code', label: 'Code', field: 'Code', align: 'center' },
-        { name: 'type', label: 'Type', field: 'Type', align: 'center' },
-        { name: 'size', label: 'Size', field: 'Size', align: 'center' },
-        { name: 'status', label: 'Status', field: 'Status', align: 'center' },
+        { name: 'code', label: 'Mã phòng', field: 'Code', align: 'center' },
+        { name: 'type', label: 'Kiểu phòng', field: 'Type', align: 'center' },
+        { name: 'size', label: 'Kích thước', field: 'Size', align: 'center' },
+        { name: 'status', label: 'Trạng thái', field: 'Status', align: 'center' },
         {
           name: 'location',
-          label: 'Location',
+          label: 'Địa điểm',
           field: 'Location',
           align: 'center'
         }
@@ -2171,7 +2405,7 @@ export default {
         {
           name: 'name',
           align: 'center',
-          label: 'Room type',
+          label: 'Kiểu văn phòng',
           field: 'Name',
           sortable: true
         }
@@ -2199,73 +2433,73 @@ export default {
         {
           name: 'code',
           align: 'center',
-          label: 'Code',
+          label: 'Mã đặt phòng',
           field: 'Code',
           sortable: true
         },
         {
           name: 'date',
           align: 'center',
-          label: 'Date',
+          label: 'Ngày đặt',
           field: 'Date',
           sortable: true
         },
         {
           name: 'start_time',
-          label: 'Start time',
+          label: 'Thời gian bắt đầu',
           field: 'Start_time',
           align: 'center'
         },
         {
           name: 'end_time',
-          label: 'End time',
+          label: 'Thời gian kết thúc',
           field: 'End_time',
           align: 'center'
         },
-        { name: 'price', label: 'Price', field: 'Price', align: 'center' },
+        { name: 'price', label: 'Giá', field: 'Price', align: 'center' },
         {
           name: 'price_vat',
-          label: 'Price VAT',
+          label: 'Giá VAT',
           field: 'Price_VAT',
           align: 'center'
         },
         {
           name: 'total_price',
-          label: 'Total Price',
+          label: 'Tổng giá',
           field: 'Total_price',
           align: 'center'
         },
-        { name: 'status', label: 'Status', field: 'Status', align: 'center' },
+        { name: 'status', label: 'Trạng thái', field: 'Status', align: 'center' },
         {
           name: 'user_name',
-          label: 'User Name',
+          label: 'Tên người dùng',
           field: 'User_name',
           align: 'center'
         },
         { name: 'email', label: 'Email', field: 'Email', align: 'center' },
         {
           name: 'address',
-          label: 'Address',
+          label: 'Địa điểm',
           field: 'Address',
           align: 'center'
         },
         {
           name: 'phone_number',
-          label: 'Phone Number',
+          label: 'Số điện thoại',
           field: 'Phone_number',
           align: 'center'
         },
-        { name: 'note', label: 'Note', field: 'Note', align: 'center' },
-        { name: 'room', label: 'Room', field: 'Room', align: 'center' },
+        { name: 'note', label: 'Ghi chú', field: 'Note', align: 'center' },
+        { name: 'room', label: 'Phòng', field: 'Room', align: 'center' },
         {
           name: 'total_time',
-          label: 'Total Time',
+          label: 'Tổng thời gian',
           field: 'Total_time',
           align: 'center'
         },
         {
           name: 'method_of_payment',
-          label: 'Method of payment',
+          label: 'Hình thức thanh toán',
           field: 'Method_of_payment',
           align: 'center'
         }
@@ -2298,13 +2532,13 @@ export default {
         {
           name: 'name',
           align: 'center',
-          label: 'Service room',
+          label: 'Dịch vụ',
           field: 'Name',
           sortable: true
         }
       ],
-      kieuphong: ['Meeting', 'Conference', 'Event_space'],
-      trangthai: ['Available', 'Unavailable'],
+      kieuphong: ['Phòng họp', 'Phòng hội nghị', 'Sảnh sự kiện'],
+      trangthai: ['Còn phòng', 'Hết phòng'],
       roomservice: {
         nameroomservice: '',
         motaroomservice: ''
@@ -2334,7 +2568,7 @@ export default {
         {
           name: 'name',
           align: 'center',
-          label: 'Service room',
+          label: 'Kiểu tầm nhìn',
           field: 'Name',
           sortable: true
         }

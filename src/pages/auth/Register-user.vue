@@ -5,21 +5,21 @@
         <div class="q-px-lg" >
         <q-card square class="shadow-24" style="width: 400px">
           <q-card-section class="bg-amber">
-            <h4 class="text-h5 text-white text-center q-my-md">Register</h4>
+            <h4 class="text-h5 text-white text-center q-my-md">Đăng ký</h4>
           </q-card-section>
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input clearable v-model="username" label="Username" :rules="[(val)=>(val && val.length > 6)|| 'Username must be longer 6 characters']">
+              <q-input clearable v-model="username" label="Tên người dùng" :rules="[(val)=>(val && val.length > 6)|| 'Tên người dùng phải lớn hơn 6 ký tự']">
               <template v-slot:prepend>
                 <q-icon name="person" />
               </template>
              </q-input>
-             <q-input clearable v-model="email" label="Email" type="Email" :rules="[(val)=> !!val || 'Email is missing', emailValidate]">
+             <q-input clearable v-model="email" label="Email" type="Email" :rules="[(val)=> !!val || 'Email không được để trống', emailValidate]">
               <template v-slot:prepend>
                 <q-icon name="email"></q-icon>
               </template>
             </q-input>
-             <q-input clearable v-model="password" label="Password" type="Password" :rules="[(val)=>(val && val.length > 6)|| 'Username must be longer 6 characters']">
+             <q-input clearable v-model="password" label="Mật khẩu" type="Password" :rules="[(val)=>(val && val.length > 6)|| 'Mật khẩu phải lớn hơn 6 ký tự']">
               <template v-slot:prepend>
                 <q-icon name="lock" />
               </template>
@@ -27,11 +27,11 @@
             </q-form>
           </q-card-section>
           <q-card-actions>
-            <q-btn color="amber" class="text-white full-width" label="Register" size="md" type="submit" @click="submitForm"></q-btn>
+            <q-btn color="amber" class="text-white full-width" label="Đăng ký" size="md" type="submit" @click="submitForm"></q-btn>
           </q-card-actions>
           <q-card-section>
-            <p>Already have an account?
-              <router-link to="/login">Login Now !</router-link></p>
+            <p>Bạn đã có tài khoản ?
+              <router-link to="/login">Đăng nhập ngay !</router-link></p>
           </q-card-section>
         </q-card>
         </div>
@@ -84,7 +84,7 @@ export default {
       } catch (error) {
         $q.notify({
           type: 'negative',
-          message: 'Register is fail. Try again!'
+          message: 'Đăng ký thất bại. Vui lòng thử lại!'
         })
       }
     }

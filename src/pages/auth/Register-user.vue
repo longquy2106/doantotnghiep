@@ -1,3 +1,4 @@
+<!-- eslint-disable no-const-assign -->
 <template>
   <q-page class="bg-yellow-2 row justify-center items-center">
     <div class="q-pa-lg">
@@ -27,7 +28,7 @@
             </q-form>
           </q-card-section>
           <q-card-actions>
-            <q-btn color="amber" class="text-white full-width" label="Đăng ký" size="md" type="submit" @click="submitForm"></q-btn>
+            <q-btn color="amber" class="text-white full-width" disable="false" label="Đăng ký" size="md" type="submit" @click="submitForm"></q-btn>
           </q-card-actions>
           <q-card-section>
             <p>Bạn đã có tài khoản ?
@@ -53,15 +54,22 @@ import { useQuasar } from 'quasar'
 export default {
   name: 'Register-user',
   setup () {
+    const term = ref('')
+    fetch('https://api.ipify.org?format=json')
+      .then(x => x.json())
+      .then(({ ip }) => {
+        term.value = ip
+      })
     const username = ref('')
     const email = ref('')
     const password = ref('')
-    const auths = ref('user')
+    const auths = ref('User')
     const router = useRouter()
     const $q = useQuasar()
     const isLoading = ref(false)
     const submitForm = async () => {
       // Register-user logic
+      localStorage.setItem('ip', term.value)
       const data = {
         username: username.value,
         email: email.value,

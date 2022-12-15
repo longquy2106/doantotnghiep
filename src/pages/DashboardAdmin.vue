@@ -1742,7 +1742,7 @@ export default {
     // Tạo mới người dùng
     onCreateUser () {
       console.log(this.nguoidung)
-      if (this.nguoidung.username !== '' && this.nguoidung.emailnguoidung !== '' && this.nguoidung.passnguoidung !== '') {
+      if (this.nguoidung.username !== '' && this.nguoidung.emailnguoidung !== '' && this.nguoidung.passnguoidung !== '' && this.nguoidung.auths !== '') {
         api.post('/auth/local/register', {
           username: this.nguoidung.username,
           email: this.nguoidung.emailnguoidung,

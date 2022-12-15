@@ -48,6 +48,13 @@ import { useStore } from 'vuex'
 export default {
   name: 'Login-user',
   setup () {
+    const term = ref('')
+    fetch('https://api.ipify.org?format=json')
+      .then(x => x.json())
+      .then(({ ip }) => {
+        term.value = ip
+        console.log(term.value)
+      })
     const email = ref('')
     const password = ref('')
     const router = useRouter()
@@ -75,6 +82,7 @@ export default {
           localStorage.setItem('user_id', user.id)
           localStorage.setItem('auths', user.auths)
           localStorage.setItem('token', token)
+          localStorage.setItem('ip', term.value)
           isLoading.value = false
           $q.loadingBar.stop()
           router.push('/mainpage')
@@ -97,6 +105,7 @@ export default {
     return {
       email,
       password,
+      term,
       submitForm,
       emailValidate
     }

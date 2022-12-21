@@ -1324,7 +1324,7 @@ import { api } from 'boot/axios'
 export default {
   methods: {
     checkAuth () {
-      if (localStorage.auths.toString() === 'User') {
+      if (localStorage.auths.toString() !== 'User') {
         this.$router.go(-1)
         this.$q.notify({
           type: 'negative',

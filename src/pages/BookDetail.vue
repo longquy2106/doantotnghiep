@@ -61,7 +61,7 @@
               <div class="q-my-sm">
                 <q-input
                   outlined
-                  v-model="khachhang.hovaten"
+                  v-model="thisUser.Full_name"
                   label="Nhập họ và tên"
                   :rules="[(val)=>(val && val.length > 0)|| 'Không được để trống']"
                 ></q-input>
@@ -69,7 +69,7 @@
               <div class="q-my-sm">
                 <q-input
                   outlined
-                  v-model="khachhang.sdt"
+                  v-model="thisUser.Phone_number"
                   label="Nhập số điện thoại"
                   :rules="[(val)=>(val && val.length > 0)|| 'Không được để trống']"
                 ></q-input>
@@ -77,7 +77,7 @@
               <div class="q-my-sm">
                 <q-input
                   outlined
-                  v-model="khachhang.email"
+                  v-model="thisUser.email"
                   label="Nhập địa chỉ Email"
                   type="Email" :rules="[(val)=> !!val || 'Email không được để trống', emailValidate]"
                 ></q-input>
@@ -144,7 +144,7 @@
                   <div class="q-mx-md">
                     <q-img
                       style="width:300px, height:300px"
-                      src="https://scontent.fsgn5-12.fna.fbcdn.net/v/t1.15752-9/312085079_835419294249172_1292868566750573491_n.png?_nc_cat=103&ccb=1-7&_nc_sid=ae9488&_nc_ohc=_ZFDErCuaGYAX9kBiSc&_nc_ht=scontent.fsgn5-12.fna&oh=03_AdTrgDkTI6fcGvrh_tZz7WrrOoAc8uBwKeEq8guZACAOzw&oe=639C0A31"
+                      src="https://f7-zpcloud.zdn.vn/8221599380048796161/4c86b42559498117d858.jpg"
                     ></q-img>
                   </div>
                 </q-card>
@@ -432,15 +432,15 @@
                 </div>
                 <div>
                   <a class="text-bold">- TÊN KHÁCH HÀNG :</a>&nbsp;
-                  <a>{{ khachhang.hovaten }}</a>
+                  <a>{{ thisUser.Full_name }}</a>
                 </div>
                 <div>
                   <a class="text-bold">- EMAIL :</a>&nbsp;
-                  <a>{{ khachhang.email }}</a>
+                  <a>{{ thisUser.email }}</a>
                 </div>
                 <div>
                   <a class="text-bold">- SỐ ĐIỆN THOẠI :</a>&nbsp;
-                  <a>{{ khachhang.sdt }}</a>
+                  <a>{{ thisUser.Phone_number }}</a>
                 </div>
                 <div>
                   <a class="text-bold">- GHI CHÚ :</a>&nbsp;
@@ -506,6 +506,16 @@ import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 export default {
   name: 'BookDetail',
+  setup () {
+    const emailValidate = (val) => {
+      const emailPattern =
+        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
+      return emailPattern.test(val) || 'Invalid email'
+    }
+    return {
+      emailValidate
+    }
+  },
   created () {
     api.get('/bookings?populate=*&pagination[pageSize]=1000').then((res) => {
       for (let index = 0; index < res.data.data.length; index++) {
@@ -553,6 +563,28 @@ export default {
           this.inforoomdatas.push(tempRoomData)
         }
       })
+    api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {
+      this.postsUser = res.data
+      for (let index = 0; index < this.postsUser.length; index++) {
+        const tempPostUser = {}
+        tempPostUser.id = this.postsUser[index].id
+        tempPostUser.email = this.postsUser[index].email
+        tempPostUser.username = this.postsUser[index].username
+        tempPostUser.Full_name = this.postsUser[index].Full_name
+        tempPostUser.Dob = this.postsUser[index].Dob
+        tempPostUser.Address = this.postsUser[index].Address
+        tempPostUser.auths = this.postsUser[index].auths
+        tempPostUser.Phone_number = this.postsUser[index].Phone_number
+        tempPostUser.bookingHistory = this.postsUser[index].booking_histories
+        this.dataUsers.push(tempPostUser)
+      }
+      for (let todo = 0; todo < this.dataUsers.length; todo++) {
+        if (Number(this.userID) === this.dataUsers[todo].id) {
+          this.thisUser = this.dataUsers[todo]
+          console.log('alo', this.thisUser)
+        }
+      }
+    })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {
         day: 'numeric',
@@ -597,7 +629,7 @@ export default {
       this.tamtinh = this.total_time * this.roomdatas.priceRoomData
       this.price_vat = (this.tamtinh * 10) / 100
       this.total_price = this.tamtinh + this.price_vat
-      if (this.khachhang.hovaten !== '' && this.khachhang.sdt !== '' && this.khachhang.email !== '' && this.total_time > 0) {
+      if (this.thisUser.Full_name !== '' && this.thisUser.Phone_number !== '' && this.thisUser.email !== '' && this.total_time > 0) {
         this.dialogBook = true
       } else {
         this.$q.notify({
@@ -632,9 +664,9 @@ export default {
           Price_VAT: Number(this.price_vat),
           Total_price: Number(this.total_price),
           Status: this.bookStatus,
-          User_name: this.khachhang.hovaten,
-          Phone_number: this.khachhang.sdt,
-          Email: this.khachhang.email,
+          User_name: this.thisUser.Full_name,
+          Phone_number: this.thisUser.Phone_number,
+          Email: this.thisUser.email,
           Address: this.room.nameRooms,
           Room: this.roomdatas.nameRoomData,
           Note: this.khachhang.note,
@@ -662,6 +694,8 @@ export default {
   },
   data () {
     return {
+      dataUsers: [],
+      thisUser: [],
       userID: '',
       idNew: '',
       dateClone: '',

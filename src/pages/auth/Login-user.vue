@@ -85,7 +85,7 @@ export default {
           localStorage.setItem('ip', term.value)
           isLoading.value = false
           $q.loadingBar.stop()
-          router.push('/mainpage')
+          router.push('/')
         }
       } catch (error) {
         $q.notify({

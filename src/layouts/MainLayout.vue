@@ -6,7 +6,7 @@
             Book Now !
           </q-toolbar-title>
         <div class="row q-px-md">
-          <router-link :to="{ path: '/mainpage' }"><q-chip class="q-px-md text-bold">Địa Điểm</q-chip></router-link>
+          <router-link :to="{ path: '/' }"><q-chip class="q-px-md text-bold">Địa Điểm</q-chip></router-link>
           <router-link :to="{ path: '/profile' }"><q-chip class="q-px-md text-bold">Quản lý tài khoản cá nhân</q-chip></router-link>
           <router-link :to="{ path: '/historybook' }"><q-chip class="q-px-md text-bold">Lịch sử đặt phòng</q-chip></router-link>
           <router-link :to="{ path: '/dashboard' }"><q-chip class="q-px-md text-bold">Quản lý</q-chip></router-link>
@@ -57,7 +57,7 @@ export default defineComponent({
   name: 'MainLayout',
   methods: {
     toPageMain () {
-      const route = this.$router.resolve({ path: '/mainpage' })
+      const route = this.$router.resolve({ path: '/' })
       window.open(route.href)
     },
     linktomessenger () {

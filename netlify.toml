@@ -1,0 +1,4 @@
+[[redirect]]
+from = "/*"
+to = "/IndexPage.vue"
+status = 200

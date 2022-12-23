@@ -139,7 +139,6 @@ export default {
           tempRoom.image = res.data?.data[index]?.attributes?.Image.data[0].attributes.url
           this.rooms.push(tempRoom)
         }
-        console.log(this.rooms)
         // const tempRoom = res.data?.data.map(e => ({
         //   id: e.id,
         //   nameRooms: e.attributes.Name,
@@ -160,7 +159,6 @@ export default {
           tempView.nameView = res.data.data[index].attributes.Name
           this.views.push(tempView)
         }
-        console.log(this.views)
       })
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {

@@ -152,7 +152,6 @@ export default ({
         tempPostBookHis.Price = this.postsBookHis[this.postsBookHis.length - 1].attributes.Price
         tempPostBookHis.Price_VAT = this.postsBookHis[this.postsBookHis.length - 1].attributes.Price_VAT
         this.dataBookHis.push(tempPostBookHis)
-        console.log(this.dataBookHis)
       })
     api.get('/rooms?populate=*&pagination[pageSize]=1000')
       .then((res) => {
@@ -169,18 +168,15 @@ export default ({
           tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images?.data?.attributes?.url
           this.inforoomdatas.push(tempRoomData)
         }
-        console.log(this.inforoomdatas)
-        console.log(this.dataBookHis[0]?.Room)
+        for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
+          if (this.dataBookHis[0]?.Room === this.inforoomdatas[tudo].nameRoomData) {
+            this.inforoom.push(this.inforoomdatas[tudo])
+          }
+        }
       })
   },
   mounted () {
-    setTimeout(() => {
-      for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
-        if (this.dataBookHis[0]?.Room === this.inforoomdatas[tudo].nameRoomData) {
-          this.inforoom.push(this.inforoomdatas[tudo])
-        }
-      }console.log(this.inforoom)
-    }, 1000)
+
   },
   data () {
     return {

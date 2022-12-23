@@ -178,12 +178,11 @@ export default {
     },
     open () {
       this.openStatus = true
-      console.log(this.selectedBookHis)
       for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
         if (this.selectedBookHis[0]?.Room === this.inforoomdatas[tudo].nameRoomData) {
           this.inforoom.push(this.inforoomdatas[tudo])
         }
-      }console.log('ok', this.inforoom)
+      }
     }
   },
   mounted () {

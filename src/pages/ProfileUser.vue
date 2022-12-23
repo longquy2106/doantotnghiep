@@ -92,7 +92,6 @@ export default {
           Phone_number: this.thisUser.Phone_number
         }).then((response) => {
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'
@@ -111,7 +110,6 @@ export default {
           Phone_number: this.thisUser.Phone_number
         }).then((response) => {
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'

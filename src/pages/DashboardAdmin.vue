@@ -1422,7 +1422,6 @@ export default {
           tempPostRoty.Name = this.postsRoty[index].attributes.Name
           this.dataRoomType.push(tempPostRoty)
         }
-        console.log('room-type', this.dataRoomType)
       })
     },
     getPostsRoSe () {
@@ -1434,7 +1433,6 @@ export default {
           tempPostRoSe.Name = this.postsRoSe[index].attributes.Name
           this.dataRoomService.push(tempPostRoSe)
         }
-        console.log(this.dataRoomService)
       })
     },
     getPostsBookHis () {
@@ -1502,9 +1500,7 @@ export default {
             Image: this.newimage.toString()
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Tạo thành công'
@@ -1524,7 +1520,6 @@ export default {
                   this.postsCo[index].attributes?.room_type.data?.attributes?.Name
                 this.dataCompanies.push(tempPostCo)
               }
-              console.log('this.dataCompanies', this.dataCompanies)
             })
             this.createCompany = false
           }
@@ -1534,8 +1529,6 @@ export default {
           type: 'negative',
           message: 'Vui lòng nhập liệu đầy đủ'
         })
-        console.log(this.selectRoomService)
-        console.log(this.selectRoomType?.id)
       }
     },
 
@@ -1565,9 +1558,7 @@ export default {
             Image: this.newimage.toString()
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'
@@ -1592,9 +1583,7 @@ export default {
     deleteCompany () {
       api.delete(`/bookings/${this.selectedCo[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -1614,11 +1603,9 @@ export default {
                 this.postsCo[index].attributes?.room_type.data?.attributes?.Name
               this.dataCompanies.push(tempPostCo)
             }
-            console.log('this.dataCompanies', this.dataCompanies)
           })
         }
       })
-      console.log(this.selectedCo[0]?.id)
     },
 
     // Tạo mới thông tin văn phòng
@@ -1647,9 +1634,7 @@ export default {
           }
         })
           .then((response) => {
-            console.log(response)
             if (response.status === 200) {
-              console.log('Success')
               this.$q.notify({
                 type: 'positive',
                 message: 'Tạo thành công'
@@ -1681,7 +1666,6 @@ export default {
           message: 'Vui lòng nhập liệu đầy đủ'
         })
       }
-      console.log(this.vanphong)
     },
 
     openDialogRoomUpdate () {
@@ -1718,9 +1702,7 @@ export default {
             Images: this.newimage.toString()
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'
@@ -1747,9 +1729,7 @@ export default {
     deleteRoom () {
       api.delete(`/rooms/${this.selectedRo[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -1762,14 +1742,12 @@ export default {
             }
           }
           this.dataRooms = tempDataRooms
-          console.log(this.dataRooms)
         }
       })
     },
 
     // Tạo mới người dùng
     onCreateUser () {
-      console.log(this.nguoidung)
       if (this.nguoidung.username !== '' && this.nguoidung.emailnguoidung !== '' && this.nguoidung.passnguoidung !== '' && this.nguoidung.auths !== '') {
         api.post('/auth/local/register', {
           username: this.nguoidung.username,
@@ -1781,9 +1759,7 @@ export default {
           auths: this.nguoidung.auths,
           Phone_number: this.nguoidung.sdtnguoidung
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Tạo thành công'
@@ -1820,7 +1796,6 @@ export default {
       }
     },
     openDialogUserUpdate () {
-      console.log(this.selectedUser)
       this.editnguoidung.username = this.selectedUser[0].username
       this.editnguoidung.emailnguoidung = this.selectedUser[0].email
       this.editnguoidung.tennguoidung = this.selectedUser[0].Full_name
@@ -1843,7 +1818,6 @@ export default {
           Phone_number: this.editnguoidung.sdtnguoidung
         }).then((response) => {
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'
@@ -1877,9 +1851,7 @@ export default {
           auths: this.editnguoidung.auths,
           Phone_number: this.editnguoidung.sdtnguoidung
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'
@@ -1909,9 +1881,7 @@ export default {
     deleteUser () {
       api.delete(`/users/${this.selectedUser[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -1924,7 +1894,6 @@ export default {
             }
           }
           this.dataUsers = tempDataUser
-          console.log(this.dataUsers)
         }
       })
     },
@@ -1936,9 +1905,7 @@ export default {
             Name: this.roomtype.nameroomtype
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Tạo thành công'
@@ -1962,15 +1929,12 @@ export default {
           message: 'Vui lòng nhập liệu đầy đủ'
         })
       }
-      console.log(this.roomtype)
     },
     // Xóa các kiểu văn phòng
     deleteRoomType () {
       api.delete(`/room-types/${this.selectedRoTy[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -1983,7 +1947,6 @@ export default {
             }
           }
           this.dataRoomType = tempDataRoomType
-          console.log(this.dataRoomType)
         }
       })
     },
@@ -1997,9 +1960,7 @@ export default {
             Description: this.roomservice.motaroomservice
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Tạo thành công'
@@ -2013,7 +1974,6 @@ export default {
                 tempPostRoSe.Name = this.postsRoSe[index].attributes.Name
                 this.dataRoomService.push(tempPostRoSe)
               }
-              console.log(this.dataRoomService)
             })
             this.createRoomService = false
           }
@@ -2024,15 +1984,12 @@ export default {
           message: 'Vui lòng nhập liệu'
         })
       }
-      console.log(this.roomservice)
     },
     // Xóa dịch vụ văn phòng
     deleteRoomService () {
       api.delete(`/services-rooms/${this.selectedRoSe[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -2045,7 +2002,6 @@ export default {
             }
           }
           this.dataRoomService = tempDataRoomService
-          console.log(this.dataRoomService)
         }
       })
     },
@@ -2058,9 +2014,7 @@ export default {
             Name: this.roomview.nameview
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Tạo thành công'
@@ -2089,9 +2043,7 @@ export default {
     deleteRoomView () {
       api.delete(`/views-rooms/${this.selectedRoVi[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -2120,14 +2072,12 @@ export default {
       this.editUpdateBookHis.Email = this.selectedBookHis[0].Email
       this.editUpdateBookHis.Phone = this.selectedBookHis[0].Phone_number
       this.editUpdateBookHis.Note = this.selectedBookHis[0].Note
-      console.log(this.selectedBookHis[0])
     },
     onUpdateBookHis () {
       const day = this.editUpdateBookHis.Date.split('/')[2]
       const month = this.editUpdateBookHis.Date.split('/')[1]
       const year = this.editUpdateBookHis.Date.split('/')[0]
       this.dateClone = `${day}/${month}/${year}`
-      console.log(this.dateClone)
       if (this.editUpdateBookHis.Timestart < this.editUpdateBookHis.Timeend && this.dateClone !== '' && this.editUpdateBookHis.Status !== '' && this.editUpdateBookHis.Username !== '' && this.editUpdateBookHis.Note !== '' && this.editUpdateBookHis.Email !== '' && this.editUpdateBookHis.Phone !== '' && this.editUpdateBookHis.Payment !== '') {
         api.put(`/booking-histories/${this.selectedBookHis[0]?.id}`, {
           data: {
@@ -2142,9 +2092,7 @@ export default {
             Method_of_payment: this.editUpdateBookHis.Payment
           }
         }).then((response) => {
-          console.log(response)
           if (response.status === 200) {
-            console.log('Success')
             this.$q.notify({
               type: 'positive',
               message: 'Cập nhật thành công'
@@ -2178,9 +2126,7 @@ export default {
     deleteBookHis () {
       api.delete(`/booking-histories/${this.selectedBookHis[0]?.id}`, {
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Xóa thành công'
@@ -2193,7 +2139,6 @@ export default {
             }
           }
           this.dataBookHis = tempDataBookHis
-          console.log(this.dataRooms)
         }
       })
     }

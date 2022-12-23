@@ -566,7 +566,6 @@ export default {
             this.inforoom.push(this.inforoomdatas[tudo])
           }
         }
-        console.log(this.inforoom)
       }, 1000)
     })
     api.get('/rooms?populate=*&pagination[pageSize]=1000')
@@ -596,7 +595,6 @@ export default {
       for (let todo = 0; todo < this.dataUsers.length; todo++) {
         if (Number(this.userID) === this.dataUsers[todo].id) {
           this.thisUser = this.dataUsers[todo]
-          console.log('alo', this.thisUser)
         }
       }
     })
@@ -665,9 +663,7 @@ export default {
           user: this.userID.toString()
         }
       }).then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          console.log('Success')
           this.$q.notify({
             type: 'positive',
             message: 'Đặt phòng thành công'

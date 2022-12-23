@@ -598,25 +598,6 @@ import { api } from 'boot/axios'
 
 export default defineComponent({
   name: 'CompanyInfo',
-  mounted () {
-    console.log('this.router', this.$route)
-    this.id = this.$route.params.roomId
-    setTimeout(() => {
-      for (let index = 0; index < this.rooms.length; index++) {
-        if (this.rooms[index].id === Number(this.id)) {
-          this.room = this.rooms.find((room) => room.id === Number(this.id))
-        }
-        console.log('this.room', this.room)
-      }
-      for (let tudo = 0; tudo < this.room.rooms.length; tudo++) {
-        for (let tido = 0; tido < this.roomdatas.length; tido++) {
-          if (this.room.rooms[tudo].id === this.roomdatas[tido].id) {
-            this.inforoom.push(this.roomdatas[tido])
-          }
-        }
-      }console.log(this.inforoom)
-    }, 1000)
-  },
   created () {
     api.get('/bookings?populate=*&pagination[pageSize]=1000')
       .then((res) => {
@@ -660,6 +641,21 @@ export default defineComponent({
           }
           this.rooms.push(tempRoom)
         }
+        this.id = this.$route.params.roomId
+        setTimeout(() => {
+          for (let index = 0; index < this.rooms.length; index++) {
+            if (this.rooms[index].id === Number(this.id)) {
+              this.room = this.rooms.find((room) => room.id === Number(this.id))
+            }
+          }
+          for (let tudo = 0; tudo < this.room?.rooms?.length; tudo++) {
+            for (let tido = 0; tido < this.roomdatas.length; tido++) {
+              if (this.room.rooms[tudo].id === this.roomdatas[tido].id) {
+                this.inforoom.push(this.roomdatas[tido])
+              }
+            }
+          }
+        }, 1000)
       })
     api.get('/rooms?populate=*&pagination[pageSize]=1000')
       .then((res) => {
@@ -677,7 +673,6 @@ export default defineComponent({
           this.roomdatas.push(tempRoomData)
         }
       })
-    console.log('room', this.roomdatas)
     this.interval = setInterval(() => {
       this.time = Intl.DateTimeFormat(navigator.language, {
         day: 'numeric',
@@ -687,6 +682,10 @@ export default defineComponent({
         minute: 'numeric'
       }).format()
     }, 1000)
+  },
+
+  mounted () {
+
   },
   data () {
     return {

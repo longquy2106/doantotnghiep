@@ -561,11 +561,7 @@ export default {
             )
           }
         }
-        for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
-          if (this.roomdatas?.id === this.inforoomdatas[tudo].id) {
-            this.inforoom.push(this.inforoomdatas[tudo])
-          }
-        }
+        localStorage.setItem('roomdataid', this.roomdatas.id)
       }, 1000)
     })
     api.get('/rooms?populate=*&pagination[pageSize]=1000')
@@ -575,6 +571,12 @@ export default {
           tempRoomData.id = res.data.data[tedo].id
           tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data.attributes?.url
           this.inforoomdatas.push(tempRoomData)
+        }
+        console.log(Number(localStorage.roomdataid))
+        for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
+          if (Number(localStorage.roomdataid) === Number(this.inforoomdatas[tudo].id)) {
+            this.inforoom.push(this.inforoomdatas[tudo])
+          }
         }
       })
     api.get('/users?populate=*&?pagination[pageSize]=1000').then((res) => {

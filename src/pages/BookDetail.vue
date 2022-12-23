@@ -546,19 +546,34 @@ export default {
         }
         this.rooms.push(tempRoom)
       }
+      this.id = this.$route.params.roomId
+      this.dataid = this.$route.params.roomdata
+      setTimeout(() => {
+        for (let index = 0; index < this.rooms.length; index++) {
+          if (this.rooms[index].id === Number(this.id)) {
+            this.room = this.rooms.find((room) => room.id === Number(this.id))
+          }
+        }
+        for (let todo = 0; todo < this.roomdata.length; todo++) {
+          if (this.roomdata[todo].id === Number(this.dataid)) {
+            this.roomdatas = this.roomdata.find(
+              (roomdatas) => roomdatas.id === Number(this.dataid)
+            )
+          }
+        }
+        for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
+          if (this.roomdatas?.id === this.inforoomdatas[tudo].id) {
+            this.inforoom.push(this.inforoomdatas[tudo])
+          }
+        }
+        console.log(this.inforoom)
+      }, 1000)
     })
     api.get('/rooms?populate=*&pagination[pageSize]=1000')
       .then((res) => {
         for (let tedo = 0; tedo < res.data.data.length; tedo++) {
           const tempRoomData = {}
           tempRoomData.id = res.data.data[tedo].id
-          tempRoomData.nameRoomData = res.data.data[tedo].attributes.Name
-          tempRoomData.priceRoomData = res.data.data[tedo].attributes.Price
-          tempRoomData.pricevatRoomData = res.data.data[tedo].attributes.Price_VAT
-          tempRoomData.codeRoomData = res.data.data[tedo].attributes.Code
-          tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
-          tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
-          tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
           tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data.attributes?.url
           this.inforoomdatas.push(tempRoomData)
         }
@@ -598,28 +613,7 @@ export default {
   },
 
   mounted () {
-    console.log('this.router', this.$route)
-    this.id = this.$route.params.roomId
-    this.dataid = this.$route.params.roomdata
-    setTimeout(() => {
-      for (let index = 0; index < this.rooms.length; index++) {
-        if (this.rooms[index].id === Number(this.id)) {
-          this.room = this.rooms.find((room) => room.id === Number(this.id))
-        }
-      }
-      for (let todo = 0; todo < this.roomdata.length; todo++) {
-        if (this.roomdata[todo].id === Number(this.dataid)) {
-          this.roomdatas = this.roomdata.find(
-            (roomdatas) => roomdatas.id === Number(this.dataid)
-          )
-        }
-      }
-      for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
-        if (this.roomdatas?.id === this.inforoomdatas[tudo].id) {
-          this.inforoom.push(this.inforoomdatas[tudo])
-        }
-      }
-    }, 1000)
+
   },
   methods: {
     dialogBookclick () {
@@ -648,8 +642,6 @@ export default {
       } else {
         console.log('false', this.userID)
       }
-      console.log(this.date)
-      console.log(this.dateClone)
     },
     onCreateBook () {
       api.post('/booking-histories', {
@@ -682,12 +674,6 @@ export default {
           })
         }
       })
-      // api.get('/booking-histories?pagination[pageSize]=1000')
-      //   .then((res) => {
-      //     this.postsBookHis = res.data.data
-      //     this.idNew = this.postsBookHis[this.postsBookHis.length - 1].id.toString()
-      //     console.log('newid', this.idNew)
-      //   })
     }
   },
   data () {

@@ -184,7 +184,7 @@
           <q-card class="">
             <div>
               <q-img
-                :src="`http://localhost:1337${room.image}`"
+                :src="`${room.image}`"
                 style="width: 580px; height: 300px"
               ></q-img>
             </div>
@@ -245,7 +245,7 @@
                 </div>
                 <div class="q-mr-sm q-my-md">
                   <q-img
-                    :src="`http://localhost:1337${inforoom[0]?.imageRoomData}`"
+                    :src="`${inforoom[0]?.imageRoomData}`"
                     style="width: 508px; height: 220px"
                   ></q-img>
                 </div>
@@ -559,7 +559,7 @@ export default {
           tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
           tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
           tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
-          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data[0].attributes.url
+          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data.attributes?.url
           this.inforoomdatas.push(tempRoomData)
         }
       })
@@ -605,7 +605,6 @@ export default {
       for (let index = 0; index < this.rooms.length; index++) {
         if (this.rooms[index].id === Number(this.id)) {
           this.room = this.rooms.find((room) => room.id === Number(this.id))
-          console.log('this.room', this.room)
         }
       }
       for (let todo = 0; todo < this.roomdata.length; todo++) {
@@ -613,14 +612,13 @@ export default {
           this.roomdatas = this.roomdata.find(
             (roomdatas) => roomdatas.id === Number(this.dataid)
           )
-          console.log('this.roomdatas', this.roomdatas)
         }
       }
       for (let tudo = 0; tudo < this.inforoomdatas.length; tudo++) {
         if (this.roomdatas?.id === this.inforoomdatas[tudo].id) {
           this.inforoom.push(this.inforoomdatas[tudo])
         }
-      }console.log(this.inforoom)
+      }
     }, 1000)
   },
   methods: {
@@ -657,8 +655,8 @@ export default {
       api.post('/booking-histories', {
         data: {
           Code: this.codeBooking.toString(),
-          Start_time: this.timestart,
-          End_time: this.timeend,
+          Start_time: Number(this.timestart),
+          End_time: Number(this.timeend),
           Date: this.dateClone,
           Price: Number(this.roomdatas.priceRoomData),
           Price_VAT: Number(this.price_vat),
@@ -670,7 +668,7 @@ export default {
           Address: this.room.nameRooms,
           Room: this.roomdatas.nameRoomData,
           Note: this.khachhang.note,
-          Total_time: this.total_time,
+          Total_time: Number(this.total_time),
           Method_of_payment: this.shape,
           user: this.userID.toString()
         }
@@ -684,12 +682,12 @@ export default {
           })
         }
       })
-      api.get('/booking-histories?pagination[pageSize]=1000')
-        .then((res) => {
-          this.postsBookHis = res.data.data
-          this.idNew = this.postsBookHis[this.postsBookHis.length - 1].id.toString()
-          console.log('newid', this.idNew)
-        })
+      // api.get('/booking-histories?pagination[pageSize]=1000')
+      //   .then((res) => {
+      //     this.postsBookHis = res.data.data
+      //     this.idNew = this.postsBookHis[this.postsBookHis.length - 1].id.toString()
+      //     console.log('newid', this.idNew)
+      //   })
     }
   },
   data () {

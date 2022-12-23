@@ -104,7 +104,7 @@
             <q-carousel animated v-model="slide" arrows navigation infinite>
               <q-carousel-slide v-for="roomimage in room.arrImage" :key="roomimage.id"
                 :name="roomimage.index"
-                :img-src="`http://localhost:1337${roomimage.url}`"
+                :img-src="`${roomimage.url}`"
               />
             </q-carousel>
           </div>
@@ -165,7 +165,7 @@
 
       <div class="flex q-ml-xl q-my-lg">
         <div class="q-mr-lg">
-          <q-btn flat style="color: #ff0080" class="text-bold">
+          <q-btn flat style="color: #ff0080" class="text-bold" >
             Tổng quan
           </q-btn>
         </div>
@@ -191,7 +191,7 @@
 
       <div class="q-ml-xl q-my-lg" style="width: 840px">
         <div class="text-bold">
-          <a style="fontsize: 22px">Tổng quan về {{room.nameRooms}}</a>
+          <a style="fontSize: 22px">Tổng quan về {{room.nameRooms}}</a>
         </div>
         <div class="text-justify q-mt-sm">
           <a
@@ -202,7 +202,7 @@
 
       <div class="q-ml-xl q-my-lg">
         <div><a class="text-bold text-grey-13">Hiện tại:&nbsp;{{time}}</a></div>
-        <div class="text-bold"><a style="fontsize: 22px">Giờ làm việc</a></div>
+        <div class="text-bold"><a style="fontSize: 22px">Giờ làm việc</a></div>
         <div class="flex">
           <div class="q-pt-md q-mr-sm row">
             <q-card class="my-card">
@@ -307,7 +307,7 @@
 
       <div class="q-mx-xl q-my-lg">
         <div class="text-bold">
-          <a style="fontsize: 22px">Không gian làm việc</a>
+          <a style="fontSize: 22px">Không gian làm việc</a>
         </div>
         <div>
           <q-card class="my-card">
@@ -376,7 +376,7 @@
                   <div class="q-mr-md" loading="lazy" spinner-color="white">
                     <q-img
                       style="width: 250px; height: 150px"
-                      :src="`http://localhost:1337${iroom.imageRoomData}`"
+                      :src="`${iroom.imageRoomData}`"
                     />
                   </div>
                   <div class="flex justify-between" style="width: 68%">
@@ -434,7 +434,7 @@
       </div>
       <div class="q-mx-xl q-my-lg">
         <div class="text-bold">
-          <a style="fontsize: 22px">Đánh Giá Của Khách Hàng</a>
+          <a style="fontSize: 22px">Đánh Giá Của Khách Hàng</a>
         </div>
         <div class="flex justify-center">
           <div class="q-pt-md q-mx-md" style="max-width: 30%">
@@ -551,7 +551,7 @@
       </div>
 
       <div class="q-mx-xl q-my-lg">
-        <div class="text-bold"><a style="fontsize: 22px">Hỗ trợ</a></div>
+        <div class="text-bold"><a style="fontSize: 22px">Hỗ trợ</a></div>
         <div style="color: black" class="q-mt-sm">
           <q-expansion-item class="bg-amber-12" label="Tôi muốn thay đổi lịch/ đặt phòng ngoài giờ thì sao ?">
             <q-card class="my-card">
@@ -654,7 +654,7 @@ export default defineComponent({
           tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
           tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
           tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
-          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data[0].attributes.url
+          tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data.attributes?.url
           this.roomdatas.push(tempRoomData)
         }
       })
@@ -680,7 +680,7 @@ export default defineComponent({
           console.log('this.room', this.room)
         }
       }
-      for (let tudo = 0; tudo < this.room.rooms.length; tudo++) {
+      for (let tudo = 0; tudo < this.room?.rooms?.length; tudo++) {
         for (let tido = 0; tido < this.roomdatas.length; tido++) {
           if (this.room.rooms[tudo].id === this.roomdatas[tido].id) {
             this.inforoom.push(this.roomdatas[tido])

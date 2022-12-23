@@ -60,7 +60,7 @@
                   </div>
                   <div class="q-mr-sm q-my-md">
                     <q-img
-                      :src="`http://localhost:1337${inforoom[0]?.imageRoomData}`"
+                      :src="`${inforoom[0]?.imageRoomData}`"
                       style="width: 335px; height: 150px"
                     ></q-img>
                   </div>
@@ -171,7 +171,7 @@ export default {
             tempRoomData.typeRoomData = res.data.data[tedo].attributes.Type
             tempRoomData.statusRoomData = res.data.data[tedo].attributes.Status
             tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
-            tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data[0].attributes.url
+            tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data.attributes?.url
             this.inforoomdatas.push(tempRoomData)
           }
         })

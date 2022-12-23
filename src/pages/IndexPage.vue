@@ -61,7 +61,7 @@
         <template v-for="room in rooms" :key="room.id">
           <q-item class="bg-grey-1 q-ma-sm" >
             <div class="q-mt-sm" loading="lazy" spinner-color="white" style="width: 240px;height:auto;">
-              <img :src="`http://localhost:1337${room.image}`" class="pa-1 logo" style="width: 100%;height:120px" />
+              <img :src="`${room.image}`" class="pa-1 logo" style="width: 100%;height:120px" />
             </div>
             <div class="" style="width:50%">
               <div class="col">
@@ -139,7 +139,7 @@ export default {
           tempRoom.image = res.data?.data[index]?.attributes?.Image.data[0].attributes.url
           this.rooms.push(tempRoom)
         }
-
+        console.log(this.rooms)
         // const tempRoom = res.data?.data.map(e => ({
         //   id: e.id,
         //   nameRooms: e.attributes.Name,
@@ -151,7 +151,7 @@ export default {
         //   }))[0]
         // }))
       })
-    api.get('/view-rooms?populate=*&pagination[pageSize]=1000')
+    api.get('/views-rooms?populate=*&pagination[pageSize]=1000')
       .then((res) => {
         for (let index = 0; index < res.data.data.length; index++) {
           const tempView = {}

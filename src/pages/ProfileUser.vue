@@ -18,7 +18,8 @@
               <q-input style="width: 280px" filled v-model="thisUser.email" label="Email" />
             </div>
             <div class="flex q-my-lg q-ml-lg justify-center">
-              <q-input style="width: 280px" class="q-mr-lg" filled v-model="password" label="Mật khẩu"/>
+              <q-input style="width: 280px" class="q-mr-lg" filled v-model="password" label="Mật khẩu" type="Password"
+                  :rules="[(val)=>(val && val.length > 5)|| 'Mật khẩu phải >= 6 ký tự']"/>
               <q-input style="width: 280px" filled v-model="thisUser.Full_name" label="Tên đầy đủ"/>
             </div>
             <div class="flex q-mt-lg q-ml-lg">

@@ -385,6 +385,7 @@
                   v-model="nguoidung.passnguoidung"
                   label="Mật khẩu"
                   type="Password"
+                  :rules="[(val)=>(val && val.length > 5)|| 'Mật khẩu phải >= 6 ký tự']"
                 />
                 <q-input
                   class="q-mt-md"
@@ -498,6 +499,7 @@
                   v-model="editnguoidung.passnguoidung"
                   label="Mật khẩu"
                   type="Password"
+                  :rules="[(val)=>(val && val.length > 5)|| 'Mật khẩu phải >= 6 ký tự']"
                 />
                 <q-input
                   class="q-mt-md"
@@ -1323,8 +1325,34 @@ import { ref } from 'vue'
 import { api } from 'boot/axios'
 export default {
   methods: {
+    uploadImage (event) {
+      const data = new FormData()
+      data.append('name', 'my-picture')
+      data.append('files', event.target.files[0])
+      const config = {
+        header: {
+          'Content-Type': 'image/png'
+        }
+      }
+      this.$q.notify({
+        type: 'negative',
+        message: 'Vui lòng chờ trong giây lát'
+      })
+      api.post('/upload', data, config)
+        .then(
+          response => {
+            if (response.status === 200) {
+              this.newimage = response.data[0].id
+              this.$q.notify({
+                type: 'positive',
+                message: 'Upload thành công'
+              })
+            }
+          }
+        )
+    },
     checkAuth () {
-      if (localStorage.auths.toString() !== 'User') {
+      if (localStorage.auths.toString() === 'User') {
         this.$router.go(-1)
         this.$q.notify({
           type: 'negative',
@@ -1363,7 +1391,7 @@ export default {
           tempPostRo.Size = this.postsRo[index].attributes.Size
           tempPostRo.Status = this.postsRo[index].attributes.Status
           tempPostRo.Location =
-            this.postsRo[index].attributes?.location.data?.attributes?.Name
+            this.postsRo[index].attributes?.company.data?.attributes?.Name
           this.dataRooms.push(tempPostRo)
         }
       })
@@ -1386,7 +1414,7 @@ export default {
       })
     },
     getPostsRoty () {
-      api.get('/room-types?pagination[pageSize]=1000').then((res) => {
+      api.get('/room-types?populate=*&pagination[pageSize]=1000').then((res) => {
         this.postsRoty = res.data.data
         for (let index = 0; index < this.postsRoty.length; index++) {
           const tempPostRoty = {}
@@ -1398,7 +1426,7 @@ export default {
       })
     },
     getPostsRoSe () {
-      api.get('/service-rooms?pagination[pageSize]=1000').then((res) => {
+      api.get('/services-rooms?pagination[pageSize]=1000').then((res) => {
         this.postsRoSe = res.data.data
         for (let index = 0; index < this.postsRoSe.length; index++) {
           const tempPostRoSe = {}
@@ -1444,7 +1472,7 @@ export default {
       })
     },
     getPostsRoVi () {
-      api.get('/view-rooms?pagination[pageSize]=1000').then((res) => {
+      api.get('/views-rooms?pagination[pageSize]=1000').then((res) => {
         this.postsRoVi = res.data.data
         for (let index = 0; index < this.postsRoVi.length; index++) {
           const tempPostRoVi = {}
@@ -1963,7 +1991,7 @@ export default {
     // Tạo mới dịch vụ văn phòng
     onCreateRoomService () {
       if (this.roomservice.nameroomservice !== '' && this.roomservice.motaroomservice !== '') {
-        api.post('/service-rooms', {
+        api.post('/services-rooms', {
           data: {
             Name: this.roomservice.nameroomservice,
             Description: this.roomservice.motaroomservice
@@ -1976,7 +2004,7 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
-            api.get('/service-rooms?pagination[pageSize]=1000').then((res) => {
+            api.get('/services-rooms?pagination[pageSize]=1000').then((res) => {
               this.postsRoSe = res.data.data
               this.dataRoomService = []
               for (let index = 0; index < this.postsRoSe.length; index++) {
@@ -2000,7 +2028,7 @@ export default {
     },
     // Xóa dịch vụ văn phòng
     deleteRoomService () {
-      api.delete(`/service-rooms/${this.selectedRoSe[0]?.id}`, {
+      api.delete(`/services-rooms/${this.selectedRoSe[0]?.id}`, {
       }).then((response) => {
         console.log(response)
         if (response.status === 200) {
@@ -2025,7 +2053,7 @@ export default {
     // Tạo mới tầm nhìn văn phòng
     onCreateRoomView () {
       if (this.roomview.nameview !== '') {
-        api.post('/view-rooms', {
+        api.post('/views-rooms', {
           data: {
             Name: this.roomview.nameview
           }
@@ -2037,7 +2065,7 @@ export default {
               type: 'positive',
               message: 'Tạo thành công'
             })
-            api.get('/view-rooms?pagination[pageSize]=1000').then((res) => {
+            api.get('/views-rooms?pagination[pageSize]=1000').then((res) => {
               this.postsRoVi = res.data.data
               this.dataRoomView = []
               for (let index = 0; index < this.postsRoVi.length; index++) {
@@ -2059,7 +2087,7 @@ export default {
     },
     // Xóa tầm nhìn văn phòng
     deleteRoomView () {
-      api.delete(`/view-rooms/${this.selectedRoVi[0]?.id}`, {
+      api.delete(`/views-rooms/${this.selectedRoVi[0]?.id}`, {
       }).then((response) => {
         console.log(response)
         if (response.status === 200) {
@@ -2068,7 +2096,7 @@ export default {
             type: 'positive',
             message: 'Xóa thành công'
           })
-          api.get('/view-rooms?pagination[pageSize]=1000').then((res) => {
+          api.get('/views-rooms?pagination[pageSize]=1000').then((res) => {
             this.postsRoVi = res.data.data
             this.dataRoomView = []
             for (let index = 0; index < this.postsRoVi.length; index++) {
@@ -2168,23 +2196,6 @@ export default {
           console.log(this.dataRooms)
         }
       })
-    },
-    uploadImage (event) {
-      const data = new FormData()
-      data.append('name', 'my-picture')
-      data.append('files', event.target.files[0])
-      const config = {
-        header: {
-          'Content-Type': 'image/png'
-        }
-      }
-      api.post('/upload', data, config)
-        .then(
-          response => {
-            this.newimage = response.data[0].id
-            console.log('new image', response.data[0].id)
-          }
-        )
     }
   },
   mounted () {

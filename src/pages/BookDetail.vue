@@ -27,7 +27,7 @@
                     <a>Bạn đã có tài khoản BookNow của riêng mình chưa ?</a>
                   </div>
                   <div>
-                    <a href="/login-user">Đăng nhập</a>
+                    <a href="/login">Đăng nhập</a>
                     <a>&nbsp;để thanh toán hoặc&nbsp;</a>
                     <a href="/register">Đăng ký</a>
                     <a>&nbsp;để tận hưởng ưu đã thành viên !</a>

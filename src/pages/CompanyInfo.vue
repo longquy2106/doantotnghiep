@@ -163,38 +163,38 @@
         </div>
       </div>
 
-      <div class="flex q-ml-xl q-my-lg">
-        <div class="q-mr-lg">
+      <div class="flex q-ml-xl q-my-lg justify-between" style="width: 70%">
+        <div>
           <q-btn flat style="color: #ff0080" class="text-bold" >
             Tổng quan
           </q-btn>
         </div>
-        <div class="q-mx-lg">
+        <div>
           <q-btn flat style="color: #ff0080" class="text-bold">
             Giờ làm việc
           </q-btn>
         </div>
-        <div class="q-mx-lg">
+        <div>
           <q-btn flat style="color: #ff0080" class="text-bold">
             Không gian làm việc
           </q-btn>
         </div>
-        <div class="q-mx-lg">
+        <div>
           <q-btn flat style="color: #ff0080" class="text-bold">
             Đánh giá
           </q-btn>
         </div>
-        <div class="q-ml-lg">
+        <div>
           <q-btn flat style="color: #ff0080" class="text-bold"> Hỗ trợ </q-btn>
         </div>
       </div>
 
-      <div class="q-ml-xl q-my-lg" style="width: 840px">
+      <div class="q-ml-xl q-my-lg" style="width: 70%">
         <div class="text-bold">
           <a style="fontSize: 22px">Tổng quan về {{room.nameRooms}}</a>
         </div>
         <div class="text-justify q-mt-sm">
-          <a
+          <a style="fontSize: 20px"
             >{{room.decripRooms}}</a
           >
         </div>
@@ -203,8 +203,8 @@
       <div class="q-ml-xl q-my-lg">
         <div><a class="text-bold text-grey-13">Hiện tại:&nbsp;{{time}}</a></div>
         <div class="text-bold"><a style="fontSize: 22px">Giờ làm việc</a></div>
-        <div class="flex">
-          <div class="q-pt-md q-mr-sm row">
+        <div class="flex justify-between" style="width:96%">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Thứ 2</div>
@@ -218,7 +218,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="q-pt-md q-mx-sm row">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Thứ 3</div>
@@ -232,7 +232,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="q-pt-md q-mx-sm row">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Thứ 4</div>
@@ -246,7 +246,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="q-pt-md q-mx-sm row">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Thứ 5</div>
@@ -260,7 +260,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="q-pt-md q-mx-sm row">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Thứ 6</div>
@@ -274,7 +274,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="q-pt-md q-mx-sm row">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Thứ 7</div>
@@ -288,7 +288,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="q-pt-md q-ml-sm row">
+          <div>
             <q-card class="my-card">
               <q-card-section align="center">
                 <div class="text-bold" style="fontsize: 15px">Chủ Nhật</div>
@@ -335,7 +335,7 @@
               <q-separator vertical inset />
 
               <div class="q-mr-md" style="width: 75%">
-                <div class="flex q-mt-md q-ml-md justify-between">
+                <div class="flex q-mt-md q-ml-md">
                   <div style="max-width: 300px">
                     <q-input
                       filled
@@ -365,7 +365,6 @@
                       </template>
                     </q-input>
                   </div>
-                  <div>Giảm giá</div>
                 </div>
 
                 <!-- vòng lặp v-for -->

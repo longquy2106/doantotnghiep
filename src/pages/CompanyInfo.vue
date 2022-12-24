@@ -335,7 +335,7 @@
               <q-separator vertical inset />
 
               <div class="q-mr-md" style="width: 75%">
-                <div class="flex q-mt-md q-ml-md">
+                <div class="flex q-mt-md q-ml-md justify-between">
                   <div style="max-width: 300px">
                     <q-input
                       filled
@@ -365,6 +365,7 @@
                       </template>
                     </q-input>
                   </div>
+                  <div><a style="color:crimson; fontSize:17px">* Nếu không thể hiển thị danh sách, vui lòng nhấn phím F5</a></div>
                 </div>
 
                 <!-- vòng lặp v-for -->

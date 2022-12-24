@@ -91,12 +91,12 @@
       </div>
 
       <div class="q-ml-xl flex justify-between">
-        <div>
+        <div style="width:72%">
           <div
             class=""
             style="
-              min-width: 840px
-              max-width: 840px
+              min-width: 860px
+              max-width: 2000px
               min-height: 400px
               max-height: 450px
             "
@@ -109,7 +109,7 @@
             </q-carousel>
           </div>
         </div>
-        <div class="bg-grey-3 q-mr-xl">
+        <div class="bg-grey-3 q-mr-xl" style="width:22%">
           <div class="q-mt-md q-mb-sm q-ml-md">
             <div><a style="fontsize: 20px" class="text-bold">Nổi Bật</a></div>
             <div class="q-mx-xl" style="fontsize: 14px">
@@ -119,7 +119,7 @@
                   color="positive"
                   class="q-mx-sm"
                 ></q-icon
-                ><a>Hơn 1200 chỗ</a>
+                ><a>Hơn 50 chỗ</a>
               </div>
               <div>
                 <q-icon

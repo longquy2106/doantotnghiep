@@ -73,51 +73,48 @@
 
     <!-- "DANH SÁCH CÁC CÔNG TY" -->
     <q-page-container v-show="dscongty">
-      <q-page padding>
-        <div >
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH CÁC CÔNG TY"
-              :rows="dataCompanies"
-              :columns="columnsCompanies"
-              row-key="id"
-              selection="single"
-              v-model:selected="selectedCo"
+      <div class="q-ml-md"><a class="text-bold" style="color:#ec407a; fontSize:30px">Quản lý công ty</a></div>
+      <!-- table -->
+      <div class="q-pa-md">
+        <q-table
+          title="DANH SÁCH CÁC CÔNG TY"
+          :rows="dataCompanies"
+          :columns="columnsCompanies"
+          row-key="id"
+          selection="single"
+          v-model:selected="selectedCo"
+        />
+        <div class="flex justify-end q-mt-md">
+          <div class="q-mr-sm">
+            <q-btn
+              color="primary"
+              icon="add"
+              label="Thêm"
+              @click="createCompany = true"
             />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  color="primary"
-                  icon="add"
-                  label="Thêm"
-                  @click="createCompany = true"
-                />
-              </div>
-              <div class="q-mr-sm">
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Chỉnh sửa"
-                  @click="(updateCompany = true, openDialogCompanyUpdate())"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteCompany"
-                />
-              </div>
-            </div>
+          </div>
+          <div class="q-mr-sm">
+            <q-btn
+              color="primary"
+              icon="edit"
+              label="Chỉnh sửa"
+              @click="(updateCompany = true, openDialogCompanyUpdate())"
+            />
+          </div>
+          <div>
+            <q-btn
+              color="primary"
+              icon="delete"
+              label="Xóa"
+              @click="deleteCompany"
+            />
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
 
     <!-- Tạo mới thông tin công ty -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="createCompany" persistent>
         <q-card>
           <q-card-section class="">
@@ -216,7 +213,7 @@
     </div>
 
     <!-- Chỉnh sửa thông tin công ty -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="updateCompany" persistent>
         <q-card>
           <q-card-section class="">
@@ -316,48 +313,47 @@
 
     <!-- "DANH SÁCH NGƯỜI DÙNG" -->
     <q-page-container v-show="dsnguoidung">
-      <q-page padding>
-        <!-- table -->
-        <div class="q-pa-md">
-          <q-table
-            title="DANH SÁCH NGƯỜI DÙNG"
-            :rows="dataUsers"
-            :columns="columnsUsers"
-            row-key="id"
-            selection="single"
-            v-model:selected="selectedUser"
-          />
-          <div class="flex justify-end q-mt-md">
-            <div class="q-mr-sm">
-              <q-btn
-                class="q-mr-sm"
-                color="primary"
-                icon="add"
-                label="Thêm"
-                @click="createUser = true"
-              />
-              <q-btn
-                color="primary"
-                icon="edit"
-                label="Chỉnh sửa"
-                @click="(editUser = true, openDialogUserUpdate())"
-              />
-            </div>
-            <div>
-              <q-btn
-                color="primary"
-                icon="delete"
-                label="Xóa"
-                @click="deleteUser"
-              />
-            </div>
+      <!-- table -->
+      <div><a class="text-bold q-ml-md" style="color:#ec407a; fontSize:30px">Quản lý người dùng</a></div>
+      <div class="q-pa-md">
+        <q-table
+          title="DANH SÁCH NGƯỜI DÙNG"
+          :rows="dataUsers"
+          :columns="columnsUsers"
+          row-key="id"
+          selection="single"
+          v-model:selected="selectedUser"
+        />
+        <div class="flex justify-end q-mt-md">
+          <div class="q-mr-sm">
+            <q-btn
+              class="q-mr-sm"
+              color="primary"
+              icon="add"
+              label="Thêm"
+              @click="createUser = true"
+            />
+            <q-btn
+              color="primary"
+              icon="edit"
+              label="Chỉnh sửa"
+              @click="(editUser = true, openDialogUserUpdate())"
+            />
+          </div>
+          <div>
+            <q-btn
+              color="primary"
+              icon="delete"
+              label="Xóa"
+              @click="deleteUser"
+            />
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
 
     <!-- TẠO MỚI NGƯỜI DÙNG -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="createUser" persistent>
         <q-card>
           <q-card-section class="">
@@ -471,7 +467,7 @@
     </div>
 
     <!-- CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="editUser" persistent>
         <q-card>
           <q-card-section class="">
@@ -586,50 +582,49 @@
 
     <!-- "DANH SÁCH CÁC VĂN PHÒNG" -->
     <q-page-container v-show="dsvanphong">
-      <q-page padding>
-        <div>
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH CÁC VĂN PHÒNG"
-              :rows="dataRooms"
-              :columns="columnsRooms"
-              row-key="id"
-              selection="single"
-              v-model:selected="selectedRo"
-            />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  class="q-mr-sm"
-                  color="primary"
-                  icon="add"
-                  label="Thêm"
-                  @click="createRooms = true"
-                />
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Chỉnh sửa"
-                  @click="(updateRoom = true, openDialogRoomUpdate())"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteRoom"
-                />
-              </div>
+      <div>
+        <div><a class="text-bold q-ml-md" style="color:#ec407a; fontSize:30px">Quản lý văn phòng</a></div>
+        <!-- table -->
+        <div class="q-pa-md">
+          <q-table
+            title="DANH SÁCH CÁC VĂN PHÒNG"
+            :rows="dataRooms"
+            :columns="columnsRooms"
+            row-key="id"
+            selection="single"
+            v-model:selected="selectedRo"
+          />
+          <div class="flex justify-end q-mt-md">
+            <div class="q-mr-sm">
+              <q-btn
+                class="q-mr-sm"
+                color="primary"
+                icon="add"
+                label="Thêm"
+                @click="createRooms = true"
+              />
+              <q-btn
+                color="primary"
+                icon="edit"
+                label="Chỉnh sửa"
+                @click="(updateRoom = true, openDialogRoomUpdate())"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                icon="delete"
+                label="Xóa"
+                @click="deleteRoom"
+              />
             </div>
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
 
     <!-- Tạo mới thông tin văn Phòng -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="createRooms" persistent>
         <q-card>
           <q-card-section class="">
@@ -756,7 +751,7 @@
     </div>
 
     <!-- Chỉnh sửa thông tin văn phòng -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="updateRoom" persistent>
         <q-card>
           <q-card-section class="">
@@ -884,43 +879,42 @@
 
     <!-- "DANH SÁCH LỊCH SỬ ĐẶT PHÒNG" -->
     <q-page-container v-show="dslichsu">
-      <q-page padding>
-        <div>
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH LỊCH SỬ ĐẶT PHÒNG"
-              :rows="dataBookHis"
-              :columns="columnsBookHis"
-              row-key="id"
-              selection="single"
-              v-model:selected="selectedBookHis"
-            />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Chỉnh sửa"
-                  @click="(updateBookHis = true, openDialogBookHisUpdate())"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteBookHis"
-                />
-              </div>
+      <div>
+        <div><a class="text-bold q-ml-md" style="color:#ec407a; fontSize:30px">Quản lý lịch sử đặt phòng</a></div>
+        <!-- table -->
+        <div class="q-pa-md">
+          <q-table
+            title="DANH SÁCH LỊCH SỬ ĐẶT PHÒNG"
+            :rows="dataBookHis"
+            :columns="columnsBookHis"
+            row-key="id"
+            selection="single"
+            v-model:selected="selectedBookHis"
+          />
+          <div class="flex justify-end q-mt-md">
+            <div class="q-mr-sm">
+              <q-btn
+                color="primary"
+                icon="edit"
+                label="Chỉnh sửa"
+                @click="(updateBookHis = true, openDialogBookHisUpdate())"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                icon="delete"
+                label="Xóa"
+                @click="deleteBookHis"
+              />
             </div>
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
 
     <!-- Chỉnh sửa lịch sử đặt phòng -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="updateBookHis" persistent>
         <q-card>
           <q-card-section class="">
@@ -1076,44 +1070,43 @@
 
     <!-- "DANH SÁCH CÁC KIỂU VĂN PHÒNG" -->
     <q-page-container v-show="dskieu">
-      <q-page padding>
-        <div>
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH CÁC KIỂU VĂN PHÒNG"
-              :rows="dataRoomType"
-              :columns="columnsRoty"
-              row-key="id"
-              selection="single"
-              v-model:selected="selectedRoTy"
-            />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  class="q-mr-sm"
-                  color="primary"
-                  icon="add"
-                  label="Thêm"
-                  @click="createRoomtype = true"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteRoomType"
-                />
-              </div>
+      <div>
+        <div><a class="text-bold q-ml-md" style="color:#ec407a; fontSize:30px">Quản lý kiểu văn phòng</a></div>
+        <!-- table -->
+        <div class="q-pa-md">
+          <q-table
+            title="DANH SÁCH CÁC KIỂU VĂN PHÒNG"
+            :rows="dataRoomType"
+            :columns="columnsRoty"
+            row-key="id"
+            selection="single"
+            v-model:selected="selectedRoTy"
+          />
+          <div class="flex justify-end q-mt-md">
+            <div class="q-mr-sm">
+              <q-btn
+                class="q-mr-sm"
+                color="primary"
+                icon="add"
+                label="Thêm"
+                @click="createRoomtype = true"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                icon="delete"
+                label="Xóa"
+                @click="deleteRoomType"
+              />
             </div>
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
 
     <!-- chỉnh sửa các kiểu văn phòng -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="createRoomtype" persistent>
         <q-card>
           <q-card-section class="">
@@ -1154,43 +1147,42 @@
 
     <!-- "DANH SÁCH CÁC DỊCH VỤ VĂN PHÒNG" -->
     <q-page-container v-show="dsdichvu">
-      <q-page padding>
-        <div>
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH CÁC DỊCH VỤ VĂN PHÒNG"
-              :rows="dataRoomService"
-              :columns="columnsRoSe"
-              row-key="id"
-              selection="single"
-              v-model:selected="selectedRoSe"
-            />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  class="q-mr-sm"
-                  color="primary"
-                  icon="add"
-                  label="Thêm"
-                  @click="createRoomService = true"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteRoomService"
-                />
-              </div>
+      <div>
+        <div><a class="text-bold q-ml-md" style="color:#ec407a; fontSize:30px">Quản lý dịch vụ văn phòng</a></div>
+        <!-- table -->
+        <div class="q-pa-md" >
+          <q-table
+            title="DANH SÁCH CÁC DỊCH VỤ VĂN PHÒNG"
+            :rows="dataRoomService"
+            :columns="columnsRoSe"
+            row-key="id"
+            selection="single"
+            v-model:selected="selectedRoSe"
+          />
+          <div class="flex justify-end q-mt-md">
+            <div class="q-mr-sm">
+              <q-btn
+                class="q-mr-sm"
+                color="primary"
+                icon="add"
+                label="Thêm"
+                @click="createRoomService = true"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                icon="delete"
+                label="Xóa"
+                @click="deleteRoomService"
+              />
             </div>
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
     <!-- Tạo mới thông tin dịch vụ văn phòng -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="createRoomService" persistent>
         <q-card>
           <q-card-section class="">
@@ -1241,44 +1233,43 @@
 
      <!-- "DANH SÁCH TẦM NHÌN VĂN PHÒNG" -->
     <q-page-container v-show="dsview">
-      <q-page padding>
-        <div>
-          <!-- table -->
-          <div class="q-pa-md">
-            <q-table
-              title="DANH SÁCH CÁC TẦM NHÌN VĂN PHÒNG"
-              :rows="dataRoomView"
-              :columns="columnsRoVi"
-              row-key="id"
-              selection="single"
-              v-model:selected="selectedRoVi"
-            />
-            <div class="flex justify-end q-mt-md">
-              <div class="q-mr-sm">
-                <q-btn
-                  class="q-mr-sm"
-                  color="primary"
-                  icon="add"
-                  label="Thêm"
-                  @click="createRoomView = true"
-                />
-              </div>
-              <div>
-                <q-btn
-                  color="primary"
-                  icon="delete"
-                  label="Xóa"
-                  @click="deleteRoomView"
-                />
-              </div>
+      <div>
+        <div><a class="text-bold q-ml-md" style="color:#ec407a; fontSize:30px">Quản lý tầm nhìn văn phòng</a></div>
+        <!-- table -->
+        <div class="q-pa-md">
+          <q-table
+            title="DANH SÁCH CÁC TẦM NHÌN VĂN PHÒNG"
+            :rows="dataRoomView"
+            :columns="columnsRoVi"
+            row-key="id"
+            selection="single"
+            v-model:selected="selectedRoVi"
+          />
+          <div class="flex justify-end q-mt-md">
+            <div class="q-mr-sm">
+              <q-btn
+                class="q-mr-sm"
+                color="primary"
+                icon="add"
+                label="Thêm"
+                @click="createRoomView = true"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                icon="delete"
+                label="Xóa"
+                @click="deleteRoomView"
+              />
             </div>
           </div>
         </div>
-      </q-page>
+      </div>
     </q-page-container>
 
     <!-- Tạo mới thông tin tầm nhìn văn phòng -->
-    <div class="q-pa-md">
+    <div>
       <q-dialog v-model="createRoomView" persistent>
         <q-card>
           <q-card-section class="">

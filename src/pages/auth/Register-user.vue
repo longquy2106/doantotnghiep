@@ -10,7 +10,7 @@
           </q-card-section>
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input clearable v-model="username" label="Tên người dùng" :rules="[(val)=>(val && val.length > 5)|| 'Tên người dùng phải lớn hơn 6 ký tự']">
+              <q-input clearable v-model="username" label="Tên người dùng" :rules="[(val)=>(val && val.length > 6)|| 'Tên người dùng phải lớn hơn 6 ký tự']">
               <template v-slot:prepend>
                 <q-icon name="person" />
               </template>
@@ -20,7 +20,7 @@
                 <q-icon name="email"></q-icon>
               </template>
             </q-input>
-             <q-input clearable v-model="password" label="Mật khẩu" type="Password" :rules="[(val)=>(val && val.length > 6)|| 'Mật khẩu phải lớn hơn 6 ký tự']">
+             <q-input clearable v-model="password" label="Mật khẩu" type="Password" :rules="[(val)=>(val && val.length > 5)|| 'Mật khẩu phải lớn hơn 6 ký tự']">
               <template v-slot:prepend>
                 <q-icon name="lock" />
               </template>

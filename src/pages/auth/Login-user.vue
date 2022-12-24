@@ -14,7 +14,7 @@
                 <q-icon name="email"></q-icon>
               </template>
             </q-input>
-             <q-input clearable v-model="password" label="Mật khẩu" type="Password" :rules="[(val)=>(val && val.length > 6)|| 'Mật khẩu phải trên 6 ký tự']">
+             <q-input clearable v-model="password" label="Mật khẩu" type="Password" :rules="[(val)=>(val && val.length > 5)|| 'Mật khẩu phải trên 6 ký tự']">
               <template v-slot:prepend>
                 <q-icon name="lock" />
               </template>

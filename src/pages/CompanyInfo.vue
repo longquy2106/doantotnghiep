@@ -647,13 +647,7 @@ export default defineComponent({
             this.room = this.rooms.find((room) => room.id === Number(this.id))
           }
         }
-        for (let tudo = 0; tudo < this.room?.rooms?.length; tudo++) {
-          for (let tido = 0; tido < this.roomdatas.length; tido++) {
-            if (this.room.rooms[tudo].id === this.roomdatas[tido].id) {
-              this.inforoom.push(this.roomdatas[tido])
-            }
-          }
-        }
+        console.log(this.room)
       })
     api.get('/rooms?populate=*&pagination[pageSize]=1000')
       .then((res) => {
@@ -669,6 +663,13 @@ export default defineComponent({
           tempRoomData.sizeRoomData = res.data.data[tedo].attributes.Size
           tempRoomData.imageRoomData = res.data?.data[tedo]?.attributes?.Images.data.attributes?.url
           this.roomdatas.push(tempRoomData)
+        }
+        for (let tudo = 0; tudo < this.room?.rooms?.length; tudo++) {
+          for (let tido = 0; tido < this.roomdatas.length; tido++) {
+            if (this.room.rooms[tudo].id === this.roomdatas[tido].id) {
+              this.inforoom.push(this.roomdatas[tido])
+            }
+          }
         }
       })
     this.interval = setInterval(() => {

@@ -3,12 +3,12 @@
       <div class="flex justify-between  q-mx-xl">
         <div class="YL__toolbar-input-container row no-wrap  q-mt-sm" >
           <q-btn class="YL__toolbar-input-btn" color="grey-3" text-color="grey-8" icon="search" unelevated />
-          <q-input dense outlined square v-model="search" placeholder="Thành phố Hồ Chí Minh" class="bg-white col" />
+          <q-input dense outlined square type="text" v-model="input" placeholder="Tìm kiếm văn phòng ..." class="bg-white col" />
         </div>
         <!-- time -->
         <div>
           <q-chip class="q-ma-sm" style="width: 215px; height:40px">
-            <q-input v-model="time">
+            <q-input v-model="time" disable>
               <template v-slot:prepend>
                 <q-icon name="event" style="height:40px" >
                 </q-icon>

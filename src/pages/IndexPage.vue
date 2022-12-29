@@ -20,6 +20,8 @@
           <q-chip style="min-height: 40px" class="bg-amber-13 text-weight-bold">Tìm Kiếm</q-chip>
         </div>
       </div>
+      <div align="center"><a style="color:crimson; fontSize:17px">* Lần đầu tải trang sẽ chậm, vui lòng đợi.
+        Nếu không hiển thị vui lòng nhấn F5 để tải lại trang! Xin lỗi vì sự bất tiện này.</a></div>
 
     <div class="flex justify-between q-mx-xl q-my-md">
    <!-- Chọn thuộc tính -->
